@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body th:fragment="header">
+<header>
+    <nav class="h-20">
+        <div class="fixed w-full animation_scroll z-20 bg-white/90 dark:bg-gray-800/90 dark:shadow-gray-700 shadow">
+            <div class="mx-auto max-w-7xl px-6">
+                <div class="flex items-center justify-between py-3 md:space-x-10">
+                    <!-- logo -->
+                    <div class="">
+                        <a href="/">
+                            <span class="sr-only text-2xl">Your Company</span>
+                            <img class="h-8 w-8 sm:w-10 sm:h-10 max-w-none rounded" th:src="@{/images/BC.png}"
+                                 alt="BCENT"/>
+                        </a>
+                    </div>
+                    <div>
+                        <a th:href="@{/comics}">
+                            <button>
+                                Comics
+                            </button>
+                        </a>
+                    </div>
+                    <div class="flex gap-2">
+                        <button id="btn-open-modal-search" class="p-2 hover:bg-gray-100 hover:text-green-500 rounded">
+                            <i class="fa-light fa-magnifying-glass fa-lg"></i>
+                        </button>
+                        <button class="p-2 hover:bg-gray-50 hover:text-green-500 rounded">
+                            <i class="fa-light fa-user fa-lg"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<!-- modal -->
+<main class="flex justify-center w-full">
+    <section id="modal-search" class="hidden justify-center fixed z-40">
+        <div id="modal-content-search"
+             class="modal-content-search bg-white rounded w-[550px] min-h-64 absolute top-[20%]">
+            <div class="relative shadow-sm">
+                <input
+                        id="search-input"
+                        class="block w-full appearance-none bg-transparent py-4 pl-4 pr-12 text-base text-slate-900 placeholder:text-slate-600 focus:outline-none sm:text-sm sm:leading-6"
+                        placeholder="Find anything..."
+                />
+                <button id="btn-input-search" class="pointer-events-none absolute top-4 right-4 h-6 w-6">
+                    <i class="fa-light fa-magnifying-glass fa-lg"></i>
+                </button>
+            </div>
+            <!-- list search -->
+            <ul
+                    class="max-h-[18.375rem] divide-y divide-slate-200 overflow-y-auto rounded-b-lg border-slate-200 text-sm leading-6"
+                    role="listbox"
+                    id="list-search"
+            >
+            </ul>
+        </div>
+    </section>
+    <div id="overlay-search" class="hidden z-30">
+        <div id="overlay-body-search"
+             class="overlay-body-search fixed inset-0 w-full h-screen bg-gray-500/50 blur-sm"></div>
+    </div>
+</main>
+
+<!-- script -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var isScrollDown = false;
+
+        var lastScrollTop = 0;
+        $(window).scroll(function () {
+            var currentScrollTop = $(this).scrollTop();
+            if (currentScrollTop > lastScrollTop) {
+                isScrollDown = true;
+            } else {
+                isScrollDown = false;
+            }
+            lastScrollTop = currentScrollTop;
+
+            updateScrollClass();
+        });
+
+        function updateScrollClass() {
+            var $div = $('.animation_scroll');
+
+            if (isScrollDown) {
+                $div.addClass('is_scroll');
+                $div.removeClass('shadow');
+            } else {
+                $div.removeClass('is_scroll');
+                $div.addClass('shadow');
+            }
+        }
+    });
+</script>
+<!-- search -->
+<script>
+    $(document).ready(function () {
+        const modalSearch = $("#modal-search");
+        const modalContentSearch = $("#modal-content-search");
+        const overlaySearch = $("#overlay-search");
+        const overlayBodySearch = $("#overlay-body-search");
+        const openModalBtnSearch = $("#btn-open-modal-search");
+        const inputSearch = $("#search-input");
+        const btnInputSearch = $("#btn-input-search");
+        const listSearch = $("#list-search");
+        let isCallApi = false;
+        let isLoaded = false;
+        let timeout = null;
+
+        // handle isCallApi on change
+        const handleIsCallApiOnChange = function () {
+            if (isCallApi) {
+                if (isLoaded) {
+                    return;
+                }
+                btnInputSearch.html('<svg class="animate-spin mr-3 h-5 w-5 text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"> <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle> <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path> </svg>');
+                isLoaded = true;
+            } else {
+                btnInputSearch.html('<i class="fa-light fa-magnifying-glass fa-lg"></i>');
+                isLoaded = false;
+            }
+        };
+        // switch icon search
+        inputSearch.on("input", () => {
+            isCallApi = inputSearch.val().length > 0;
+            handleIsCallApiOnChange();
+        });
+
+        const openModalSearch = function () {
+            modalSearch.removeClass("hidden").addClass("flex");
+            overlaySearch.removeClass("hidden");
+            inputSearch.focus();
+            setTimeout(function () {
+                overlayBodySearch.addClass("active");
+                modalContentSearch.addClass("active");
+            }, 100);
+        };
+        openModalBtnSearch.on("click", openModalSearch);
+
+        const closeModalSearch = function () {
+            modalContentSearch.removeClass("active");
+            overlayBodySearch.removeClass("active");
+            setTimeout(function () {
+                modalSearch.addClass("hidden");
+                overlaySearch.addClass("hidden");
+            }, 400);
+        };
+        overlaySearch.on("click", closeModalSearch);
+
+        // input onchange
+        inputSearch.on("input", function () {
+            if (timeout) {
+                clearTimeout(timeout);
+            }
+            if (inputSearch.val().length > 0) {
+                timeout = setTimeout(function () {
+                    // call api
+                    isCallApi = true;
+                    $.post("/api/comics/search", {
+                        title: inputSearch.val(),
+                    }, (data, status) => {
+                        isCallApi = false;
+                        handleIsCallApiOnChange();
+                        // set list search empty
+                        listSearch.empty();
+                        listSearch.removeClass('border-t')
+                        // update list search
+                        if (data.length > 0) {
+                            listSearch.addClass('border-t')
+                            data.forEach(comic => {
+                                listSearch.append('<li class="hover:bg-gray-200" role="option"> ' +
+                                    `<a href="/comics/${comic.titleSlug}" class="grid grid-cols-3 items-center justify-between p-4"> ` +
+                                    '<div class="col-span-2"> ' +
+                                    `<span class="font-semibold text-slate-900">${comic.title}</span> ` +
+                                    '</div> ' +
+                                    '<div class="col-span-1 flex gap-2 items-center"> ' +
+                                    '<span class="text-slate-600"><i class="fa-light fa-file-image"></i></span> ' +
+                                    `<span class="text-slate-600">${comic.countChapter}</span> ` +
+                                    `<span class="text-right text-xs text-slate-600">${comic.timeAgo}</span> ` +
+                                    '</div> ' +
+                                    '</a> ' +
+                                    '</li>');
+                            })
+                        }
+                    })
+                }, 1000);
+            }
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+{
+    -ms-overflow-style: none;
+    scrollbar-width: none; /* Firefox */
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+}
+#backToTopButton {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    transform: translateY(10px);
+}
+
+#backToTopButton.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* search */
+.modal-content-search {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    transform: translateY(10px);
+}
+.modal-content-search.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+.overlay-body-search {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+.overlay-body-search.active {
+    opacity: 1;
+}

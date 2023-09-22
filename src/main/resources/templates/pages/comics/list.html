@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/fragments/head :: head(title='Comics | BCuns Entertainment')}">
+    <title>Title</title>
+</head>
+<body>
+<!-- header -->
+<header th:replace="~{/fragments/header :: header}"></header>
+
+<!-- content -->
+<!--<div th:each="item:${comics}">-->
+<!--    <div th:each="like: ${item.getLike()}">-->
+<!--        <p th:text="${like.getValue()}"></p>-->
+<!--    </div>-->
+<!--    <div th:text="${item.getLike().size()}">-->
+<!--</div>-->
+<section>
+    <div class="mx-auto max-w-2xl py-4 sm:px-2 lg:max-w-7xl lg:px-4">
+        <!--    title -->
+        <div class="py-4">
+            <div class="flex items-center border-b pb-1">
+                <i class="fa-thin fa-list-timeline" style="color: #ff0000;"></i>
+                <a href="#"
+                   class="flex items-center hover:text-red-500 dark:hover:text-red-500 text-black dark:text-white">
+                    <h1 class="sm:text-xl font-medium mx-2">Truyện tranh nổi bật</h1>
+                    <i class="fa-light fa-angles-right fa-lg"></i>
+                </a>
+            </div>
+        </div>
+        <!--    list comics -->
+        <div class="grid grid-cols-2 gap-y-10 gap-x-6 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 xl:gap-x-8">
+            <div class="shadow dark:shadow-gray-700 rounded" th:each="item: ${comics}">
+                <div class="group relative">
+                    <!-- rating -->
+                    <a href="#" class="flex items-center absolute px-1 bg-black/50 top-[10%] right-0 z-10 rounded-l">
+                        <!--                        <p-->
+                        <!--                                class={classs(-->
+                        <!--                        'font-medium mx-1',-->
+                        <!--                        rate >= 5 && 'text-amber-500 text-5xl',-->
+                        <!--                        rate < 5 && rate >= 4 && 'text-rose-500 text-4xl',-->
+                        <!--                        rate < 4 && rate >= 3 && 'text-green-500 text-2xl',-->
+                        <!--                        rate < 3 && rate >= 2 && 'text-teal-500 text-xl',-->
+                        <!--                        rate < 2 && rate >= 1 && 'text-sky-500 text-lg',-->
+                        <!--                        rate < 1 && 'text-white text-base'-->
+                        <!--                        )}-->
+                        <!--                        >-->
+                        <!--                        {rate}-->
+                        <!--                        </p>-->
+                        <p class="font-medium mx-1 text-amber-500 text-5xl">
+                            5
+                        </p>
+                        <div class="text-amber-300 mx-1">
+                            <i class="fa-light fa-star fa-lg" style="color: #ffeb0f;"></i>
+                        </div>
+                    </a>
+                    <!-- image -->
+                    <div class="h-60 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-t bg-gray-200 group-hover:opacity-75 lg:aspect-none lg:h-72 xl:h-64">
+                        <img th:src="${item.getThumbnails()}"
+                             class="h-full w-full object-cover object-center lg:h-full lg:w-full group-hover:scale-110 duration-500 ease-in-out">
+                    </div>
+                    <div class="mt-3 px-2 mb-2">
+                        <div class="flex">
+                            <span th:text="${item.getTimeAgo()}" class="text-xs">{3 phút trước}</span>
+                        </div>
+                        <div>
+                            <a th:href="'comics/' + ${item.getTitleSlug()}">
+                                <span aria-hidden="true" class="absolute inset-0"></span>
+                                <span class="hidden" th:text="${item.getTitle()}">{element.title}</span>
+                            </a>
+                            <h3 class="text-sm font-medium line-clamp-1" th:text="${item.getTitle()}">
+                                {element.title}
+                            </h3>
+                        </div>
+                        <div class="flex justify-between mt-1">
+                            <div class="flex items-center">
+                                <i class="fa-light fa-file-image"></i>
+                                <p th:text="${item.getCountChapter()}" class="text-sm font-light ml-1">123</p>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fa-light fa-face-grin-hearts"></i>
+                                <p th:if="${item.getLike() != null}" th:text="${item.getLike().size()}"
+                                   class="text-sm font-light ml-1">123</p>
+                                <p th:if="${item.getLike() == null}" class="text-sm font-light ml-1">0</p>
+                            </div>
+                            <div class="flex items-center">
+                                <p th:text="${item.getView()}" class="text-sm font-light mr-1">123</p>
+                                <i class="fa-light fa-face-hand-peeking"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--    pagination -->
+        <div class="flex justify-center mt-12">
+            <div class="flex rounded-md">
+                <a th:if="${currentPage > 0}" th:href="'?page=' + ${currentPage - 1}" href="#"
+                   class="relative inline-flex items-center p-2 rounded-l-md border border-gray-300 bg-white dark:bg-gray-800 text-sm font-medium text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
+                    <span class="sr-only">Previous</span>
+                    <!-- Heroicon name: solid/chevron-left -->
+                    <i class="fa-light fa-chevron-left fa-lg"></i>
+                </a>
+                <!-- Page numbers -->
+                <span th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
+                    <a class="p-2" th:if="${pageNumber == currentPage}" th:text="${pageNumber}"></a>
+                    <a class="p-2" th:unless="${pageNumber == currentPage}" th:href="'?page=' + ${pageNumber}" th:text="${pageNumber}"></a>
+                </span>
+                <a th:if="${currentPage < totalPages - 1}" th:href="'?page=' + ${currentPage + 1}" href="#"
+                   class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white dark:bg-gray-800 text-sm font-medium text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
+                    <span class="sr-only">Next</span>
+                    <!-- Heroicon name: solid/chevron-right -->
+                    <i class="fa-light fa-chevron-right fa-lg"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- footer -->
+<footer th:replace="~{/fragments/footer :: footer}"></footer>
+</body>
+</html>
