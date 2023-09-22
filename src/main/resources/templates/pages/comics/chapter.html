@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head
-        th:replace="~{/fragments/head :: head(title=${comic.getTitle()} + ' - ' + ${chapter.getTitle()})}"
+        th:replace="~{fragments/head :: head(title=${comic.getTitle()} + ' - ' + ${chapter.getTitle()})}"
 >
     <title>Chapter</title>
 </head>
 <body class="scrollbar-hidden">
 <!-- header -->
 <header
-        th:replace="~{/fragments/comics/navbar :: navbar(
+        th:replace="~{fragments/comics/navbar :: navbar(
         chapter=${chapter},
         comic=${comic}
         )}"
@@ -25,6 +25,6 @@
     </div>
 </section>
 <!-- footer -->
-<footer th:replace="~{/fragments/footer :: footer}"></footer>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
 </body>
 </html>

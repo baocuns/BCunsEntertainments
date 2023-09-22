@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{/fragments/head :: head(title='Comics | BCuns Entertainment')}">
+<head th:replace="~{fragments/head :: head(title='Comics | BCuns Entertainment')}">
     <title>Title</title>
 </head>
 <body class="scrollbar-hidden">
 <!-- header -->
-<header th:replace="~{/fragments/header :: header}"></header>
+<header th:replace="~{fragments/header :: header}"></header>
 
 <!-- content -->
 <!--<div th:each="item:${comics}">-->
@@ -116,6 +116,6 @@
     </div>
 </section>
 <!-- footer -->
-<footer th:replace="~{/fragments/footer :: footer}"></footer>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
 </body>
 </html>

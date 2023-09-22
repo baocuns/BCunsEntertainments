@@ -24,6 +24,7 @@ public class SecurityConfiguration {
             new AntPathRequestMatcher("/forgot-password"),
             new AntPathRequestMatcher("/comics/**"),
             new AntPathRequestMatcher("/crawl/**"),
+            new AntPathRequestMatcher("/api/comics/search"),
     };
     public static final AntPathRequestMatcher[] ENDPOINTS_WHITELIST_AUTHENTICATED = {
             new AntPathRequestMatcher("/comics/**/chapter/**"),
