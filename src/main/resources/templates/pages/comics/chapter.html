@@ -9,9 +9,7 @@
 <!-- header -->
 <header
         th:replace="~{/fragments/comics/navbar :: navbar(
-        prev=${comic.getSlugChapterPrev(chapter)},
-        next=${comic.getSlugChapterNext(chapter)},
-        chapterTitle=${chapter.getTitle()},
+        chapter=${chapter},
         comic=${comic}
         )}"
 ></header>
