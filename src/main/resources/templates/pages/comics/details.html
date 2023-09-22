@@ -3,11 +3,11 @@
 <head th:replace="~{/fragments/head :: head(title=${comic.getTitle()})}">
     <title>Details</title>
 </head>
-<body>
+<body class="scrollbar-hidden">
 <!-- header -->
 <header th:replace="~{/fragments/header :: header}"></header>
 <!-- Content Comics Details -->
-<section>
+<section class="mt-20">
     <div class="mx-auto mt-6 max-w-4xl px-6 grid grid-cols-1 sm:max-w-7xl sm:grid-cols-4 sm:gap-x-8 sm:px-8">
         <!-- image -->
         <div class="aspect-w-4 aspect-h-5 sm:overflow-hidden sm:aspect-w-3 sm:aspect-h-4 rounded">
