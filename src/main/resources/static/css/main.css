@@ -754,6 +754,10 @@ video {
   margin-top: 5rem;
 }
 
+.mt-24 {
+  margin-top: 6rem;
+}
+
 .line-clamp-1 {
   overflow: hidden;
   display: -webkit-box;
@@ -1165,6 +1169,10 @@ video {
 
 .bg-white\/90 {
   background-color: rgb(255 255 255 / 0.9);
+}
+
+.bg-gray-200\/50 {
+  background-color: rgb(229 231 235 / 0.5);
 }
 
 .bg-gradient-to-b {
