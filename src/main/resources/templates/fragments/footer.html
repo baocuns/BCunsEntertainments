@@ -144,9 +144,9 @@
     </div>
 </footer>
 <!--    scroll to top -->
-<div class="fixed right-16 bottom-16">
+<div id="btn-to-top" class="fixed right-24 bottom-24 lg:right-16 lg:bottom-16 text-4xl lg:text-2xl">
     <button class="shadow p-3 rounded" id="backToTopButton">
-        <i class="fa-sharp fa-light fa-fork-knife fa-2xl"></i>
+        <i class="fa-sharp fa-light fa-fork-knife"></i>
     </button>
 </div>
 
@@ -171,11 +171,20 @@
 
     function updateButtonVisibility() {
         const backToTopButton = document.getElementById('backToTopButton');
+        const btnToTop = document.getElementById('btn-to-top');
         if (backToTopButton) {
             if (isButtonTop) {
-                backToTopButton.classList.add('active'); // Thêm lớp 'active' để hiển thị nút
+                btnToTop.classList.remove('hidden');
+                btnToTop.classList.add('block');
+                setTimeout(function () {
+                    backToTopButton.classList.add('active'); // Thêm lớp 'active' để hiển thị nút
+                }, 100);
             } else {
                 backToTopButton.classList.remove('active'); // Loại bỏ lớp 'active' để ẩn nút
+                setTimeout(function () {
+                    btnToTop.classList.remove('block');
+                    btnToTop.classList.add('hidden');
+                }, 400);
             }
         }
     }
