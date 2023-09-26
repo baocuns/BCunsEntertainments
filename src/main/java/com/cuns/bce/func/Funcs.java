@@ -53,4 +53,15 @@ public class Funcs {
         comics.forEach(comic -> comicsDto.add(modelMapper.map(comic, ComicsDto.class)));
         return comicsDto;
     }
+
+    public static List<List<Chapter>> chunkChapters(Set<Chapter> chapters, int size) {
+        List<List<Chapter>> chunks = new ArrayList<>();
+
+        for (int i = 0; i < chapters.size(); i += size) {
+            int endIndex = Math.min(i + size, chapters.size());
+            List<Chapter> chunk = chapters.stream().skip(i).limit(endIndex - i).toList();
+            chunks.add(chunk);
+        }
+        return chunks;
+    }
 }

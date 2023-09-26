@@ -10,6 +10,7 @@ import org.ocpsoft.prettytime.PrettyTime;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -58,5 +59,8 @@ public class ComicDto implements Serializable {
         }
         Chapter nextChapter = (Chapter) chapters.toArray()[index + 1];
         return "/comics/" + slug + "-" + id + "/chapter/" + nextChapter.getId();
+    }
+    public List<List<Chapter>> getChunks() {
+        return Funcs.chunkChapters(chapters, 50);
     }
 }

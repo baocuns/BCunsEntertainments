@@ -8,29 +8,29 @@
 <header>
     <nav class="">
         <div class="fixed w-full animation_scroll z-20 dark:bg-gray-800/90 dark:shadow-gray-700 transition duration-300 ease-in-out">
-            <div class="mx-auto max-w-7xl px-10">
-                <div class="flex items-center justify-between py-6 md:space-x-10">
+            <div class="mx-auto max-w-7xl px-6">
+                <div class="flex items-center justify-between py-3 md:space-x-10">
                     <!-- logo -->
                     <div class="">
                         <a href="/">
                             <span class="sr-only text-2xl">Your Company</span>
-                            <img class="h-20 w-20 lg:w-10 lg:h-10 max-w-none rounded" th:src="@{/images/BC.png}"
+                            <img class="h-8 w-8 sm:w-10 sm:h-10 max-w-none rounded" th:src="@{/images/BC.png}"
                                  alt="BCuns Entertainment | BCENT"/>
                         </a>
                     </div>
                     <div>
                         <a th:href="@{/comics}">
-                            <button class="text-4xl lg:text-xl font-bold">
+                            <button class="text-xl font-bold">
                                 Comics
                             </button>
                         </a>
                     </div>
-                    <div class="flex gap-2 text-4xl lg:text-xl">
+                    <div class="flex gap-2">
                         <button id="btn-open-modal-search" class="p-2 hover:bg-gray-100 hover:text-green-500 rounded">
-                            <i class="fa-light fa-magnifying-glass"></i>
+                            <i class="fa-light fa-magnifying-glass fa-lg"></i>
                         </button>
                         <button class="p-2 hover:bg-gray-50 hover:text-green-500 rounded">
-                            <i class="fa-light fa-user"></i>
+                            <i class="fa-light fa-user fa-lg"></i>
                         </button>
                     </div>
                 </div>
@@ -43,12 +43,12 @@
 <main class="flex justify-center w-full">
     <section id="modal-search" class="hidden justify-center fixed inset-0 z-30">
         <div id="modal-content-search"
-             class="modal-content-search bg-white rounded w-[700px] lg:w-[550px] min-h-64 absolute top-[20%] z-20">
+             class="modal-content-search bg-white rounded w-11/12 md:w-[550px] min-h-64 absolute top-[20%] z-20">
             <div class="relative shadow-sm">
                 <input
                         id="search-input"
-                        class="block w-full appearance-none bg-transparent py-4 pl-4 pr-12 text-2xl lg:text-base text-slate-900 placeholder:text-slate-600 focus:outline-none sm:leading-6"
-                        placeholder="Find anything..."
+                        class="block w-full appearance-none bg-transparent py-4 pl-4 pr-12 text-base text-slate-900 placeholder:text-slate-600 focus:outline-none sm:text-sm sm:leading-6"
+                        placeholder="Tìm kiếm bất kỳ thứ gì..."
                 />
                 <button id="btn-input-search" class="pointer-events-none absolute top-4 right-4 h-6 w-6">
                     <i class="fa-light fa-magnifying-glass fa-lg"></i>
@@ -56,7 +56,7 @@
             </div>
             <!-- list search -->
             <ul
-                    class="max-h-[18.375rem] divide-y divide-slate-200 overflow-y-auto rounded-b-lg border-slate-200 text-xl lg:text-base leading-6"
+                    class="max-h-[18.375rem] divide-y divide-slate-200 overflow-y-auto rounded-b-lg border-slate-200 text-xs"
                     role="listbox"
                     id="list-search"
             >
@@ -205,7 +205,7 @@
                             listSearch.addClass('border-t')
                             data.forEach(comic => {
                                 listSearch.append('<li class="hover:bg-gray-200" role="option"> ' +
-                                    `<a href="/comics/${comic.titleSlug}" class="grid grid-cols-3 items-center justify-between p-4 gap-x-4"> ` +
+                                    `<a href="/comics/${comic.titleSlug}" class="grid grid-cols-3 items-center justify-between p-4 gap-2"> ` +
                                     '<div class="col-span-2"> ' +
                                     `<span class="font-semibold text-slate-900 line-clamp-2">${comic.title}</span> ` +
                                     '</div> ' +

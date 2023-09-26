@@ -1,61 +1,70 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title=${comic.getTitle()})}">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head
+        th:replace="~{fragments/head :: head(
+        title=${comic.getTitle()} + ' | BCuns Entertainment',
+        description=${comic.getDescription()},
+        keywords=${comic.getTitle()},
+        url=${'https://bcent.online/comics/' + comic.getTileSlug()},
+        image=${comic.getThumbnails()},
+        site_name=${comic.getTitle()}
+        )}"
+>
     <title>Details</title>
 </head>
 <body class="scrollbar-hidden">
 <!-- header -->
 <header th:replace="~{fragments/header :: header}"></header>
 <!-- Content Comics Details -->
-<section class="mt-32">
-    <div class="mx-auto mt-6 max-w-4xl px-6 grid grid-cols-1 lg:max-w-7xl lg:grid-cols-4 lg:gap-x-8 lg:px-8">
+<section class="mt-20">
+    <div class="mx-auto mt-6 max-w-4xl px-6 grid grid-cols-1 sm:max-w-7xl sm:grid-cols-4 sm:gap-x-8 sm:px-8">
         <!-- image -->
-        <div class="lg:overflow-hidden lg:aspect-w-3 lg:aspect-h-4 rounded">
+        <div class="aspect-w-4 aspect-h-5 sm:overflow-hidden sm:aspect-w-3 sm:aspect-h-4 rounded">
             <img
                     th:src="${comic.getThumbnails()}"
                     alt="cover"
-                    class="h-full w-full object-cover object-center rounded"
+                    class="h-96 w-full object-cover object-center rounded"
             />
         </div>
         <div class="col-span-3">
-            <div class="mt-8 sm:mt-2 text-4xl lg:text-base">
+            <div class="mt-8 sm:mt-2">
                 <!-- title -->
-                <h1 class="text-4xl lg:text-xl font-semibold mt-6 lg:mt-0" th:text="${comic.getTitle()}">Title</h1>
+                <h1 class="text-2xl font-semibold" th:text="${comic.getTitle()}">Title</h1>
                 <!-- info -->
-                <div class="flex font-light mt-4 py-2 lg:py-0">
+                <div class="flex font-light mt-4">
                     <div class="mx-2 flex items-center">
                         <i class="fa-light fa-timer"></i>
                     </div>
                     <p th:text="${comic.getUpdateTimeAgo()}">{dayjs(comic.updated_at).fromNow()}</p>
                 </div>
-                <div class="flex font-light py-2 lg:py-0">
+                <div class="flex font-light">
                     <div class="mx-2 flex items-center">
                         <i class="fa-light fa-calendar-plus"></i>
                     </div>
                     <p th:text="${comic.getCreateTimeAgo()}">{dayjs(comic.created_at).format('DD/MM/YYYY')}</p>
                 </div>
                 <div class="flex">
-                    <div class="flex font-light mr-4 py-2 lg:py-0">
+                    <div class="flex font-light mr-4">
                         <div class="mx-2 flex items-center">
                             <i class="fa-light fa-face-hand-peeking"></i>
                         </div>
                         <p th:text="${comic.getView()}">{numberFormat(comic.view, 1)}</p>
                     </div>
-                    <div class="flex font-light mr-4 py-2 lg:py-0">
+                    <div class="flex font-light mr-4">
                         <div class="mx-2 flex items-center">
                             <i class="fa-light fa-face-grin-hearts"></i>
                         </div>
                         <p th:if="${comic.getLike() != null}" th:text="${comic.getLike().size()}">like</p>
                         <p th:unless="${comic.getLike() != null}">0</p>
                     </div>
-                    <div class="flex font-light mr-4 py-2 lg:py-0">
+                    <div class="flex font-light mr-4">
                         <div class="mx-2 flex items-center">
                             <i class="fa-light fa-file-image"></i>
                         </div>
                         <p th:text="${comic.getCountChapter()}">{comic.chapters.length} chapter</p>
                     </div>
                 </div>
-                <div class="flex font-light py-2 lg:py-0">
+                <div class="flex font-light">
                     <div class="mx-2 flex items-center">
                         <i class="fa-light fa-comments"></i>
                     </div>
@@ -77,19 +86,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex font-light py-2 lg:py-0">
+                <div class="flex font-light">
                     <div class="mx-2 flex items-center">
                         <i class="fa-light fa-user-shield"></i>
                     </div>
                     <p class="text-red-600 font-medium" th:text="${comic.getAuthor()}">{comic.author}</p>
                 </div>
-                <div class="flex font-light py-2 lg:py-0">
+                <div class="flex font-light">
                     <div class="mx-2 flex items-center">
                         <i class="fa-light fa-tags"></i>
                     </div>
                     <p>Action - Chuyển Sinh - Comedy - Live action - Manhua - Truyện Màu</p>
                 </div>
-                <div class="flex font-light py-2 lg:py-0">
+                <div class="flex font-light">
                     <div class="mx-2 flex items-start">
                         <i class="fa-light fa-memo-pad"></i>
                     </div>
@@ -104,7 +113,7 @@
                     <div class="m-2" th:if="${comic.getChapters().size()} >= 1">
                         <a th:if="${comic.getChapters().size()} >= 1"
                            th:href="${comic.getTileSlug()} + '/chapter/' + ${comic.getChapters()[comic.getChapters().size()-1].getId()}">
-                            <div class="p-2 bg-green-500 hover:bg-green-600 hover:scale-110 duration-300 ease-in-out rounded text-white">
+                            <div class="p-2 bg-transparent hover:scale-110 duration-300 ease-in-out rounded text-black dark:text-gray-300 flex items-center border border-green-500">
                                 Đọc Ngay
                             </div>
                         </a>
@@ -123,14 +132,14 @@
                         </form>
                         <div>
                             <button th:if="${isLiked}" type="submit" form="wishlist"
-                                    class="p-2 bg-transparent hover:scale-110 duration-300 ease-in-out rounded flex items-center border border-red-500">
+                                    class="p-2 w-full bg-transparent hover:scale-110 duration-300 ease-in-out rounded flex items-center border border-red-500">
                                 <div class="mr-1 text-red-600 dark:text-red-300">
                                     <i class="fa-light fa-thumbs-up"></i>
                                 </div>
                                 <p class="text-red-600 dark:text-red-300">Liked</p>
                             </button>
                             <button th:unless="${isLiked}" type="submit" form="wishlist"
-                                    class="p-2 bg-transparent hover:scale-110 duration-300 ease-in-out rounded flex items-center border border-red-500">
+                                    class="p-2 w-full bg-transparent hover:scale-110 duration-300 ease-in-out rounded flex items-center border border-red-500">
                                 <div class="mr-1 text-black dark:text-gray-300">
                                     <i class="fa-light fa-thumbs-up"></i>
                                 </div>
@@ -146,29 +155,54 @@
 <!-- chapters -->
 <section>
     <div class="mx-auto mt-6 max-w-4xl px-6 sm:max-w-7xl sm:px-8">
-        <div class="flex w-full font-medium items-center border-b py-1 text-4xl lg:text-base">
-            <i class="fa-sharp fa-light fa-list-timeline mr-2 text-red-500"></i>
-            <p class="">Danh Sách Chương</p>
+        <div class="flex w-full font-medium items-center border-b py-1">
+            <i class="fa-sharp fa-light fa-list-timeline mr-2 text-red-500 fa-xl"></i>
+            <p class="text-xl">Danh Sách Chương</p>
         </div>
-        <div class="md:px-4 py-2 text-3xl lg:text-base">
-            <div th:each="chapter: ${comic.getChapters()}">
-                <a th:href="${comic.getTileSlug()} + '/chapter/' + ${chapter.getId()}">
-                    <div class="grid grid-cols-4 gap-2 p-2 my-2 rounded shadow hover:scale-105 cursor-pointer duration-500 ease-in-out dark:shadow-gray-700">
-                        <h1 class="flex items-center col-span-2 md:col-auto"
-                            th:text="${chapter.getTitle()}">Chapter 6</h1>
-                        <div class="font-thin flex items-center"><i th:text="${chapter.getTimeAgo()}">a few seconds
-                            ago</i></div>
-                        <div class="flex items-center gap-2">
-                            <p th:text="${chapter.getView()}">2</p>
-                            <i class="fa-sharp fa-light fa-eyes"></i>
-                        </div>
+        <div class="md:px-4 py-2">
+            <div class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-4 p-2 rounded bg-gray-50 dark:bg-gray-700">
+                <button
+                        th:each="chunk : ${comic.getChunks()}"
+                        th:id="${chunk.get(0).getId()}"
+                        onclick="tabs(this.id)"
+                        class="transition duration-500 ease-in-out hover:scale-125 hover:bg-red-300 text-red-500 font-semibold shadow rounded w-full py-2 dark:hover:bg-green-400 dark:text-white bg-red-200 dark:bg-green-200"
+                >
+                    <p th:text="${chunk.get(0).extractNumber()} + ' : ' + ${chunk.get(chunk.size() - 1).extractNumber()}">
+                        123</p>
+                </button>
+            </div>
+            <!-- list chapter -->
+            <div th:each="chunk, chunkIndex: ${comic.getChunks()}">
+                <div th:id="${chunk.get(0).getId()}" th:class="'tabs' + ${chunkIndex.index > 0 ? ' hidden' : ''}">
+                    <div th:each="chapter: ${chunk}">
+                        <a th:href="${comic.getTileSlug()} + '/chapter/' + ${chapter.getId()}">
+                            <div class="grid grid-cols-4 gap-2 p-2 my-2 rounded shadow hover:scale-105 cursor-pointer duration-500 ease-in-out dark:shadow-gray-700">
+                                <h1 class="flex items-center text-sm md:text-base col-span-2 md:col-auto"
+                                    th:text="${chapter.getTitle()}">Chapter 6</h1>
+                                <div class="font-thin flex items-center"><i th:text="${chapter.getTimeAgo()}">a few seconds
+                                    ago</i></div>
+                                <div class="flex items-center gap-2">
+                                    <p th:text="${chapter.getView()}">2</p>
+                                    <i class="fa-sharp fa-light fa-eyes"></i>
+                                </div>
+                            </div>
+                        </a>
                     </div>
-                </a>
+                </div>
             </div>
         </div>
     </div>
 </section>
 <!-- footer -->
 <footer th:replace="~{fragments/footer :: footer}"></footer>
+<script>
+    // Hàm tabs chuyển đổi giữa các tab
+    const tabs = (id) => {
+        const content = $('div[id="' + id + '"]')
+        const tabs = $('div[class="tabs"]')
+        tabs.addClass('hidden')
+        content.removeClass('hidden')
+    }
+</script>
 </body>
 </html>
