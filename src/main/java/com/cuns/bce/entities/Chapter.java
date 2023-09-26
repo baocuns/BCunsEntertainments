@@ -8,6 +8,8 @@ import lombok.Setter;
 import java.time.OffsetDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Getter
 @Setter
@@ -49,5 +51,16 @@ public class Chapter {
 
     public String getTimeAgo() {
         return Funcs.getTimeAgo(createdAt);
+    }
+    public Integer extractNumber() {
+        Pattern pattern = Pattern.compile("\\d+"); // Tìm các chữ số trong chuỗi
+        Matcher matcher = pattern.matcher(title);
+
+        if (matcher.find()) {
+            String numberStr = matcher.group();
+            return Integer.parseInt(numberStr);
+        } else {
+            return -1;
+        }
     }
 }

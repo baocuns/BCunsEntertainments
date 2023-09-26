@@ -1,7 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head
-        th:replace="~{fragments/head :: head(title=${comic.getTitle()} + ' - ' + ${chapter.getTitle()})}"
+        th:replace="~{fragments/head :: head(
+        title=${comic.getTitle()} + ' - ' + ${chapter.getTitle()} + ' | BCuns Entertainment',
+        description=${comic.getDescription()},
+        keywords=${comic.getTitle()} + ' - ' + ${chapter.getTitle()},
+        url='https://bcent.online/comics/' + ${comic.getTileSlug()} + '/chapter/' + ${chapter.getId()},
+        image=${comic.getThumbnails()},
+        site_name=${comic.getTitle()}
+        )}"
 >
     <title>Chapter</title>
 </head>
@@ -14,13 +21,14 @@
         )}"
 ></header>
 <!-- Content Chapter Details: Photos -->
-<section class="py-4 mt-32">
-    <div class="mx-auto max-w-full py-4 lg:max-w-3xl">
+<section class="py-4">
+    <div class="mx-auto max-w-full py-4 md:max-w-2xl lg:max-w-3xl lg:px-4">
         <div class="flex justify-center" th:each="photo: ${chapter.getPhotos()}">
             <img
                     th:src="'https://picture.bcent.online/images?src=' + ${photo.getUrl()}"
                     th:alt="${photo.getTitle()}"
                     class="w-full h-auto object-cover"
+                    loading="lazy"
             >
         </div>
     </div>

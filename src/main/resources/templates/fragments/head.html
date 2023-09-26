@@ -1,6 +1,37 @@
 <head th:fragment="head">
     <meta charset="UTF-8">
     <title th:text="${title}">Title</title>
+
+    <!-- meta systems -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="language" content="en">
+    <meta name="revisit-after" content="1 day">
+    <meta name="robots" content="index, follow">
+    <meta name="distribution" content="global">
+    <meta name="googlebot" content="index, follow">
+
+    <!-- meta auth -->
+    <meta name="author" content="BCuns">
+    <meta name="rating" content="entertainment">
+    <meta name="owner" content="BCuns">
+
+    <!-- meta details -->
+    <meta name="title" th:content="${title}" content="BCuns Entertainment">
+    <meta name="description" th:content="${description}" content="BCuns Entertainment">
+    <meta name="keywords" th:content="${keywords}" content="BCuns Entertainment">
+    <meta name="url" th:content="${url}" content="https://bcent.online/">
+    <meta name="identifier-URL" content="https://bcent.online/">
+
+    <!-- meta social -->
+    <meta property="og:title" th:content="${title}" content="BCuns Entertainment">
+    <meta property="og:description" th:content="${description}" content="BCuns Entertainment">
+    <meta property="og:image" th:content="${image}" content="https://bcent.online/images/BC.png">
+    <meta property="og:url" th:content="${url}" content="https://bcent.online/">
+    <meta property="og:site_name" th:content="${site_name}" content="BCuns Entertainment">
+    <meta property="og:locale" content="pt_VN">
+    <meta property="og:type" content="website">
+
+    <!-- link css -->
     <link rel="icon" th:href="@{/images/BC.png}" />
     <link th:href="@{/css/main.css}" rel="stylesheet"/>
     <link th:href="@{/css/all.css}" rel="stylesheet"/>

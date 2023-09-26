@@ -1,26 +1,32 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title='Signup Account | BCENT')}">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head
+        th:replace="~{fragments/head :: head(
+        title='Đăng Ký Tài Khoản | BCENT',
+        description='Đăng Ký Tài Khoản BCuns Entertainment',
+        keywords='Truyện Tranh, BCuns Entertainment',
+        url='https://bcent.online/register',
+        image='',
+        site_name='BCuns Entertainment'
+        )}"
+>
     <title>Signup Account</title>
 </head>
 <body>
 <!-- header -->
 <header th:replace="~{fragments/header :: header}"></header>
 <!-- form signup -->
-<main class="px-4 sm:px-8 mt-32">
-    <div class="my-8 m-auto p-4 w-[80%] lg:w-[60%] xl:w-[40%] text-2xl lg:text-base">
-        <div th:if="${param.logout}" class="py-2 justify-center">
-            <p class="text-green-600">You have been logged out.</p>
-        </div>
+<main class="px-4 sm:px-8 mt-20">
+    <div class="my-8 m-auto p-4 w-full sm:w-[80%] md:w-[60%] lg:w-[40%]">
         <div class="shadow p-8 rounded-md dark:shadow-gray-700">
             <div class="flex items-center">
                 <div class="mr-2 bg-green-600 p-2 rounded-full text-white">
                     <i class="fa-sharp fa-light fa-person-through-window"></i>
                 </div>
-                <h1 class="text-4xl lg:text-2xl font-medium">Wellcome to BCENT</h1>
+                <h1 class="text-2xl font-medium">Chào mừng Bạn đến với BCENT</h1>
             </div>
             <div>
-                <p class="my-3 font-light">Register an account today for BCuns Entertainment</p>
+                <p class="my-3 font-light">Hãy đăng ký tài khoản và truy cập vào hệ thống BCENT của chúng tôi ngay hôm nay!</p>
             </div>
             <!-- form -->
             <form th:action="@{/register}" th:object="${user}" method="post">
@@ -31,59 +37,59 @@
                                id="email"
                                required
                                class="w-full px-4 py-2 shadow rounded focus:outline-green-600 "
-                               placeholder="Your username"/>
+                               placeholder="Email để xác nhận danh tính"/>
                     </div>
                 </div>
-                <div><label for="username" class="">User Name</label>
+                <div><label for="username" class="">Tên Đăng Nhập</label>
                     <div class="my-2">
                         <input type="text"
                                th:field="*{username}"
                                id="username"
                                required
                                class="w-full px-4 py-2 shadow rounded focus:outline-green-600 "
-                               placeholder="Your username"/>
+                               placeholder="Tên đăng nhập của bạn thật đặc biệt"/>
                     </div>
                 </div>
-                <div><label for="password" class="">Password</label>
+                <div><label for="password" class="">Mật Khẩu</label>
                     <div class="my-2">
                         <input type="password"
                                th:field="*{password}"
                                id="password"
                                required
                                class="w-full px-4 py-2 shadow rounded focus:outline-green-600 "
-                               placeholder="Your password"/>
+                               placeholder="Mật khẩu thật khó để bảo mật"/>
                     </div>
                 </div>
-                <div><label for="confirm-password" class="">Confirm Password</label>
+                <div><label for="confirm-password" class="">Xác Nhận Mật Khẩu Khỏi Quên Nhé</label>
                     <div class="my-2">
                         <input type="password"
-                                 th:field="*{confirmPassword}"
+                               th:field="*{confirmPassword}"
                                id="confirm-password"
                                required
                                class="w-full px-4 py-2 shadow rounded focus:outline-green-600 "
-                               placeholder="Your confirm password"/>
+                               placeholder="Nhập lại lần nữa nào, đôi khi lại quên"/>
                     </div>
                 </div>
                 <!-- error -->
                 <div th:if="${param.error}" class="py-2 justify-center">
-                    <p class="text-red-600 underline">Invalid username and password.</p>
+                    <p class="text-red-600 underline text-sm">Tên Đăng Nhập Hoặc Mật Khẩu Không Hợp Lệ Rồi Bạn Ơi!</p>
                 </div>
                 <div class="py-2">
                     <button type="submit"
                             class="flex w-full py-2 rounded shadow bg-green-500 hover:bg-green-600 text-white justify-center items-center gap-4">
                         <i class="fa-sharp fa-light fa-signature-lock"></i>
-                        <span>Register</span>
+                        <span>Bấm Ở Đây Để Đăng Ký</span>
                     </button>
                 </div>
             </form>
             <div class="py-2 flex justify-center">
-                <a class="text-gray-500 hover:text-gray-400 underline" href="/forgot-password">
-                    Forgot your password?
+                <a class="text-gray-500 hover:text-gray-400 underline text-sm" href="/forgot-password">
+                    Trí nhớ huyền thoại của Bạn đã bị mất? Khôi phục mật khẩu
                 </a>
             </div>
             <div class="py-2 flex justify-center">
-                <a class="text-gray-500 hover:text-gray-400 underline" href="/login">
-                    Do you already have an account! Log in
+                <a class="text-gray-500 hover:text-gray-400 underline text-sm" href="/login">
+                    Bạn đã có tài khoản ư? Đăng nhập ngay
                 </a>
             </div>
         </div>
