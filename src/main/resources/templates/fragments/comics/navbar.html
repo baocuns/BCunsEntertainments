@@ -5,10 +5,10 @@
     <title>Title</title>
 </head>
 <body th:fragment="navbar">
-<nav class="h-20">
+<nav>
     <div class="fixed w-full animation_scroll z-20 bg-white/90 dark:bg-gray-800/90 dark:shadow-gray-700 shadow">
         <div class="mx-auto max-w-7xl px-6">
-            <div class="flex items-center justify-between py-3 md:space-x-10">
+            <div class="flex items-center justify-between py-3 md:space-x-10 gap-4">
                 <!-- logo -->
                 <div class="">
                     <a href="/">
@@ -19,33 +19,40 @@
                 </div>
                 <div>
                     <!--    button-->
-                    <div class="flex justify-center my-2 gap-4">
-                        <a class="shadow p-1 rounded" th:href="${comic.getSlugChapterPrev(chapter)}">
-                            <i class="fa-light fa-angles-left fa-xl text-red-500"></i>
+                    <div class="flex justify-center my-2 gap-2">
+                        <a class="flex items-center justify-center shadow px-2 rounded text-md md:text-xl text-red-500" th:href="${comic.getSlugChapterPrev(chapter)}">
+                            <i class="fa-light fa-angles-left"></i>
                         </a>
                         <button
                                 id="openModalBtn"
-                                class="shadow py-1 px-2 rounded font-bold text-xl"
-                                th:text="${chapter.getTitle()}">
-                            1
+                                class="shadow py-1 px-2 rounded">
+                            <p class="line-clamp-1 font-bold text-sm md:text-xl" th:text="${chapter.getTitle()}">></p>
                         </button>
-                        <a class="shadow p-1 rounded" th:href="${comic.getSlugChapterNext(chapter)}">
-                            <i class="fa-light fa-angles-right fa-xl text-red-500"></i>
+                        <a class="flex items-center justify-center shadow px-2 rounded text-md md:text-xl text-red-500" th:href="${comic.getSlugChapterNext(chapter)}">
+                            <i class="fa-light fa-angles-right"></i>
                         </a>
                     </div>
                 </div>
                 <div class="flex gap-2">
-                    <button id="btn-open-modal-search" class="p-2 hover:bg-gray-100 hover:text-green-500 rounded">
+                    <button id="btn-open-modal-search" class="p-2 hover:bg-gray-100 hover:text-green-500 rounded hidden md:block">
                         <i class="fa-light fa-magnifying-glass fa-lg"></i>
                     </button>
-                    <button class="p-2 hover:bg-gray-50 hover:text-green-500 rounded">
+                    <button class="p-2 hover:bg-gray-50 hover:text-green-500 rounded hidden md:block">
                         <i class="fa-light fa-user fa-lg"></i>
+                    </button>
+                    <button id="btn-mobile-bar" class="p-2 hover:bg-gray-50 hover:text-green-500 rounded md:hidden">
+                        <i class="fa-light fa-grid-2 fa-lg"></i>
                     </button>
                 </div>
             </div>
         </div>
     </div>
 </nav>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- mobile bar -->
+<main th:replace="~{fragments/mobilebar :: mobilebar}"></main>
+
 <!-- modal chapter -->
 <div id="myModal" class="modal hidden overflow-y-auto h-screen inset-0 z-30">
     <div id="chapter-modal" class="flex justify-center items-center py-8 bg-gray-400/50 transition ease-in-out duration-100 opacity-0">
@@ -114,7 +121,6 @@
     </section>
 </main>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- modal.js -->
 <script>
     // modal.js
@@ -183,6 +189,7 @@
         const overlaySearch = $("#overlay-search");
         const overlayBodySearch = $("#overlay-body-search");
         const openModalBtnSearch = $("#btn-open-modal-search");
+        const closeModalBtnSearchMobile = $("#btn-open-modal-search-mobile");
         const inputSearch = $("#search-input");
         const btnInputSearch = $("#btn-input-search");
         const listSearch = $("#list-search");
@@ -219,6 +226,7 @@
             }, 100);
         };
         openModalBtnSearch.on("click", openModalSearch);
+        closeModalBtnSearchMobile.on("click", openModalSearch);
 
         const closeModalSearch = function () {
             modalContentSearch.removeClass("active");

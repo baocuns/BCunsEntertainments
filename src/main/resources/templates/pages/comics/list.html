@@ -103,23 +103,34 @@
         <!--    pagination -->
         <div class="flex justify-center mt-12">
             <div class="flex rounded-md">
-                <a th:if="${currentPage > 0}" th:href="'?page=' + ${currentPage - 1}" href="#"
-                   class="relative inline-flex items-center p-2 rounded-l-md border border-gray-300 bg-white dark:bg-gray-800 text-sm font-medium text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
-                    <span class="sr-only">Previous</span>
-                    <!-- Heroicon name: solid/chevron-left -->
-                    <i class="fa-light fa-chevron-left fa-lg"></i>
-                </a>
+                <div>
+                    <a
+                            th:if="${currentPage > 0}"
+                            th:href="'?page=' + ${currentPage - 1}"
+                            class="text-black dark:text-white w-10 h-10 bg-white dark:bg-gray-800 hover:bg-gray-50 border-gray-300 mx-1 relative inline-flex items-center px-4 py-2 border text-sm font-medium dark:hover:bg-gray-700 rounded-l-md justify-center"
+                    >
+                        <i class="fa-light fa-chevron-left fa-lg"></i>
+                    </a>
+                </div>
                 <!-- Page numbers -->
-                <span th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
-                    <a class="p-2" th:if="${pageNumber == currentPage}" th:text="${pageNumber}"></a>
-                    <a class="p-2" th:unless="${pageNumber == currentPage}" th:href="'?page=' + ${pageNumber}" th:text="${pageNumber}"></a>
-                </span>
-                <a th:if="${currentPage < totalPages - 1}" th:href="'?page=' + ${currentPage + 1}" href="#"
-                   class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white dark:bg-gray-800 text-sm font-medium text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
-                    <span class="sr-only">Next</span>
-                    <!-- Heroicon name: solid/chevron-right -->
-                    <i class="fa-light fa-chevron-right fa-lg"></i>
-                </a>
+                <div th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
+                    <a
+                            th:if="${pageNumber >= currentPage - 2 && pageNumber <= currentPage + 2}"
+                            th:href="${pageNumber == currentPage} ? '#' : '?page=' + ${pageNumber}"
+                            th:class="(${pageNumber == currentPage} ? 'text-red-500 bg-red-200 w-10 h-10 hover:bg-red-300' : 'text-black dark:text-white w-10 h-10 bg-white dark:bg-gray-800 hover:bg-gray-50 border-gray-300') + ' justify-center mx-1 relative inline-flex items-center px-4 py-2 border text-sm font-medium dark:hover:bg-gray-700'"
+                            th:text="${pageNumber}"
+                    >
+                    </a>
+                </div>
+                <div>
+                    <a
+                            th:if="${currentPage < totalPages - 1}"
+                            th:href="'?page=' + ${currentPage + 1}"
+                            class="justify-center text-black dark:text-white w-10 h-10 bg-white dark:bg-gray-800 hover:bg-gray-50 border-gray-300 mx-1 relative inline-flex items-center px-4 py-2 border text-sm font-medium dark:hover:bg-gray-700 rounded-r-md"
+                    >
+                        <i class="fa-light fa-chevron-right fa-lg"></i>
+                    </a>
+                </div>
             </div>
         </div>
     </div>

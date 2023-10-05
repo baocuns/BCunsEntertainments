@@ -55,7 +55,13 @@ public class SecurityConfiguration {
                         .logoutUrl(LOGOUT_URL)
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
-                        .logoutSuccessUrl(LOGIN_URL + "?logout"));
+                        .logoutSuccessUrl(LOGIN_URL + "?logout"))
+                .rememberMe(rememberMe -> rememberMe
+                        .key("bcunsentertainment")
+                        // tokenValiditySeconds = 1 month
+                        .tokenValiditySeconds(2592000));
+
+
 //                .sessionManagement(session -> session
 //                        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
 //                        .invalidSessionUrl("/invalidSession.htm")
