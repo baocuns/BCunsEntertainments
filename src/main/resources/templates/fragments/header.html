@@ -26,11 +26,14 @@
                         </a>
                     </div>
                     <div class="flex gap-2">
-                        <button id="btn-open-modal-search" class="p-2 hover:bg-gray-100 hover:text-green-500 rounded">
+                        <button id="btn-open-modal-search" class="p-2 hover:bg-gray-100 hover:text-green-500 rounded hidden md:block">
                             <i class="fa-light fa-magnifying-glass fa-lg"></i>
                         </button>
-                        <button class="p-2 hover:bg-gray-50 hover:text-green-500 rounded">
+                        <button class="p-2 hover:bg-gray-50 hover:text-green-500 rounded hidden md:block">
                             <i class="fa-light fa-user fa-lg"></i>
+                        </button>
+                        <button id="btn-mobile-bar" class="p-2 hover:bg-gray-50 hover:text-green-500 rounded md:hidden">
+                            <i class="fa-light fa-grid-2 fa-lg"></i>
                         </button>
                     </div>
                 </div>
@@ -38,6 +41,10 @@
         </div>
     </nav>
 </header>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- mobile bar -->
+<main th:replace="~{fragments/mobilebar :: mobilebar}"></main>
 
 <!-- modal -->
 <main class="flex justify-center w-full">
@@ -71,7 +78,6 @@
 </main>
 
 <!-- script -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
         var isScrollDown = false;
@@ -136,6 +142,7 @@
         const overlaySearch = $("#overlay-search");
         const overlayBodySearch = $("#overlay-body-search");
         const openModalBtnSearch = $("#btn-open-modal-search");
+        const closeModalBtnSearchMobile = $("#btn-open-modal-search-mobile");
         const inputSearch = $("#search-input");
         const btnInputSearch = $("#btn-input-search");
         const listSearch = $("#list-search");
@@ -172,6 +179,7 @@
             }, 100);
         };
         openModalBtnSearch.on("click", openModalSearch);
+        closeModalBtnSearchMobile.on("click", openModalSearch);
 
         const closeModalSearch = function () {
             modalContentSearch.removeClass("active");
