@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body th:fragment="mobilebar">
+<main id="modal-mobile-bar" class="fixed z-30 hidden h-screen w-full">
+    <div id="bg-mobile" class="flex h-screen w-full bg-gray-400/50 justify-end transition duration-300 ease-in-out opacity-0">
+        <div id="bg-mobile-close" class="w-1/4 h-screen"></div>
+        <div id="mobile-bar-content" class="w-3/4 py-4 z-40 bg-white h-screen transition duration-500 ease-in-out translate-x-full">
+            <div class="flex justify-between px-4 pb-1 border-b">
+                <h2 class="font-medium">BCuns Entertainment</h2>
+                <button id="btn-close-mobile-bar">Close</button>
+            </div>
+            <div class="p-4 grid gap-y-4 font-medium">
+                <button id="btn-open-modal-search-mobile" class="flex gap-2 py-2">
+                    <p class="text-teal-600"><i class="fa-light fa-magnifying-glass fa-lg"></i></i></i></p>
+                    <p>Tìm kiếm</p>
+                </button>
+                <a class="flex gap-2 py-2" href="/login">
+                    <p class="text-purple-600"><i class="fa-light fa-user fa-lg"></i></i></p>
+                    <p>Tài Khoản</p>
+                </a>
+                <a class="flex gap-2 py-2" href="#">
+                    <p class="text-green-600"><i class="fa-light fa-champagne-glasses fa-lg"></i></p>
+                    <p>News</p>
+                </a>
+                <a class="flex gap-2 py-2" href="/comics">
+                    <p class="text-red-600"><i class="fa-light fa-image fa-lg"></i></p>
+                    <p>Comics</p>
+                </a>
+                <a class="flex gap-2 py-2" href="#">
+                    <p class="text-orange-600"><i class="fa-light fa-clapperboard-play fa-lg"></i></i></p>
+                    <p>Anime</p>
+                </a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    $(document).ready(() => {
+        $('#btn-mobile-bar').click(() => {
+            $('#modal-mobile-bar').toggleClass('hidden')
+            setTimeout(() => {
+                $('#bg-mobile').toggleClass('opacity-0 opacity-100')
+                $('#mobile-bar-content').toggleClass('translate-x-full translate-x-0')
+            }, 100)
+        })
+        $('#btn-close-mobile-bar').click(() => {
+            $('#bg-mobile').toggleClass('opacity-0 opacity-100')
+            $('#mobile-bar-content').toggleClass('translate-x-full translate-x-0')
+            setTimeout(() => {
+                $('#modal-mobile-bar').toggleClass('hidden')
+            }, 500)
+        })
+        $('#bg-mobile-close').click(() => {
+            $('#bg-mobile').toggleClass('opacity-0 opacity-100')
+            $('#mobile-bar-content').toggleClass('translate-x-full translate-x-0')
+            setTimeout(() => {
+                $('#modal-mobile-bar').toggleClass('hidden')
+            }, 500)
+        })
+        $('#btn-open-modal-search-mobile').click(() => {
+            $('#bg-mobile').toggleClass('opacity-0 opacity-100')
+            $('#mobile-bar-content').toggleClass('translate-x-full translate-x-0')
+            setTimeout(() => {
+                $('#modal-mobile-bar').toggleClass('hidden')
+            }, 500)
+        })
+    })
+</script>
+</body>
+</html>
