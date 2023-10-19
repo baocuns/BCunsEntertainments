@@ -6,7 +6,7 @@
 </head>
 <body th:fragment="navbar">
 <nav>
-    <div class="fixed w-full animation_scroll z-20 bg-white/90 dark:bg-gray-800/90 dark:shadow-gray-700 shadow">
+    <div class="fixed w-full animation_scroll z-20 bg-white/90 dark:bg-slate-800/90 dark:shadow-gray-700 shadow">
         <div class="mx-auto max-w-7xl px-6">
             <div class="flex items-center justify-between py-3 md:space-x-10 gap-4">
                 <!-- logo -->
@@ -20,22 +20,25 @@
                 <div>
                     <!--    button-->
                     <div class="flex justify-center my-2 gap-2">
-                        <a class="flex items-center justify-center shadow px-2 rounded text-md md:text-xl text-red-500" th:href="${comic.getSlugChapterPrev(chapter)}">
+                        <a class="flex items-center justify-center shadow px-2 rounded text-md md:text-xl text-red-500 dark:shadow-slate-700 dark:hover:bg-slate-700 hover:bg-slate-100" th:href="${comic.getSlugChapterPrev(chapter)}">
                             <i class="fa-light fa-angles-left"></i>
                         </a>
                         <button
                                 id="openModalBtn"
-                                class="shadow py-1 px-2 rounded">
-                            <p class="line-clamp-1 font-bold text-sm md:text-xl" th:text="${chapter.getTitle()}">></p>
+                                class="shadow py-1 px-2 rounded dark:shadow-slate-700 dark:hover:bg-slate-700 hover:bg-slate-100">
+                            <p class="line-clamp-1 font-bold text-sm md:text-xl dark:text-white" th:text="${chapter.getTitle()}">></p>
                         </button>
-                        <a class="flex items-center justify-center shadow px-2 rounded text-md md:text-xl text-red-500" th:href="${comic.getSlugChapterNext(chapter)}">
+                        <a class="flex items-center justify-center shadow px-2 rounded text-md md:text-xl text-red-500 dark:shadow-slate-700 dark:hover:bg-slate-700 hover:bg-slate-100" th:href="${comic.getSlugChapterNext(chapter)}">
                             <i class="fa-light fa-angles-right"></i>
                         </a>
                     </div>
                 </div>
-                <div class="flex gap-2">
+                <div class="flex gap-2 dark:text-white">
                     <button id="btn-open-modal-search" class="p-2 hover:bg-gray-100 hover:text-green-500 rounded hidden md:block">
                         <i class="fa-light fa-magnifying-glass fa-lg"></i>
+                    </button>
+                    <button id="theme-switch" class=" p-2 hover:bg-gray-50 hover:text-green-500 rounded hidden md:block">
+                        <i id="theme-icon" class="fa-light fa-sun-bright fa-lg"></i>
                     </button>
                     <button class="p-2 hover:bg-gray-50 hover:text-green-500 rounded hidden md:block">
                         <i class="fa-light fa-user fa-lg"></i>
@@ -71,7 +74,7 @@
                 <div class="md:px-4 py-2">
                     <div th:each="chap: ${comic.getChapters()}">
                         <a th:href="'/comics/' + ${comic.getTileSlug()} + '/chapter/' + ${chap.getId()}">
-                            <div th:id="${chapter.getId() == chap.getId() ? 'chapter-active' : ''}" class="grid grid-cols-4 gap-2 p-2 my-2 rounded shadow hover:scale-105 cursor-pointer duration-500 ease-in-out dark:shadow-gray-700">
+                            <div th:id="${chapter.getId() == chap.getId() ? 'chapter-active' : ''}" class="grid grid-cols-4 gap-2 p-2 my-2 rounded shadow hover:scale-105 cursor-pointer duration-500 ease-in-out">
                                 <h1 class="flex items-center text-sm md:text-base col-span-2 md:col-auto"
                                     th:text="${chap.getTitle()}">Chapter 6</h1>
                                 <div class="font-thin flex items-center"><i th:text="${chap.getTimeAgo()}">a few
@@ -143,6 +146,7 @@
             }, 100)
             chapterActive.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"});
             chapterActive.classList.add('bg-red-200')
+            history.pushState({modalOpen: true}, null, null);
         }
         const handleCloseModal = function () {
             chapterList.classList.remove('opacity-100')
@@ -169,12 +173,11 @@
                 handleCloseModal()
             }
         });
-        // Thêm sự kiện "popstate" để theo dõi thay đổi trong lịch sử duyệt
-        window.addEventListener('popstate', function (event) {
-            // Kiểm tra xem modal có đang mở hay không
-            if (modal.style.display === 'flex') {
-                modal.classList.remove('flex')
-                modal.classList.add('hidden')
+        // ẩn modal khi bấm nút back
+        window.addEventListener('popstate', function(event) {
+            // Kiểm tra trạng thái modal
+            if (event.state && event.state.modalOpen) {
+                handleCloseModal()
             }
         });
     });

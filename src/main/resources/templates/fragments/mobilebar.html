@@ -8,8 +8,8 @@
 <main id="modal-mobile-bar" class="fixed z-30 hidden h-screen w-full">
     <div id="bg-mobile" class="flex h-screen w-full bg-gray-400/50 justify-end transition duration-300 ease-in-out opacity-0">
         <div id="bg-mobile-close" class="w-1/4 h-screen"></div>
-        <div id="mobile-bar-content" class="w-3/4 py-4 z-40 bg-white h-screen transition duration-500 ease-in-out translate-x-full">
-            <div class="flex justify-between px-4 pb-1 border-b">
+        <div id="mobile-bar-content" class="w-3/4 py-4 z-40 bg-white h-screen transition duration-500 ease-in-out translate-x-full dark:bg-slate-800 dark:text-white">
+            <div class="flex justify-between px-4 pb-2 border-b">
                 <h2 class="font-medium">BCuns Entertainment</h2>
                 <button id="btn-close-mobile-bar">Close</button>
             </div>
@@ -34,6 +34,10 @@
                     <p class="text-orange-600"><i class="fa-light fa-clapperboard-play fa-lg"></i></i></p>
                     <p>Anime</p>
                 </a>
+                <button id="theme-switch" class="theme-switch-mobile flex gap-2 py-2">
+                    <p class="text-teal-600"><i id="theme-icon" class="fa-light fa-sun-bright fa-lg"></i></i></i></i></p>
+                    <p>Dark / Light</p>
+                </button>
             </div>
         </div>
     </div>
@@ -47,28 +51,34 @@
                 $('#bg-mobile').toggleClass('opacity-0 opacity-100')
                 $('#mobile-bar-content').toggleClass('translate-x-full translate-x-0')
             }, 100)
+            history.pushState({ modalOpen: true }, null, null);
         })
         $('#btn-close-mobile-bar').click(() => {
-            $('#bg-mobile').toggleClass('opacity-0 opacity-100')
-            $('#mobile-bar-content').toggleClass('translate-x-full translate-x-0')
-            setTimeout(() => {
-                $('#modal-mobile-bar').toggleClass('hidden')
-            }, 500)
+            handleCloseMobileBar()
         })
         $('#bg-mobile-close').click(() => {
-            $('#bg-mobile').toggleClass('opacity-0 opacity-100')
-            $('#mobile-bar-content').toggleClass('translate-x-full translate-x-0')
-            setTimeout(() => {
-                $('#modal-mobile-bar').toggleClass('hidden')
-            }, 500)
+            handleCloseMobileBar()
         })
         $('#btn-open-modal-search-mobile').click(() => {
+            handleCloseMobileBar()
+        })
+        $('.theme-switch-mobile').click(() => {
+            handleCloseMobileBar()
+        })
+        // ẩn modal khi bấm nút back
+        window.addEventListener('popstate', function(event) {
+            // Kiểm tra trạng thái modal
+            if (event.state && event.state.modalOpen) {
+                handleCloseMobileBar()
+            }
+        });
+        const handleCloseMobileBar = () => {
             $('#bg-mobile').toggleClass('opacity-0 opacity-100')
             $('#mobile-bar-content').toggleClass('translate-x-full translate-x-0')
             setTimeout(() => {
                 $('#modal-mobile-bar').toggleClass('hidden')
             }, 500)
-        })
+        }
     })
 </script>
 </body>

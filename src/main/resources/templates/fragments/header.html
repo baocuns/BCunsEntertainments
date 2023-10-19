@@ -7,7 +7,7 @@
 <body th:fragment="header">
 <header>
     <nav class="">
-        <div class="fixed w-full animation_scroll z-20 dark:bg-gray-800/90 dark:shadow-gray-700 transition duration-300 ease-in-out">
+        <div class="fixed w-full animation_scroll z-20 dark:shadow-gray-700 transition duration-300 ease-in-out">
             <div class="mx-auto max-w-7xl px-6">
                 <div class="flex items-center justify-between py-3 md:space-x-10">
                     <!-- logo -->
@@ -20,14 +20,17 @@
                     </div>
                     <div>
                         <a th:href="@{/comics}">
-                            <button class="text-xl font-bold">
+                            <button class="text-xl font-bold dark:text-white">
                                 Comics
                             </button>
                         </a>
                     </div>
-                    <div class="flex gap-2">
+                    <div class="flex gap-2 dark:text-white">
                         <button id="btn-open-modal-search" class="p-2 hover:bg-gray-100 hover:text-green-500 rounded hidden md:block">
                             <i class="fa-light fa-magnifying-glass fa-lg"></i>
+                        </button>
+                        <button id="theme-switch" class=" p-2 hover:bg-gray-50 hover:text-green-500 rounded hidden md:block">
+                            <i id="theme-icon" class="fa-light fa-sun-bright fa-lg"></i>
                         </button>
                         <button class="p-2 hover:bg-gray-50 hover:text-green-500 rounded hidden md:block">
                             <i class="fa-light fa-user fa-lg"></i>
@@ -83,11 +86,11 @@
         var isScrollDown = false;
 
         if (isHomePage()) {
-            $('.animation_scroll').removeClass('bg-white/90 shadow text-black');
+            $('.animation_scroll').removeClass('bg-white/90 shadow text-black dark:bg-slate-800/90');
             $('.animation_scroll').addClass('bg-gradient-to-b from-black/50 to-transparent text-white');
         } else {
             $('.animation_scroll').removeClass('bg-gradient-to-b from-black/50 to-transparent text-white');
-            $('.animation_scroll').addClass('bg-white/90 shadow text-black');
+            $('.animation_scroll').addClass('bg-white/90 shadow text-black dark:bg-slate-800/90');
         }
 
         var lastScrollTop = 0;
@@ -106,9 +109,9 @@
             if (isHomePage()) {
                 if (currentScrollTop > 100) {
                     $('.animation_scroll').removeClass('bg-gradient-to-b from-black/50 to-transparent text-white');
-                    $('.animation_scroll').addClass('bg-white/90 shadow text-black');
+                    $('.animation_scroll').addClass('bg-white/90 text-black dark:bg-slate-800/90');
                 } else {
-                    $('.animation_scroll').removeClass('bg-white/90 shadow text-black');
+                    $('.animation_scroll').removeClass('bg-white/90 shadow text-black dark:bg-slate-800/90');
                     $('.animation_scroll').addClass('bg-gradient-to-b from-black/50 to-transparent text-white');
                 }
             }
@@ -177,9 +180,17 @@
                 overlayBodySearch.addClass("active");
                 modalContentSearch.addClass("active");
             }, 100);
+            history.pushState({ modalOpen: true }, null, null);
         };
         openModalBtnSearch.on("click", openModalSearch);
         closeModalBtnSearchMobile.on("click", openModalSearch);
+        // ẩn modal khi bấm nút back
+        window.addEventListener('popstate', function(event) {
+            // Kiểm tra trạng thái modal
+            if (event.state && event.state.modalOpen) {
+                closeModalSearch()
+            }
+        });
 
         const closeModalSearch = function () {
             modalContentSearch.removeClass("active");

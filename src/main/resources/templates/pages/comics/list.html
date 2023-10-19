@@ -12,7 +12,7 @@
 >
     <title>Title</title>
 </head>
-<body class="scrollbar-hidden">
+<body class="scrollbar-hidden bg-white dark:bg-slate-900">
 <!-- header -->
 <header th:replace="~{fragments/header :: header}"></header>
 
@@ -37,7 +37,7 @@
             </div>
         </div>
         <!--    list comics -->
-        <div class="grid grid-cols-2 gap-y-10 gap-x-6 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 xl:gap-x-8">
+        <div class="grid grid-cols-2 gap-y-10 gap-x-6 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 xl:gap-x-8 dark:text-slate-300">
             <div class="shadow dark:shadow-gray-700 rounded" th:each="item: ${comics}">
                 <div class="group relative">
                     <!-- rating -->
@@ -76,7 +76,7 @@
                                 <span aria-hidden="true" class="absolute inset-0"></span>
                                 <span class="hidden" th:text="${item.getTitle()}">{element.title}</span>
                             </a>
-                            <h3 class="text-sm font-medium line-clamp-1" th:text="${item.getTitle()}">
+                            <h3 class="text-sm font-medium line-clamp-1 dark:text-white" th:text="${item.getTitle()}">
                                 {element.title}
                             </h3>
                         </div>
@@ -107,7 +107,7 @@
                     <a
                             th:if="${currentPage > 0}"
                             th:href="'?page=' + ${currentPage - 1}"
-                            class="text-black dark:text-white w-10 h-10 bg-white dark:bg-gray-800 hover:bg-gray-50 border-gray-300 mx-1 relative inline-flex items-center px-4 py-2 border text-sm font-medium dark:hover:bg-gray-700 rounded-l-md justify-center"
+                            class="text-black dark:text-white w-10 h-10 bg-white dark:bg-slate-800 hover:bg-slate-50 border-slate-300 dark:border-slate-400 mx-1 relative inline-flex items-center px-4 py-2 border text-sm font-medium dark:hover:bg-slate-700 rounded-l-md justify-center"
                     >
                         <i class="fa-light fa-chevron-left fa-lg"></i>
                     </a>
@@ -117,7 +117,7 @@
                     <a
                             th:if="${pageNumber >= currentPage - 2 && pageNumber <= currentPage + 2}"
                             th:href="${pageNumber == currentPage} ? '#' : '?page=' + ${pageNumber}"
-                            th:class="(${pageNumber == currentPage} ? 'text-red-500 bg-red-200 w-10 h-10 hover:bg-red-300' : 'text-black dark:text-white w-10 h-10 bg-white dark:bg-gray-800 hover:bg-gray-50 border-gray-300') + ' justify-center mx-1 relative inline-flex items-center px-4 py-2 border text-sm font-medium dark:hover:bg-gray-700'"
+                            th:class="(${pageNumber == currentPage} ? 'text-red-500 bg-red-200 w-10 h-10 hover:bg-red-300' : 'text-black dark:text-white w-10 h-10 bg-white dark:bg-gray-800 hover:bg-gray-50 border-gray-300 dark:border-slate-400') + ' justify-center mx-1 relative inline-flex items-center px-4 py-2 border text-sm font-medium dark:hover:bg-gray-700'"
                             th:text="${pageNumber}"
                     >
                     </a>
@@ -126,7 +126,7 @@
                     <a
                             th:if="${currentPage < totalPages - 1}"
                             th:href="'?page=' + ${currentPage + 1}"
-                            class="justify-center text-black dark:text-white w-10 h-10 bg-white dark:bg-gray-800 hover:bg-gray-50 border-gray-300 mx-1 relative inline-flex items-center px-4 py-2 border text-sm font-medium dark:hover:bg-gray-700 rounded-r-md"
+                            class="justify-center text-black dark:text-white w-10 h-10 bg-white dark:bg-gray-800 hover:bg-gray-50 border-gray-300 dark:border-slate-400 mx-1 relative inline-flex items-center px-4 py-2 border text-sm font-medium dark:hover:bg-gray-700 rounded-r-md"
                     >
                         <i class="fa-light fa-chevron-right fa-lg"></i>
                     </a>
