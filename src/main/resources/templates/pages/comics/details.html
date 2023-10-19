@@ -12,7 +12,7 @@
 >
     <title>Details</title>
 </head>
-<body class="scrollbar-hidden">
+<body class="scrollbar-hidden bg-white dark:bg-slate-900">
 <!-- header -->
 <header th:replace="~{fragments/header :: header}"></header>
 <!-- Content Comics Details -->
@@ -26,10 +26,10 @@
                     class="h-96 w-full object-cover object-center rounded"
             />
         </div>
-        <div class="col-span-3">
+        <div class="col-span-3 dark:text-slate-400">
             <div class="mt-8 sm:mt-2">
                 <!-- title -->
-                <h1 class="text-2xl font-semibold" th:text="${comic.getTitle()}">Title</h1>
+                <h1 class="text-2xl font-semibold dark:text-white" th:text="${comic.getTitle()}">Title</h1>
                 <!-- info -->
                 <div class="flex font-light mt-4">
                     <div class="mx-2 flex items-center">
@@ -157,26 +157,26 @@
     <div class="mx-auto mt-6 max-w-4xl px-6 sm:max-w-7xl sm:px-8">
         <div class="flex w-full font-medium items-center border-b py-1">
             <i class="fa-sharp fa-light fa-list-timeline mr-2 text-red-500 fa-xl"></i>
-            <p class="text-xl">Danh Sách Chương</p>
+            <p class="text-xl dark:text-white">Danh Sách Chương</p>
         </div>
         <div class="md:px-4 py-2">
-            <div class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-4 p-2 rounded bg-gray-50 dark:bg-gray-700">
+            <div class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-4 p-2 rounded bg-gray-50 dark:bg-slate-800">
                 <button
                         th:each="chunk : ${comic.getChunks()}"
                         th:id="${chunk.get(0).getId()}"
                         onclick="tabs(this.id)"
-                        class="transition duration-500 ease-in-out hover:scale-125 hover:bg-red-300 text-red-500 font-semibold shadow rounded w-full py-2 dark:hover:bg-green-400 dark:text-white bg-red-200 dark:bg-green-200"
+                        class="transition duration-500 ease-in-out hover:scale-125 hover:bg-red-300 text-red-500 font-semibold shadow rounded w-full py-2 dark:hover:bg-green-400 dark:text-white bg-red-200 dark:bg-green-800"
                 >
                     <p th:text="${chunk.get(0).extractNumber()} + ' : ' + ${chunk.get(chunk.size() - 1).extractNumber()}">
                         123</p>
                 </button>
             </div>
             <!-- list chapter -->
-            <div th:each="chunk, chunkIndex: ${comic.getChunks()}">
+            <div th:each="chunk, chunkIndex: ${comic.getChunks()}" class="dark:text-slate-400">
                 <div th:id="${chunk.get(0).getId()}" th:class="'tabs' + ${chunkIndex.index > 0 ? ' hidden' : ''}">
                     <div th:each="chapter: ${chunk}">
                         <a th:href="${comic.getTileSlug()} + '/chapter/' + ${chapter.getId()}">
-                            <div class="grid grid-cols-4 gap-2 p-2 my-2 rounded shadow hover:scale-105 cursor-pointer duration-500 ease-in-out dark:shadow-gray-700">
+                            <div class="grid grid-cols-4 gap-2 p-2 my-2 rounded shadow hover:scale-105 hover:bg-gray-100 cursor-pointer duration-500 ease-in-out dark:shadow-gray-700 dark:hover:bg-slate-800">
                                 <h1 class="flex items-center text-sm md:text-base col-span-2 md:col-auto"
                                     th:text="${chapter.getTitle()}">Chapter 6</h1>
                                 <div class="font-thin flex items-center"><i th:text="${chapter.getTimeAgo()}">a few seconds
