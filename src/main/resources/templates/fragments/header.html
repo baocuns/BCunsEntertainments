@@ -26,16 +26,16 @@
                         </a>
                     </div>
                     <div class="flex gap-2 dark:text-white">
-                        <button id="btn-open-modal-search" class="p-2 hover:bg-gray-100 hover:text-green-500 rounded hidden md:block">
+                        <button id="btn-open-modal-search" class="p-2 hover:bg-gray-100 hover:text-green-500 rounded hidden md:block" aria-label="Search">
                             <i class="fa-light fa-magnifying-glass fa-lg"></i>
                         </button>
-                        <button id="theme-switch" class=" p-2 hover:bg-gray-50 hover:text-green-500 rounded hidden md:block">
+                        <button id="theme-switch" class=" p-2 hover:bg-gray-50 hover:text-green-500 rounded hidden md:block" aria-label="Theme Switch">
                             <i id="theme-icon" class="fa-light fa-sun-bright fa-lg"></i>
                         </button>
-                        <button class="p-2 hover:bg-gray-50 hover:text-green-500 rounded hidden md:block">
+                        <button class="p-2 hover:bg-gray-50 hover:text-green-500 rounded hidden md:block" aria-label="Account">
                             <i class="fa-light fa-user fa-lg"></i>
                         </button>
-                        <button id="btn-mobile-bar" class="p-2 hover:bg-gray-50 hover:text-green-500 rounded md:hidden">
+                        <button id="btn-mobile-bar" class="p-2 hover:bg-gray-50 hover:text-green-500 rounded md:hidden" aria-label="Option Bar">
                             <i class="fa-light fa-grid-2 fa-lg"></i>
                         </button>
                     </div>
@@ -45,7 +45,6 @@
     </nav>
 </header>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- mobile bar -->
 <main th:replace="~{fragments/mobilebar :: mobilebar}"></main>
 
