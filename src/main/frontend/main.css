@@ -32,4 +32,11 @@
         cursor: pointer;
         border-radius: 100%;
     }
+    .rating-star:hover,
+    .rating-star:hover ~ .rating-star{
+        color: #eab308;
+    }
+    .rating:hover {
+        color: #e5e7eb;
+    }
 }
