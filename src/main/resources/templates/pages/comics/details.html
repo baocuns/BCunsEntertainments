@@ -172,21 +172,23 @@
                 </button>
             </div>
             <!-- list chapter -->
-            <div th:each="chunk, chunkIndex: ${comic.getChunks()}" class="dark:text-slate-400">
-                <div th:id="${chunk.get(0).getId()}" th:class="'tabs' + ${chunkIndex.index > 0 ? ' hidden' : ''}">
-                    <div th:each="chapter: ${chunk}">
-                        <a th:href="${comic.getTileSlug()} + '/chapter/' + ${chapter.getId()}">
-                            <div class="grid grid-cols-4 gap-2 p-2 my-2 rounded shadow hover:scale-105 hover:bg-gray-100 cursor-pointer duration-500 ease-in-out dark:shadow-gray-700 dark:hover:bg-slate-800">
-                                <h1 class="flex items-center text-sm md:text-base col-span-2 md:col-auto"
-                                    th:text="${chapter.getTitle()}">Chapter 6</h1>
-                                <div class="font-thin flex items-center"><i th:text="${chapter.getTimeAgo()}">a few seconds
-                                    ago</i></div>
-                                <div class="flex items-center gap-2">
-                                    <p th:text="${chapter.getView()}">2</p>
-                                    <i class="fa-sharp fa-light fa-eyes"></i>
+            <div th:if="${comic.getChapters().size()} > 0" class="h-96 overflow-y-auto px-8 py-4 mt-4 bg-gray-50 dark:bg-slate-800 scrollbar-hidden">
+                <div th:each="chunk, chunkIndex: ${comic.getChunks()}" class="dark:text-slate-400">
+                    <div th:id="${chunk.get(0).getId()}" th:class="'tabs' + ${chunkIndex.index > 0 ? ' hidden' : ''}">
+                        <div th:each="chapter: ${chunk}">
+                            <a th:href="${comic.getTileSlug()} + '/chapter/' + ${chapter.getId()}">
+                                <div class="grid grid-cols-4 gap-2 p-2 my-2 rounded shadow hover:scale-105 hover:bg-gray-200 cursor-pointer duration-500 ease-in-out dark:shadow-gray-700 dark:hover:bg-slate-700">
+                                    <h1 class="flex items-center text-sm md:text-base col-span-2 md:col-auto"
+                                        th:text="${chapter.getTitle()}">Chapter 6</h1>
+                                    <div class="font-thin flex items-center"><i th:text="${chapter.getTimeAgo()}">a few seconds
+                                        ago</i></div>
+                                    <div class="flex items-center gap-2">
+                                        <p th:text="${chapter.getView()}">2</p>
+                                        <i class="fa-sharp fa-light fa-eyes"></i>
+                                    </div>
                                 </div>
-                            </div>
-                        </a>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
