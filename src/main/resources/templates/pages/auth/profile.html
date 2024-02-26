@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head
+        th:replace="~{fragments/head :: head(
+        title='Đăng Nhập | BCENT',
+        description='Đăng Nhập và truy cập vào BCuns Entertainment',
+        keywords='Truyện Tranh, BCuns Entertainment',
+        url='https://bcent.online/register',
+        image='',
+        site_name='BCuns Entertainment'
+        )}"
+>
+    <title>Profile</title>
+</head>
+<body class="scrollbar-hidden bg-white dark:bg-slate-900">
+<!-- header -->
+<header th:replace="~{fragments/header :: header}"></header>
+<!-- user info -->
+<section class="mt-20">
+    <div class="px-4 sm:px-8">
+        <div class="p-4 max-w-full sm:max-w-6xl md:max-w-4xl flex justify-center">
+            <div class="flex flex-col sm:flex-row items-center sm:items-start p-4">
+                <div class="p-4">
+                    <img src="https://mhykqdaasmzkyasqdqeb.supabase.co/storage/v1/object/public/profiles/ad14fcf2-067d-4351-b065-ab18349e157c/avatar"
+                         alt="Nguyễn Văn Bảo"
+                         class="h-64 w-48 object-cover rounded-md shadow dark:shadow-gray-700"
+                    >
+                </div>
+                <div class="sm:px-4 flex flex-col items-center sm:items-start dark:text-white">
+                    <div class="flex items-center">
+                        <h1 class="text-2xl font-bold mr-2">Nguyễn Văn Bảo</h1>
+                        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24"
+                             color="#1d9bf0" style="color:#1d9bf0" height="24" width="24"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path fill="none" d="M0 0h24v24H0z"></path>
+                            <path d="M23 12l-2.44-2.79.34-3.69-3.61-.82-1.89-3.2L12 2.96 8.6 1.5 6.71 4.69 3.1 5.5l.34 3.7L1 12l2.44 2.79-.34 3.7 3.61.82L8.6 22.5l3.4-1.47 3.4 1.46 1.89-3.19 3.61-.82-.34-3.69L23 12zm-12.91 4.72l-3.8-3.81 1.48-1.48 2.32 2.33 5.85-5.87 1.48 1.48-7.33 7.35z"></path>
+                        </svg>
+                    </div>
+                    <h2 class="text-lg font-light">@baocuns</h2>
+                    <div class="">
+                        <p class="text-justify font-light">Tôi đẹp trai nhất quả đất :vv</p>
+                    </div>
+                    <div class="flex mt-4">
+                        <div class="flex mr-4">
+                            <h1 class="font-bold">120k</h1>
+                            <h2 class="font-light ml-2">Follower</h2>
+                        </div>
+                        <div class="flex mr-4">
+                            <h1 class="font-bold">130k</h1>
+                            <h2 class="font-light ml-2">Đang Follow</h2>
+                        </div>
+                        <div class="flex">
+                            <h1 class="font-bold">120.3k</h1>
+                            <h2 class="font-light ml-2">like</h2>
+                        </div>
+                    </div>
+                    <!-- btn option -->
+                    <div class="py-2">
+                        <button class="border border-red-500 dark:border-green-500 px-4 py-2 rounded font-medium hover:bg-red-50 dark:hover:bg-white/20">
+                            Follow
+                        </button>
+                        <button class="border border-red-500 dark:border-green-500 px-4 py-2 rounded font-medium hover:bg-red-50 dark:hover:bg-white/20 flex">
+                            <div class="mr-2 text-red-500 dark:text-green-500">
+                                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24"
+                                     height="24" width="24" xmlns="http://www.w3.org/2000/svg">
+                                    <g id="Edit">
+                                        <g>
+                                            <path d="M3.548,20.938h16.9a.5.5,0,0,0,0-1H3.548a.5.5,0,0,0,0,1Z"></path>
+                                            <path d="M9.71,17.18a2.587,2.587,0,0,0,1.12-.65l9.54-9.54a1.75,1.75,0,0,0,0-2.47l-.94-.93a1.788,1.788,0,0,0-2.47,0L7.42,13.12a2.473,2.473,0,0,0-.64,1.12L6.04,17a.737.737,0,0,0,.19.72.767.767,0,0,0,.53.22Zm.41-1.36a1.468,1.468,0,0,1-.67.39l-.97.26-1-1,.26-.97a1.521,1.521,0,0,1,.39-.67l.38-.37,1.99,1.99Zm1.09-1.08L9.22,12.75l6.73-6.73,1.99,1.99Zm8.45-8.45L18.65,7.3,16.66,5.31l1.01-1.02a.748.748,0,0,1,1.06,0l.93.94A.754.754,0,0,1,19.66,6.29Z"></path>
+                                        </g>
+                                    </g>
+                                </svg>
+                            </div>
+                            <p>Chỉnh sửa hồ sơ</p>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="p-4 md:px-8 md:py-4 max-w-full sm:max-w-6xl md:max-w-4xl">
+            <!-- tabs -->
+            <div class="flex justify-center md:justify-start dark:text-white">
+                <div class="flex gap-2">
+                    <button th:id="0" class="tabs px-4 py-2 border-b-2 border-red-500 dark:border-green-500 dark:bg-slate-700"
+                            onclick="tabs(0)"
+                    >Bài viết</button>
+                    <button th:id="1" class="tabs px-4 py-2 border-b dark:bg-slate-800"
+                            onclick="tabs(1)"
+                    >Truyện</button>
+                    <button th:id="2" class="tabs px-4 py-2 border-b dark:bg-slate-800"
+                            onclick="tabs(2)"
+                    >Anime</button>
+                    <button th:id="3" class="tabs px-4 py-2 border-b dark:bg-slate-800"
+                            onclick="tabs(3)"
+                    >Khác</button>
+                </div>
+            </div>
+            <!-- content -->
+            <div class="dark:text-white">
+                <div class="tabs-content"
+                     th:id="0"
+                >
+                    Bài viết
+                </div>
+                <div class="tabs-content hidden"
+                     th:id="1"
+                >
+                    Truyện
+                </div>
+                <div class="tabs-content hidden"
+                     th:id="2"
+                >
+                    Anime
+                </div>
+                <div class="tabs-content hidden"
+                     th:id="3"
+                >
+                    Khác
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- footer -->
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+<script>
+    // tabs
+    const tabs = (id) => {
+        const content = $('div[id="' + id + '"]')
+        const tabs = $('div[class="tabs-content"]')
+        tabs.addClass('hidden')
+        content.removeClass('hidden')
+        $('.tabs').addClass('border-b dark:bg-slate-800').removeClass('border-b-2 border-red-500 dark:border-green-500 dark:bg-slate-700')
+        $('#' + id).removeClass('border-b dark:bg-slate-800').addClass('border-b-2 border-red-500 dark:border-green-500 dark:bg-slate-700')
+    }
+</script>
+</body>
+</html>
