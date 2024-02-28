@@ -45,13 +45,15 @@
 
 <script>
     $(document).ready(() => {
+        let isModalOpenMobileBar = false
         $('#btn-mobile-bar').click(() => {
             $('#modal-mobile-bar').toggleClass('hidden')
             setTimeout(() => {
                 $('#bg-mobile').toggleClass('opacity-0 opacity-100')
                 $('#mobile-bar-content').toggleClass('translate-x-full translate-x-0')
             }, 100)
-            history.pushState({ modalOpen: true }, null, null);
+            isModalOpenMobileBar = true
+            history.pushState({ modalOpenMobileBar: true }, null, null);
         })
         $('#btn-close-mobile-bar').click(() => {
             handleCloseMobileBar()
@@ -68,8 +70,14 @@
         // ẩn modal khi bấm nút back
         window.addEventListener('popstate', function(event) {
             // Kiểm tra trạng thái modal
-            if (event.state && event.state.modalOpen) {
-                handleCloseMobileBar()
+            if (event.state === null) {
+                if (isModalOpenMobileBar) {
+                    handleCloseMobileBar()
+                }
+            } else {
+                if (event.state.modalOpenMobileBar && isModalOpenMobileBar) {
+                    handleCloseMobileBar()
+                }
             }
         });
         const handleCloseMobileBar = () => {
@@ -78,6 +86,7 @@
             setTimeout(() => {
                 $('#modal-mobile-bar').toggleClass('hidden')
             }, 500)
+            isModalOpenMobileBar = false
         }
     })
 </script>

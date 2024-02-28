@@ -40,4 +40,10 @@ public class User {
     @OneToMany(mappedBy = "user")
     private Set<Authority> authorities = new LinkedHashSet<>();
 
+    @OneToOne(mappedBy = "uid")
+    private Profile profile;
+
+    @OneToMany(mappedBy = "uid")
+    private Set<Comic> comics = new LinkedHashSet<>();
+
 }

@@ -26,13 +26,14 @@ public class SecurityConfiguration implements WebMvcConfigurer {
             new AntPathRequestMatcher("/forgot-password"),
             new AntPathRequestMatcher("/comics/**"),
             new AntPathRequestMatcher("/crawl/**"),
-            new AntPathRequestMatcher("/users/**"),
+            new AntPathRequestMatcher("/profiles/**"),
             // api
             new AntPathRequestMatcher("/api/comics/search"),
     };
     public static final AntPathRequestMatcher[] ENDPOINTS_WHITELIST_AUTHENTICATED = {
             new AntPathRequestMatcher("/comics/**/chapter/**"),
             new AntPathRequestMatcher("/comics/likes"),
+            new AntPathRequestMatcher("/profiles/**/follows"),
     };
     public static final String LOGIN_URL = "/login";
     public static final String LOGOUT_URL = "/logout";

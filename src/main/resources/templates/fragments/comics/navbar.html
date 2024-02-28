@@ -134,6 +134,7 @@
         const chapterModal = document.getElementById('chapter-modal');
         const chapterList = document.getElementById('chapter-list');
         const chapterActive = document.getElementById('chapter-active');
+        let isModalOpenChapter = false;
 
         const handleOpenModal = function () {
             modal.classList.remove('hidden')
@@ -146,7 +147,8 @@
             }, 100)
             chapterActive.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"});
             chapterActive.classList.add('bg-red-200')
-            history.pushState({modalOpen: true}, null, null);
+            history.pushState({modalOpenChapter: true}, null, null);
+            isModalOpenChapter = true;
         }
         const handleCloseModal = function () {
             chapterList.classList.remove('opacity-100')
@@ -159,6 +161,7 @@
                 modal.classList.remove('fixed')
                 modal.classList.add('hidden')
             }, 400)
+            isModalOpenChapter = false
         }
 
         // Khi người dùng nhấn nút "Open Modal"
@@ -176,8 +179,14 @@
         // ẩn modal khi bấm nút back
         window.addEventListener('popstate', function(event) {
             // Kiểm tra trạng thái modal
-            if (event.state && event.state.modalOpen) {
-                handleCloseModal()
+            if (event.state === null) {
+                if (isModalOpenChapter) {
+                    handleCloseModal()
+                }
+            } else {
+                if (event.state.modalOpenChapter) {
+                    handleCloseModal()
+                }
             }
         });
     });

@@ -151,6 +151,7 @@
         let isCallApi = false;
         let isLoaded = false;
         let timeout = null;
+        let isModalOpenSearch = false;
 
         // handle isCallApi on change
         const handleIsCallApiOnChange = function () {
@@ -179,14 +180,15 @@
                 overlayBodySearch.addClass("active");
                 modalContentSearch.addClass("active");
             }, 100);
-            history.pushState({ modalOpen: true }, null, null);
+            history.pushState({ modalOpenSearch: true }, null, null);
+            isModalOpenSearch = true;
         };
         openModalBtnSearch.on("click", openModalSearch);
         closeModalBtnSearchMobile.on("click", openModalSearch);
         // ẩn modal khi bấm nút back
         window.addEventListener('popstate', function(event) {
             // Kiểm tra trạng thái modal
-            if (event.state && event.state.modalOpen) {
+            if (isModalOpenSearch) {
                 closeModalSearch()
             }
         });
@@ -198,6 +200,7 @@
                 modalSearch.addClass("hidden");
                 overlaySearch.addClass("hidden");
             }, 400);
+            isModalOpenSearch = false;
         };
         overlaySearch.on("click", closeModalSearch);
 
