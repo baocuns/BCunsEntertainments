@@ -1,4 +1,6 @@
-package com.cuns.bce.entities;
+package com.cuns.bce.entities.classid;
+
+import com.cuns.bce.entities.User;
 
 import java.io.Serializable;
 

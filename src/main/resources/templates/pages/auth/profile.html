@@ -2,10 +2,10 @@
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head
         th:replace="~{fragments/head :: head(
-        title='Đăng Nhập | BCENT',
-        description='Đăng Nhập và truy cập vào BCuns Entertainment',
+        title=${profile.getFullname()},
+        description='Trang cá nhân của ' + ${profile.getFullname()} + ' trên BCuns Entertainment',
         keywords='Truyện Tranh, BCuns Entertainment',
-        url='https://bcent.online/register',
+        url='https://bcent.online',
         image='',
         site_name='BCuns Entertainment'
         )}"
@@ -18,17 +18,19 @@
 <!-- user info -->
 <section class="mt-20">
     <div class="px-4 sm:px-8">
-        <div class="p-4 max-w-full sm:max-w-6xl md:max-w-4xl flex justify-center">
-            <div class="flex flex-col sm:flex-row items-center sm:items-start p-4">
-                <div class="p-4">
-                    <img src="https://mhykqdaasmzkyasqdqeb.supabase.co/storage/v1/object/public/profiles/ad14fcf2-067d-4351-b065-ab18349e157c/avatar"
-                         alt="Nguyễn Văn Bảo"
+        <div class="p-4 max-w-full md:max-w-6xl md:min-w-max flex justify-center">
+            <div class="flex flex-col w-full sm:flex-row items-center sm:items-start p-4">
+                <div class="p-4 flex-none sm:w-1/4 justify-end flex">
+                    <img th:src="${profile.getAvatarUrl()}"
+                         alt="avatar"
                          class="h-64 w-48 object-cover rounded-md shadow dark:shadow-gray-700"
                     >
                 </div>
-                <div class="sm:px-4 flex flex-col items-center sm:items-start dark:text-white">
+                <div class="flex-1 sm:px-4 flex flex-col items-center sm:items-start dark:text-white">
                     <div class="flex items-center">
-                        <h1 class="text-2xl font-bold mr-2">Nguyễn Văn Bảo</h1>
+                        <h1 class="text-2xl font-bold mr-2"
+                            th:text="${profile.getFullname()}"
+                        >Nguyễn Văn Bảo</h1>
                         <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24"
                              color="#1d9bf0" style="color:#1d9bf0" height="24" width="24"
                              xmlns="http://www.w3.org/2000/svg">
@@ -36,30 +38,36 @@
                             <path d="M23 12l-2.44-2.79.34-3.69-3.61-.82-1.89-3.2L12 2.96 8.6 1.5 6.71 4.69 3.1 5.5l.34 3.7L1 12l2.44 2.79-.34 3.7 3.61.82L8.6 22.5l3.4-1.47 3.4 1.46 1.89-3.19 3.61-.82-.34-3.69L23 12zm-12.91 4.72l-3.8-3.81 1.48-1.48 2.32 2.33 5.85-5.87 1.48 1.48-7.33 7.35z"></path>
                         </svg>
                     </div>
-                    <h2 class="text-lg font-light">@baocuns</h2>
+                    <h2 class="text-lg font-light"
+                        th:text="'@' + ${profile.getBcId()}"
+                    >@baocuns</h2>
                     <div class="">
-                        <p class="text-justify font-light">Tôi đẹp trai nhất quả đất :vv</p>
+                        <p class="text-justify font-light"
+                           th:text="${profile.getStory()}"
+                        >Tôi đẹp trai nhất quả đất :vv</p>
                     </div>
                     <div class="flex mt-4">
                         <div class="flex mr-4">
-                            <h1 class="font-bold">120k</h1>
+                            <h1 class="font-bold" th:text="${countFollowers}">120k</h1>
                             <h2 class="font-light ml-2">Follower</h2>
                         </div>
                         <div class="flex mr-4">
-                            <h1 class="font-bold">130k</h1>
+                            <h1 class="font-bold" th:text="${countFollowing}">130k</h1>
                             <h2 class="font-light ml-2">Đang Follow</h2>
                         </div>
+                        <div class="flex mr-4">
+                            <h1 class="font-bold" th:text="${countLiker}">120.3k</h1>
+                            <h2 class="font-light ml-2">Like</h2>
+                        </div>
                         <div class="flex">
-                            <h1 class="font-bold">120.3k</h1>
-                            <h2 class="font-light ml-2">like</h2>
+                            <h1 class="font-bold" th:text="${countLiking}">120.3k</h1>
+                            <h2 class="font-light ml-2">Liking</h2>
                         </div>
                     </div>
                     <!-- btn option -->
                     <div class="py-2">
-                        <button class="border border-red-500 dark:border-green-500 px-4 py-2 rounded font-medium hover:bg-red-50 dark:hover:bg-white/20">
-                            Follow
-                        </button>
-                        <button class="border border-red-500 dark:border-green-500 px-4 py-2 rounded font-medium hover:bg-red-50 dark:hover:bg-white/20 flex">
+                        <button th:if="${isMyProfile}" id="btn-open-modal-profile-edit"
+                                class="border border-red-500 dark:border-green-500 px-4 py-2 rounded font-medium hover:bg-red-50 dark:hover:bg-white/20 flex">
                             <div class="mr-2 text-red-500 dark:text-green-500">
                                 <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24"
                                      height="24" width="24" xmlns="http://www.w3.org/2000/svg">
@@ -73,26 +81,55 @@
                             </div>
                             <p>Chỉnh sửa hồ sơ</p>
                         </button>
+                        <div th:unless="${isMyProfile}" class="flex gap-2">
+                            <form hidden th:action="'/profiles/' + ${profile.getBcId()} + '/follows'" id="follows"
+                                  method="post">
+                                <input name="follows" value="true" hidden/>
+                            </form>
+                            <button type="submit"
+                                    form="follows"
+                                    class="border border-red-500 dark:border-green-500 px-4 py-2 rounded font-medium hover:bg-red-50 dark:hover:bg-white/20">
+                                <span th:if="${isFollowing}" class="text-red-500 dark:text-green-500">Đang Follow</span>
+                                <span th:unless="${isFollowing}">Follow</span>
+                            </button>
+                            <form hidden th:action="'/profiles/' + ${profile.getBcId()} + '/likes'" id="likes"
+                                  method="post">
+                                <input name="likes" value="true" hidden/>
+                            </form>
+                            <button th:unless="${isMyProfile}"
+                                    type="submit"
+                                    form="likes"
+                                    class="border border-red-500 dark:border-green-500 px-4 py-2 rounded font-medium hover:bg-red-50 dark:hover:bg-white/20">
+                                <span th:if="${isLiking}" class="text-red-500 dark:text-green-500">Liked</span>
+                                <span th:unless="${isLiking}">Like</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- tabs này dùng js để lấy dữ liệu -->
         <div class="p-4 md:px-8 md:py-4 max-w-full sm:max-w-6xl md:max-w-4xl">
             <!-- tabs -->
             <div class="flex justify-center md:justify-start dark:text-white">
                 <div class="flex gap-2">
-                    <button th:id="0" class="tabs px-4 py-2 border-b-2 border-red-500 dark:border-green-500 dark:bg-slate-700"
+                    <button th:id="0"
+                            class="tabs px-4 py-2 border-b-2 border-red-500 dark:border-green-500 dark:bg-slate-700"
                             onclick="tabs(0)"
-                    >Bài viết</button>
+                    >Bài viết
+                    </button>
                     <button th:id="1" class="tabs px-4 py-2 border-b dark:bg-slate-800"
                             onclick="tabs(1)"
-                    >Truyện</button>
+                    >Truyện
+                    </button>
                     <button th:id="2" class="tabs px-4 py-2 border-b dark:bg-slate-800"
                             onclick="tabs(2)"
-                    >Anime</button>
+                    >Anime
+                    </button>
                     <button th:id="3" class="tabs px-4 py-2 border-b dark:bg-slate-800"
                             onclick="tabs(3)"
-                    >Khác</button>
+                    >Khác
+                    </button>
                 </div>
             </div>
             <!-- content -->
@@ -123,6 +160,175 @@
 </section>
 <!-- footer -->
 <footer th:replace="~{fragments/footer :: footer}"></footer>
+<!-- modal profile edit -->
+<main class="">
+    <section id="modal-profile-edit" class="hidden justify-center fixed inset-0 z-30 overflow-y-auto">
+        <div id="modal-content-profile-edit"
+             class="z-20 transition translate-y-2.5 opacity-0 duration-300 ease-in-out">
+            <!-- content -->
+            <div class="sm:max-w-lg text-left8 py-8">
+                <div class="bg-white rounded p-1">
+                    <div class="bg-white px-4 pt-5 pb-4">
+                        <div class="sm:flex sm:items-start">
+                            <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10 text-green-500">
+                                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24"
+                                     height="24" width="24" xmlns="http://www.w3.org/2000/svg">
+                                    <g id="Edit">
+                                        <g>
+                                            <path d="M3.548,20.938h16.9a.5.5,0,0,0,0-1H3.548a.5.5,0,0,0,0,1Z"></path>
+                                            <path d="M9.71,17.18a2.587,2.587,0,0,0,1.12-.65l9.54-9.54a1.75,1.75,0,0,0,0-2.47l-.94-.93a1.788,1.788,0,0,0-2.47,0L7.42,13.12a2.473,2.473,0,0,0-.64,1.12L6.04,17a.737.737,0,0,0,.19.72.767.767,0,0,0,.53.22Zm.41-1.36a1.468,1.468,0,0,1-.67.39l-.97.26-1-1,.26-.97a1.521,1.521,0,0,1,.39-.67l.38-.37,1.99,1.99Zm1.09-1.08L9.22,12.75l6.73-6.73,1.99,1.99Zm8.45-8.45L18.65,7.3,16.66,5.31l1.01-1.02a.748.748,0,0,1,1.06,0l.93.94A.754.754,0,0,1,19.66,6.29Z"></path>
+                                        </g>
+                                    </g>
+                                </svg>
+                            </div>
+                            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left"><h3
+                                    class="text-lg font-bold leading-6 text-black" id="headlessui-dialog-title-:r2k:"
+                                    data-headlessui-state="open">Chỉnh sửa hồ sơ</h3>
+                                <div class="py-1"><p class="text-sm font-thin text-black">Bạn có chắc chắn muốn chỉnh
+                                    sửa
+                                    tài khoản của mình không? Tất cả dữ liệu của bạn sẽ được cập nhật. Hành động này
+                                    không
+                                    thể được hoàn tác.</p></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-4 pb-4">
+                        <form th:action="'/profiles/' + ${profile.getBcId()}" th:object="${profile}" method="post"
+                              id="form-profile-edit">
+                            <div class="py-2">
+                                <div class="font-medium border-b mb-4 text-black">Ảnh hồ sơ</div>
+                                <div class="flex justify-center">
+                                    <div class="group relative max-w-max cursor-pointer">
+                                        <img
+                                                id="avatar-profile-edit"
+                                                th:src="${profile.getAvatarUrl()}"
+                                                alt="avatar"
+                                                class="shadow h-44 w-32 group-hover:shadow-xl rounded object-cover">
+                                        <div class="absolute -bottom-2 -right-2 bg-white shadow p-1 rounded text-black">
+                                            <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+                                                 viewBox="0 0 24 24"
+                                                 height="24" width="24" xmlns="http://www.w3.org/2000/svg">
+                                                <g id="Edit">
+                                                    <g>
+                                                        <path d="M3.548,20.938h16.9a.5.5,0,0,0,0-1H3.548a.5.5,0,0,0,0,1Z"></path>
+                                                        <path d="M9.71,17.18a2.587,2.587,0,0,0,1.12-.65l9.54-9.54a1.75,1.75,0,0,0,0-2.47l-.94-.93a1.788,1.788,0,0,0-2.47,0L7.42,13.12a2.473,2.473,0,0,0-.64,1.12L6.04,17a.737.737,0,0,0,.19.72.767.767,0,0,0,.53.22Zm.41-1.36a1.468,1.468,0,0,1-.67.39l-.97.26-1-1,.26-.97a1.521,1.521,0,0,1,.39-.67l.38-.37,1.99,1.99Zm1.09-1.08L9.22,12.75l6.73-6.73,1.99,1.99Zm8.45-8.45L18.65,7.3,16.66,5.31l1.01-1.02a.748.748,0,0,1,1.06,0l.93.94A.754.754,0,0,1,19.66,6.29Z"></path>
+                                                    </g>
+                                                </g>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <label for="avatar-profile-edit-input"
+                                                   class="absolute inset-0 cursor-pointer"></label>
+                                            <input
+                                                    type="file"
+                                                    id="avatar-profile-edit-input"
+                                                    class="hidden">
+                                            <input type="text" th:field="*{avatarUrl}"
+                                                   th:value="${profile.getAvatarUrl()}" class="hidden"/>
+                                        </div>
+                                        <div class="group-hover:flex justify-center hidden absolute -top-9 text-white w-full">
+                                            <p
+                                                    class="bg-gray-600/75 py-1 px-2 rounded">Chọn hình</p></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="py-2">
+                                <div class="font-medium border-b mb-2 text-black">BC ID</div>
+                                <div class="flex justify-center items-center">
+                                    <p class="text-lg text-black font-medium">@</p>
+                                    <textarea th:field="*{bcId}"
+                                              class="font-normal tracking-tight focus:outline-0 resize-none max-w-max bg-white text-black"
+                                              placeholder="BC ID" style="height: 24px !important;">baocuns</textarea>
+                                    <div class="flex items-center">
+                                        <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+                                             viewBox="0 0 16 16"
+                                             color="green" height="24" width="24" xmlns="http://www.w3.org/2000/svg"
+                                             style="color: green;">
+                                            <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="font-light text-black text-sm italic">
+                                        <p id="count-text-bcid">14/20</p>
+                                    </div>
+                                </div>
+                                <div class="px-6 py-2">
+                                    <div class="text-xs pb-2 italic text-black">
+                                        <p id="domain-bcid">www.baocuns.com/bcuns</p>
+                                    </div>
+                                    <div class="text-xs text-black italic">
+                                        <p>BC ID là chuỗi có 5 ký tự trở lên và tối đa 20 ký tự, chỉ có thể bao gồm chữ
+                                            cái, chữ số, dấu gạch ngang và chữ không dấu. Khi thay đổi BC ID, liên kết hồ sơ
+                                            của bạn cũng sẽ thay đổi. Hệ thông khuyết khích nên đặt BC ID đơn giản, ngắn
+                                            gọn dễ nhớ.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="py-2">
+                                <div class="font-medium border-b mb-2 text-black">Họ Tên</div>
+                                <div class="px-8 sm:px-16">
+                                <textarea th:field="*{fullname}"
+                                          class="w-4/5 font-normal tracking-tight focus:outline-0 resize-none text-black bg-white"
+                                          placeholder="Họ tên"
+                                          style="height: 24px !important;">Nguyễn Văn Bảo</textarea>
+                                    <div class="font-light text-black text-sm italic">
+                                        <p id="count-text-fullname">14/50</p>
+                                    </div>
+                                </div>
+                                <div class="px-6 py-2">
+                                    <div class="text-xs text-black italic">
+                                        <p>Bạn chỉ có thể thay đổi biệt danh 7 ngày một lần.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="py-2">
+                                <div class="font-medium border-b mb-2 text-black">Tiểu sử</div>
+                                <div class="px-8 sm:px-16">
+                                    <textarea th:field="*{story}"
+                                              class="w-full font-normal tracking-tight focus:outline-0 resize-none text-black bg-white"
+                                              placeholder="Tiểu sử..."
+                                              style="height: 24px !important;">Tôi đẹp trai nhất quả đất :vv</textarea>
+                                    <div class="font-light text-black text-sm italic">
+                                        <p id="count-text-story">29/100</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="py-2">
+                                <div class="font-medium border-b mb-2 text-black bg-white">Cộng đồng</div>
+                                <div class="px-8 sm:px-16">
+                                    <select th:field="*{isPublic}"
+                                            class="border w-full p-1 rounded bg-white text-black">
+                                        <option th:value="true" class="bg-white text-black" selected="">Công khai
+                                        </option>
+                                        <option th:value="false" class="bg-white text-black">Chỉ mình tôi</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                        <button type="submit"
+                                th:form="form-profile-edit"
+                                id="btn-update-profile"
+                                class="inline-flex w-full justify-center rounded-md border border-transparent bg-green-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm">
+                            Cập Nhật
+                        </button>
+                        <button type="button"
+                                id="btn-close-modal-profile-edit"
+                                class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                            Hủy Bỏ
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- overlay -->
+        <div id="overlay-profile-edit" class="hidden z-10">
+            <div id="overlay-body-profile-edit"
+                 class="fixed inset-0 w-full h-screen bg-gray-500/50 blur-sm transition duration-300 ease-in-out opacity-0"></div>
+        </div>
+    </section>
+</main>
+<!-- script -->
 <script>
     // tabs
     const tabs = (id) => {
@@ -133,6 +339,122 @@
         $('.tabs').addClass('border-b dark:bg-slate-800').removeClass('border-b-2 border-red-500 dark:border-green-500 dark:bg-slate-700')
         $('#' + id).removeClass('border-b dark:bg-slate-800').addClass('border-b-2 border-red-500 dark:border-green-500 dark:bg-slate-700')
     }
+</script>
+<script>
+    // modal profile edit
+    $(document).ready(function () {
+        let isModalOpenProfileEdit = false
+        // open modal
+        $('#btn-open-modal-profile-edit').click(function () {
+            $('#modal-profile-edit').removeClass('hidden').addClass('flex')
+            $('#overlay-profile-edit').removeClass('hidden')
+            setTimeout(() => {
+                $('#overlay-body-profile-edit').addClass('opacity-100').removeClass('opacity-0')
+                $('#modal-content-profile-edit').addClass('opacity-100 translate-y-0').removeClass('opacity-0 translate-y-2.5')
+            }, 100)
+            history.pushState({modalProfileEditOpen: true}, null, null);
+            isModalOpenProfileEdit = true
+        })
+        // close modal
+        const handleModalClose = () => {
+            $('#modal-content-profile-edit').removeClass('opacity-100 translate-y-0').addClass('opacity-0 translate-y-2.5')
+            $('#overlay-body-profile-edit').removeClass('opacity-100').addClass('opacity-0')
+            setTimeout(() => {
+                $('#modal-profile-edit').removeClass('flex').addClass('hidden')
+                $('#overlay-profile-edit').addClass('hidden')
+            }, 400)
+            isModalOpenProfileEdit = false
+        }
+        $('#overlay-profile-edit').click(handleModalClose)
+        $('#btn-close-modal-profile-edit').click(handleModalClose)
+        // close modal when press esc
+        $(document).keydown(function (e) {
+            if (e.key === 'Escape') {
+                handleModalClose()
+            }
+        })
+        // close modal when press back
+        window.onpopstate = function (event) {
+            if (event.state === null) {
+                if (isModalOpenProfileEdit) {
+                    handleModalClose()
+                }
+            } else if (event.state.modalProfileEditOpen) {
+                handleModalClose()
+            }
+        }
+
+        // update avatar
+        $('#avatar-profile-edit-input').change(function () {
+            const file = $(this)[0].files[0]
+            const reader = new FileReader()
+            reader.onload = function (e) {
+                $('#avatar-profile-edit').attr('src', e.target.result)
+                $('#avatarUrl').val(e.target.result)
+            }
+            reader.readAsDataURL(file)
+        })
+        // textarea auto height
+        $('textarea').on('input', function () {
+            this.style.height = 'auto'
+            this.style.height = (this.scrollHeight) + 'px'
+        })
+        // count text bcid
+        $('#form-profile-edit textarea[name="bcId"]').on('input', function () {
+            const count = $(this).val().length
+            $('#count-text-bcid').text(count + '/20')
+            if (count > 20) {
+                $('#count-text-bcid').addClass('text-red-500')
+            } else {
+                $('#count-text-bcid').removeClass('text-red-500')
+            }
+            // domain bcid change when bcid change
+            const domain = $(this).val().toLowerCase().replace(/ /g, '-').replace(/[^a-zA-Z0-9-]/g, '')
+            $('#domain-bcid').text('www.baocuns.com/' + domain)
+            $(this).val(domain)
+        })
+        // count text fullname
+        $('#form-profile-edit textarea[name="fullname"]').on('input', function () {
+            const count = $(this).val().length
+            $('#count-text-fullname').text(count + '/50')
+            if (count > 50) {
+                $('#count-text-fullname').addClass('text-red-500')
+            } else {
+                $('#count-text-fullname').removeClass('text-red-500')
+            }
+        })
+        // count text story
+        $('#form-profile-edit textarea[name="story"]').on('input', function () {
+            const count = $(this).val().length
+            $('#count-text-story').text(count + '/200')
+            if (count > 200) {
+                $('#count-text-story').addClass('text-red-500')
+            } else {
+                $('#count-text-story').removeClass('text-red-500')
+            }
+        })
+
+        // update profile form submit event listener check data before submit form to server
+        $('#form-profile-edit').submit(function (e) {
+            e.preventDefault()
+            const bcId = $('#form-profile-edit textarea[name="bcId"]').val()
+            const fullname = $('#form-profile-edit textarea[name="fullname"]').val()
+            const story = $('#form-profile-edit textarea[name="story"]').val()
+            if (bcId.length < 5 || bcId.length > 20) {
+                alert('BC ID phải có từ 5 đến 20 ký tự')
+                return
+            }
+            if (fullname.length > 50) {
+                alert('Họ tên không được quá 50 ký tự')
+                return
+            }
+            if (story.length > 200) {
+                alert('Tiểu sử không được quá 200 ký tự')
+                return
+            }
+            this.submit()
+        })
+    })
 </script>
 </body>
 </html>
