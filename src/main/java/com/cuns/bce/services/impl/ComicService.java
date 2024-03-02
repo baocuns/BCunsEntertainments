@@ -2,10 +2,12 @@ package com.cuns.bce.services.impl;
 
 import com.cuns.bce.dto.response.comics.ComicDto;
 import com.cuns.bce.dto.response.comics.ComicsDto;
+import com.cuns.bce.entities.CategoriesComic;
 import com.cuns.bce.entities.Chapter;
 import com.cuns.bce.entities.Comic;
 import com.cuns.bce.entities.User;
 import com.cuns.bce.func.Funcs;
+import com.cuns.bce.repositories.CategoriesComicRepository;
 import com.cuns.bce.repositories.ComicRepository;
 import com.cuns.bce.services.inter.IComicService;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ import java.util.*;
 public class ComicService implements IComicService {
     final private ComicRepository comicRepository;
     final private UserService userService;
+    final private CategoriesComicRepository categoriesComicRepository;
     private final ModelMapper modelMapper = new ModelMapper();
 
     @Override
@@ -117,4 +120,12 @@ public class ComicService implements IComicService {
         List<Comic> comics = comicRepository.findBySlugContainingIgnoreCase(Funcs.getTextSlug(title));
         return Funcs.mapList(comics);
     }
+
+    @Override
+    public Page<ComicsDto> getComicsByGenresId(Long genresId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<CategoriesComic> categoriesComics = categoriesComicRepository.findByCategoryId(genresId, pageable);
+        return categoriesComics.map(categoriesComic -> modelMapper.map(categoriesComic.getComic(), ComicsDto.class));
+    }
+
 }

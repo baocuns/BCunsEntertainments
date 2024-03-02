@@ -29,4 +29,8 @@ public class Category {
     @OneToMany(mappedBy = "category")
     private Set<CategoriesComic> categoriesComics = new LinkedHashSet<>();
 
+    public String getSlug() {
+        return title.toLowerCase().replace(" ", "-");
+    }
+
 }

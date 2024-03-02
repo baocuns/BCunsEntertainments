@@ -21,4 +21,6 @@ public interface IComicService {
     void likes(String username, Long comicId);
     // search by title
     List<ComicsDto> search(String title);
+    // get genres by comic id
+    Page<ComicsDto> getComicsByGenresId(Long genresId, int page, int size);
 }

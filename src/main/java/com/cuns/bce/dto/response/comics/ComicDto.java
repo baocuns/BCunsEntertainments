@@ -1,5 +1,6 @@
 package com.cuns.bce.dto.response.comics;
 
+import com.cuns.bce.entities.CategoriesComic;
 import com.cuns.bce.entities.Chapter;
 import com.cuns.bce.entities.RatingsComic;
 import com.cuns.bce.entities.User;
@@ -31,6 +32,7 @@ public class ComicDto implements Serializable {
     String slug;
     Set<Chapter> chapters;
     Set<RatingsComic> ratingsComics;
+    Set<CategoriesComic> categoriesComics;
 
     public String getUpdateTimeAgo() {
         return Funcs.getTimeAgo(updatedAt);
