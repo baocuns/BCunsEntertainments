@@ -29,7 +29,7 @@
         <div class="col-span-3 dark:text-slate-400">
             <div class="mt-8 sm:mt-2">
                 <!-- title -->
-                <h1 class="text-2xl font-semibold dark:text-white" th:text="${comic.getTitle()}">Title</h1>
+                <h1 class="text-2xl font-semibold dark:text-white" id="info-comic" th:data-comic-id="${comic.getId()}" th:text="${comic.getTitle()}">Title</h1>
                 <!-- info -->
                 <div class="flex font-light mt-4">
                     <div class="mx-2 flex items-center">
@@ -72,31 +72,48 @@
                         <div class="">
                             <h3 class="sr-only">Reviews</h3>
                             <div class="flex items-center">
-                                <div class="flex items-center flex-row-reverse cursor-pointer rating">
+                                <div class="flex items-center flex-row-reverse cursor-pointer rating"
+                                     th:data-is-login="${isLogin}" th:data-is-rating="${isRating}">
                                     <!-- Active: "text-yellow-500", Default: "text-gray-200" thứ tự các ngôi sao bị đảo ngược -->
-                                    <svg class="text-gray-200 rating-star h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                        <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z" clip-rule="evenodd" />
+                                    <svg data-rate="5" class="text-gray-200 rating-star h-5 w-5" viewBox="0 0 20 20"
+                                         fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd"
+                                              d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
+                                              clip-rule="evenodd"/>
                                     </svg>
-                                    <svg class="text-gray-200 rating-star h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                        <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z" clip-rule="evenodd" />
+                                    <svg data-rate="4" class="text-gray-200 rating-star h-5 w-5" viewBox="0 0 20 20"
+                                         fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd"
+                                              d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
+                                              clip-rule="evenodd"/>
                                     </svg>
-                                    <svg class="text-yellow-500 rating-star h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                        <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z" clip-rule="evenodd" />
+                                    <svg data-rate="3" class="text-yellow-500 rating-star h-5 w-5" viewBox="0 0 20 20"
+                                         fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd"
+                                              d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
+                                              clip-rule="evenodd"/>
                                     </svg>
-                                    <svg class="text-yellow-500 rating-star h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                        <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z" clip-rule="evenodd" />
+                                    <svg data-rate="2" class="text-yellow-500 rating-star h-5 w-5" viewBox="0 0 20 20"
+                                         fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd"
+                                              d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
+                                              clip-rule="evenodd"/>
                                     </svg>
-                                    <svg class="text-yellow-500 rating-star h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                        <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z" clip-rule="evenodd" />
+                                    <svg data-rate="1" class="text-yellow-500 rating-star h-5 w-5" viewBox="0 0 20 20"
+                                         fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd"
+                                              d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
+                                              clip-rule="evenodd"/>
                                     </svg>
                                 </div>
-                                <p class="mx-2">4.5/5 stars</p>
-                                <a
-                                        href="#"
-                                        class="text-sm font-medium text-indigo-600 hover:text-indigo-500"
-                                >
-                                    234 reviews
-                                </a>
+                                <div class="mx-2 flex">
+                                    <p th:text="${comic.getAvgRating()}" id="avgRating">4.5</p>
+                                    <p>/5 stars</p>
+                                </div>
+                                <button
+                                        class="list-user-rating text-sm font-medium text-indigo-600 hover:text-indigo-500"
+                                        th:text="${countRating} + ' reviews'">234 reviews
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -187,7 +204,8 @@
                 </button>
             </div>
             <!-- list chapter -->
-            <div th:if="${comic.getChapters().size()} > 0" class="h-96 overflow-y-auto px-8 py-4 mt-4 bg-gray-50 dark:bg-slate-800 scrollbar-hidden">
+            <div th:if="${comic.getChapters().size()} > 0"
+                 class="h-96 overflow-y-auto px-8 py-4 mt-4 bg-gray-50 dark:bg-slate-800 scrollbar-hidden">
                 <div th:each="chunk, chunkIndex: ${comic.getChunks()}" class="dark:text-slate-400">
                     <div th:id="${chunk.get(0).getId()}" th:class="'tabs' + ${chunkIndex.index > 0 ? ' hidden' : ''}">
                         <div th:each="chapter: ${chunk}">
@@ -195,7 +213,8 @@
                                 <div class="grid grid-cols-4 gap-2 p-2 my-2 rounded shadow hover:scale-105 hover:bg-gray-200 cursor-pointer duration-500 ease-in-out dark:shadow-gray-700 dark:hover:bg-slate-700">
                                     <h1 class="flex items-center text-sm md:text-base col-span-2 md:col-auto"
                                         th:text="${chapter.getTitle()}">Chapter 6</h1>
-                                    <div class="font-thin flex items-center"><i th:text="${chapter.getTimeAgo()}">a few seconds
+                                    <div class="font-thin flex items-center"><i th:text="${chapter.getTimeAgo()}">a few
+                                        seconds
                                         ago</i></div>
                                     <div class="flex items-center gap-2">
                                         <p th:text="${chapter.getView()}">2</p>
@@ -212,6 +231,246 @@
 </section>
 <!-- footer -->
 <footer th:replace="~{fragments/footer :: footer}"></footer>
+<!-- modal rating -->
+<main>
+    <section id="modal-comic-rating" class="hidden justify-center fixed inset-0 z-30 overflow-y-auto">
+        <div id="modal-content-comic-rating"
+             class="z-20 transition translate-y-2.5 opacity-0 duration-300 ease-in-out"
+        >
+            <div class="sm:max-w-lg py-8">
+                <div class="bg-white p-1 rounded">
+                    <div class="flex justify-between items-center p-4 border-b">
+                        <h3 class="text-lg font-semibold">Đánh giá truyện</h3>
+                        <button id="btn-close-modal-comic-rating" class="text-gray-500 hover:text-gray-700">
+                            <i class="fa-light fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="p-4">
+                        <form action="/ratings/comic/add" method="post">
+                            <input type="text" name="comicId" id="comicId" th:value="${comic.getId()}" hidden>
+                            <input type="text" name="rate" id="rate" value="5" hidden>
+                            <textarea
+                                    name="content"
+                                    id="content"
+                                    cols="30"
+                                    rows="5"
+                                    placeholder="Đánh giá..."
+                                    class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-indigo-500"
+                            ></textarea>
+                            <div class="flex justify-center mt-4">
+                                <button
+                                        type="submit"
+                                        class="p-2 w-1/2 bg-indigo-500 text-white rounded hover:bg-indigo-600"
+                                >
+                                    Đánh giá
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- overlay -->
+        <div id="overlay-comic-rating" class="hidden z-10">
+            <div id="overlay-body-comic-rating"
+                 class="fixed inset-0 w-full h-screen bg-gray-500/50 blur-sm transition duration-300 ease-in-out opacity-0"></div>
+        </div>
+    </section>
+</main>
+<!-- modal list user rating -->
+<main>
+    <section id="modal-list-user-rating" class="hidden justify-center fixed inset-0 z-30 overflow-hidden">
+        <div id="modal-content-list-user-rating"
+             class="z-20 transition translate-y-2.5 opacity-0 duration-300 ease-in-out"
+        >
+            <div class="sm:max-w-lg py-8">
+                <div class="bg-white p-1 rounded">
+                    <div class="flex justify-between items-center p-4 border-b gap-4">
+                        <h3 class="text-lg font-semibold">Danh sách đánh giá</h3>
+                        <button id="btn-close-modal-list-user-rating" class="text-gray-500 hover:text-gray-700">
+                            <i class="fa-light fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex flex-col gap-2 items-center" id="list-user-rating">
+                            <div class="flex items-center gap-4">
+                                <img
+                                        src="https://st.nettruyenus.com/data/comics/97/nguoi-thua-ke.jpg"
+                                        alt="avatar"
+                                        class="h-10 w-10 rounded-full object-cover"
+                                />
+                                <div class="">
+                                    <div class="flex gap-2">
+                                        <p class="font-medium">Nguyen Van Bao</p>
+                                        <p>4/5</p>
+                                        <svg class="text-yellow-500 h-5 w-5" viewBox="0 0 20 20"
+                                             fill="currentColor" aria-hidden="true">
+                                            <path fill-rule="evenodd"
+                                                  d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
+                                                  clip-rule="evenodd"/>
+                                        </svg>
+                                    </div>
+                                    <small>Content danh gia Content danh gia Content danh gia</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- overlay -->
+        <div id="overlay-list-user-rating" class="hidden z-10">
+            <div id="overlay-body-list-user-rating"
+                 class="fixed inset-0 w-full h-screen bg-gray-500/50 blur-sm transition duration-300 ease-in-out opacity-0"></div>
+        </div>
+    </section>
+</main>
+
+<!-- script modal rating -->
+<script>
+    $(document).ready(function () {
+        // Hàm ẩn hiện modal
+        let isModalOpenComicRating = false
+        // open modal
+        const handleOpenModalComicRating = () => {
+            $('#modal-comic-rating').removeClass('hidden').addClass('flex')
+            $('#overlay-comic-rating').removeClass('hidden')
+            setTimeout(() => {
+                $('#overlay-body-comic-rating').addClass('opacity-100').removeClass('opacity-0')
+                $('#modal-content-comic-rating').addClass('opacity-100 translate-y-0').removeClass('opacity-0 translate-y-2.5')
+            }, 100)
+            history.pushState({modalComicRatingOpen: true}, null, null);
+            isModalOpenComicRating = true
+        }
+        $('.rating-star').click(function () {
+            // check is login
+            if ($('.rating').data('is-login') === false) {
+                window.location.href = '/login'
+            } else {
+                // check is rating
+                if ($('.rating').data('is-rating') === false) {
+                    handleOpenModalComicRating()
+                } else {
+                    alert('Bạn đã đánh giá truyện này')
+                }
+            }
+        })
+        // close modal
+        const handleModalComicRatingClose = () => {
+            $('#modal-content-comic-rating').removeClass('opacity-100 translate-y-0').addClass('opacity-0 translate-y-2.5')
+            $('#overlay-body-comic-rating').removeClass('opacity-100').addClass('opacity-0')
+            setTimeout(() => {
+                $('#modal-comic-rating').removeClass('flex').addClass('hidden')
+                $('#overlay-comic-rating').addClass('hidden')
+            }, 400)
+            isModalOpenComicRating = false
+        }
+        $('#overlay-comic-rating').click(handleModalComicRatingClose)
+        $('#btn-close-modal-comic-rating').click(handleModalComicRatingClose)
+        // close modal when press esc
+        $(document).keydown(function (e) {
+            if (e.key === 'Escape') {
+                handleModalComicRatingClose()
+            }
+        })
+        // close modal when press back
+        window.onpopstate = function (event) {
+            if (event.state === null) {
+                if (isModalOpenComicRating) {
+                    handleModalComicRatingClose()
+                }
+            } else if (event.state.modalProfileEditOpen) {
+                handleModalComicRatingClose()
+            }
+        }
+    })
+</script>
+<!-- script modal list user rating -->
+<script>
+    $(document).ready(function () {
+        // Hàm ẩn hiện modal
+        let isModalOpenListUserRating = false
+        let isCallApi = false
+        // open modal
+        const handleOpenModalListUserRating = () => {
+            $('#modal-list-user-rating').removeClass('hidden').addClass('flex')
+            $('#overlay-list-user-rating').removeClass('hidden')
+            setTimeout(() => {
+                $('#overlay-body-list-user-rating').addClass('opacity-100').removeClass('opacity-0')
+                $('#modal-content-list-user-rating').addClass('opacity-100 translate-y-0').removeClass('opacity-0 translate-y-2.5')
+                setTimeout(() => {
+                    $('#modal-list-user-rating').removeClass('overflow-hidden').addClass('overflow-y-auto')
+                }, 300)
+            }, 100)
+            history.pushState({modalListUserRatingOpen: true}, null, null);
+            isModalOpenListUserRating = true
+
+            // get all user rating from backend
+            isCallApi = true
+            $.post('/api/ratings/comic/all', {comicId: $('#info-comic').data('comic-id')}, function (data, status) {
+                if (status === 'success') {
+                    $('#list-user-rating').empty()
+                    data.forEach((item) => {
+                        $('#list-user-rating').append(`
+                            <div class="flex items-center gap-4">
+                                <img
+                                        src="${item.userProfileAvatarUrl}"
+                                        alt="avatar"
+                                        class="h-10 w-10 rounded-full object-cover"
+                                />
+                                <div class="">
+                                    <div class="flex gap-2">
+                                        <p class="font-medium">${item.userProfileFullname}</p>
+                                        <p>${item.rate}/5</p>
+                                        <svg class="text-yellow-500 h-5 w-5" viewBox="0 0 20 20"
+                                             fill="currentColor" aria-hidden="true">
+                                            <path fill-rule="evenodd"
+                                                  d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
+                                                  clip-rule="evenodd"/>
+                                        </svg>
+                                    </div>
+                                    <small>${item.content}</small>
+                                </div>
+                            </div>
+                            `)
+                    })
+                }
+            })
+        }
+        $('.list-user-rating').click(function () {
+            handleOpenModalListUserRating()
+        })
+        // close modal
+        const handleModalListUserRatingClose = () => {
+            $('#modal-list-user-rating').addClass('overflow-hidden').removeClass('overflow-y-auto')
+            $('#modal-content-list-user-rating').removeClass('opacity-100 translate-y-0').addClass('opacity-0 translate-y-2.5')
+            $('#overlay-body-list-user-rating').removeClass('opacity-100').addClass('opacity-0')
+            setTimeout(() => {
+                $('#modal-list-user-rating').removeClass('flex').addClass('hidden')
+                $('#overlay-list-user-rating').addClass('hidden')
+            }, 400)
+            isModalOpenListUserRating = false
+        }
+        $('#overlay-list-user-rating').click(handleModalListUserRatingClose)
+        $('#btn-close-modal-list-user-rating').click(handleModalListUserRatingClose)
+        // close modal when press esc
+        $(document).keydown(function (e) {
+            if (e.key === 'Escape') {
+                handleModalListUserRatingClose()
+            }
+        })
+        // close modal when press back
+        window.onpopstate = function (event) {
+            if (event.state === null) {
+                if (isModalOpenListUserRating) {
+                    handleModalListUserRatingClose()
+                }
+            } else if (event.state.modalProfileEditOpen) {
+                handleModalListUserRatingClose()
+            }
+        }
+    })
+</script>
 <script>
     // Hàm tabs chuyển đổi giữa các tab
     const tabs = (id) => {
@@ -233,6 +492,21 @@
             $(this).removeClass('act')
         })
     })
+    // set star rating from backend data avgRating
+    const avgRating = $('#avgRating').text()
+    const rating = Math.round(avgRating)
+    $('.rating-star').each(function (index) {
+        if (index > 4 - rating) {
+            $(this).removeClass('text-gray-200')
+            $(this).addClass('text-yellow-500')
+        }
+        // set rate value when click star
+        $(this).click(function () {
+            $('#rate').val($(this).data('rate'))
+        })
+    })
+    // check is login
+    const isLogin = $('#isLogin').val()
 </script>
 </body>
 </html>
