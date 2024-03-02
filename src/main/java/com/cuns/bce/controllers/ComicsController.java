@@ -88,7 +88,26 @@ public class ComicsController {
 //        model.addAttribute("comics", comicService.search(keyword));
         return "pages/comics/list";
     }
+    @GetMapping("/genres/{genreSlug}")
+    public String genres(@PathVariable String genreSlug, Model model,
+                         @RequestParam(value = "page", defaultValue = "0") int page,
+                         @RequestParam(value = "size", defaultValue = "24") int size) {
+        // get comics by genres id
+        Page<ComicsDto> comics = comicService.getComicsByGenresId(getId(genreSlug), page, size);
+        // Get count total page
+        int totalPages = comics.getTotalPages();
+        // Get current page
+        int currentPage = comics.getNumber();
+        // Send list comic
+        model.addAttribute("comics", comics);
+        // Send count total page
+        model.addAttribute("totalPages", totalPages);
+        // Send current page
+        model.addAttribute("currentPage", currentPage);
+        return "pages/comics/genres";
+    }
 
+    // ----------------- Functions -----------------
     public Long getId(String slug) {
         // Tìm vị trí của dấu gạch ngang cuối cùng trong chuỗi
         int lastIndex = slug.lastIndexOf("-");

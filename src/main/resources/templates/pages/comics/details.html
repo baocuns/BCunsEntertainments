@@ -128,7 +128,14 @@
                     <div class="mx-2 flex items-center">
                         <i class="fa-light fa-tags"></i>
                     </div>
-                    <p>Action - Chuyển Sinh - Comedy - Live action - Manhua - Truyện Màu</p>
+                    <div class="flex">
+                        <div th:each="category, this : ${comic.getCategoriesComics()}" class="flex">
+                            <a th:href="'/comics/genres/' + ${category.getCategory().getSlug()}  + '-' + ${category.getCategory().getId()}" class="font-medium text-indigo-600 hover:text-indigo-500">
+                                <p th:text="${category.getCategory().getTitle()}">Live action</p>
+                            </a>
+                            <p th:if="${this.index} != ${comic.getCategoriesComics().size() - 1}" class="mx-2">-</p>
+                        </div>
+                    </div>
                 </div>
                 <div class="flex font-light">
                     <div class="mx-2 flex items-start">
