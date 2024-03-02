@@ -42,20 +42,7 @@
                 <div class="group relative">
                     <!-- rating -->
                     <a href="#" class="flex items-center absolute px-1 bg-black/50 top-[10%] right-0 z-10 rounded-l">
-                        <!--                        <p-->
-                        <!--                                class={classs(-->
-                        <!--                        'font-medium mx-1',-->
-                        <!--                        rate >= 5 && 'text-amber-500 text-5xl',-->
-                        <!--                        rate < 5 && rate >= 4 && 'text-rose-500 text-4xl',-->
-                        <!--                        rate < 4 && rate >= 3 && 'text-green-500 text-2xl',-->
-                        <!--                        rate < 3 && rate >= 2 && 'text-teal-500 text-xl',-->
-                        <!--                        rate < 2 && rate >= 1 && 'text-sky-500 text-lg',-->
-                        <!--                        rate < 1 && 'text-white text-base'-->
-                        <!--                        )}-->
-                        <!--                        >-->
-                        <!--                        {rate}-->
-                        <!--                        </p>-->
-                        <p class="font-medium mx-1 text-amber-500 text-5xl">
+                        <p class="font-medium mx-1 rate" th:text="${item.getAvgRating()}">
                             5
                         </p>
                         <div class="text-amber-300 mx-1">
@@ -140,5 +127,26 @@
 </section>
 <!-- footer -->
 <footer th:replace="~{fragments/footer :: footer}"></footer>
+<script>
+    // set all class text rate for rate
+    $(document).ready(function () {
+        $('.rate').each(function () {
+            const value = $(this).text();
+            if (value >= 5) {
+                $(this).addClass('text-amber-500 text-5xl');
+            } else if (value < 5 && value >= 4) {
+                $(this).addClass('text-rose-500 text-4xl');
+            } else if (value < 4 && value >= 3) {
+                $(this).addClass('text-green-500 text-2xl');
+            } else if (value < 3 && value >= 2) {
+                $(this).addClass('text-teal-500 text-xl');
+            } else if (value < 2 && value >= 1) {
+                $(this).addClass('text-sky-500 text-lg');
+            } else if (value < 1) {
+                $(this).addClass('text-white text-base');
+            }
+        });
+    })
+</script>
 </body>
 </html>

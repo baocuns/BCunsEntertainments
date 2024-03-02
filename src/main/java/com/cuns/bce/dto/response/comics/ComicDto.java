@@ -1,15 +1,13 @@
 package com.cuns.bce.dto.response.comics;
 
 import com.cuns.bce.entities.Chapter;
-import com.cuns.bce.entities.Rating;
+import com.cuns.bce.entities.RatingsComic;
+import com.cuns.bce.entities.User;
 import com.cuns.bce.func.Funcs;
-import com.github.slugify.Slugify;
 import lombok.*;
-import org.ocpsoft.prettytime.PrettyTime;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -32,6 +30,7 @@ public class ComicDto implements Serializable {
     Long countChapter;
     String slug;
     Set<Chapter> chapters;
+    Set<RatingsComic> ratingsComics;
 
     public String getUpdateTimeAgo() {
         return Funcs.getTimeAgo(updatedAt);
@@ -62,5 +61,12 @@ public class ComicDto implements Serializable {
     }
     public List<List<Chapter>> getChunks() {
         return Funcs.chunkChapters(chapters, 50);
+    }
+    // avg rating of comic
+    public Double getAvgRating() {
+        if (ratingsComics == null || ratingsComics.isEmpty()) {
+            return 0.0;
+        }
+        return ratingsComics.stream().mapToDouble(RatingsComic::getRate).average().orElse(0.0);
     }
 }

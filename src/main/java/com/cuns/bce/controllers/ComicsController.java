@@ -5,6 +5,7 @@ import com.cuns.bce.dto.response.comics.ComicsDto;
 import com.cuns.bce.entities.Chapter;
 import com.cuns.bce.services.impl.ChapterService;
 import com.cuns.bce.services.impl.ComicService;
+import com.cuns.bce.services.impl.RatingsComicService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@ import java.security.Principal;
 public class ComicsController {
     final private ComicService comicService;
     final private ChapterService chapterService;
+    final private RatingsComicService ratingsComicService;
     @GetMapping("")
     public String comics(@RequestParam(value = "page", defaultValue = "0") int page,
                          @RequestParam(value = "size", defaultValue = "24") int size,
@@ -50,6 +52,14 @@ public class ComicsController {
         } else {
             model.addAttribute("isLiked", false);
         }
+        // is login
+        model.addAttribute("isLogin", principal != null);
+        // check user is rating this comic
+        if (principal != null) {
+            model.addAttribute("isRating", ratingsComicService.isRating(principal, comicDto.getId()));
+        }
+        // send count rating
+        model.addAttribute("countRating", ratingsComicService.getCountRating(comicDto.getId()));
 
         return "pages/comics/details";
     }

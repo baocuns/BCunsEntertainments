@@ -14,6 +14,7 @@ public interface IComicService {
     Page<ComicsDto> findAllByPage(int page, int size);
     Page<Comic> findByUid(User uid, int page, int size);
     ComicDto findById(Long id);
+    Comic findById(Long id, boolean isComic);
     // increase views by one
     void increaseViews(Comic comic);
     // like save uid type {"1": "abc"} or {"1": "abc", "2": "xyz"}

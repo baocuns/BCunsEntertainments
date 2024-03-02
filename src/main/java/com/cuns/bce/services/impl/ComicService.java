@@ -67,6 +67,12 @@ public class ComicService implements IComicService {
     }
 
     @Override
+    public Comic findById(Long id, boolean isComic) {
+        Optional<Comic> comic = comicRepository.findById(id);
+        return comic.get();
+    }
+
+    @Override
     public void increaseViews(Comic comic) {
         comic.setView(comic.getView() + 1);
         comicRepository.save(comic);
