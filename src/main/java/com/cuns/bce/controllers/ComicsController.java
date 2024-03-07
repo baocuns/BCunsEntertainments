@@ -5,6 +5,7 @@ import com.cuns.bce.dto.response.comics.ComicsDto;
 import com.cuns.bce.entities.Chapter;
 import com.cuns.bce.services.impl.ChapterService;
 import com.cuns.bce.services.impl.ComicService;
+import com.cuns.bce.services.impl.LikesComicService;
 import com.cuns.bce.services.impl.RatingsComicService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,8 @@ public class ComicsController {
     final private ComicService comicService;
     final private ChapterService chapterService;
     final private RatingsComicService ratingsComicService;
+    final private LikesComicService likesComicService;
+
     @GetMapping("")
     public String comics(@RequestParam(value = "page", defaultValue = "0") int page,
                          @RequestParam(value = "size", defaultValue = "24") int size,
@@ -47,8 +50,9 @@ public class ComicsController {
         model.addAttribute("comic", comicDto);
 
         // send boolean isLiked
-        if (principal != null && comicDto.getLike() != null) {
-            model.addAttribute("isLiked", comicDto.getLike().containsValue(principal.getName()));
+        if (principal != null) {
+//            model.addAttribute("isLiked", comicDto.getLike().containsValue(principal.getName()));
+            model.addAttribute("isLiked", likesComicService.isLiking(principal, comicDto.getId()));
         } else {
             model.addAttribute("isLiked", false);
         }
@@ -79,7 +83,7 @@ public class ComicsController {
         // check principal
         if (principal != null) {
             log.info("name: " + principal.getName());
-            comicService.likes(principal.getName(), getId(titleSlug));
+            likesComicService.addLikeAndUnlike(principal, getId(titleSlug));
         }
         return "redirect:/comics/" + titleSlug;
     }

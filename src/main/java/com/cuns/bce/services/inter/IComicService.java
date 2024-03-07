@@ -17,8 +17,6 @@ public interface IComicService {
     Comic findById(Long id, boolean isComic);
     // increase views by one
     void increaseViews(Comic comic);
-    // like save uid type {"1": "abc"} or {"1": "abc", "2": "xyz"}
-    void likes(String username, Long comicId);
     // search by title
     List<ComicsDto> search(String title);
     // get genres by comic id
