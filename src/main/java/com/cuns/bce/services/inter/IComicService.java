@@ -1,5 +1,6 @@
 package com.cuns.bce.services.inter;
 
+import com.cuns.bce.dto.response.api.RAComicSearchDto;
 import com.cuns.bce.dto.response.comics.ComicDto;
 import com.cuns.bce.dto.response.comics.ComicsDto;
 import com.cuns.bce.entities.Comic;
@@ -18,7 +19,7 @@ public interface IComicService {
     // increase views by one
     void increaseViews(Comic comic);
     // search by title
-    List<ComicsDto> search(String title);
+    List<RAComicSearchDto> search(String title);
     // get genres by comic id
     Page<ComicsDto> getComicsByGenresId(Long genresId, int page, int size);
 }

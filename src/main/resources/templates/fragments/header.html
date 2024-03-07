@@ -226,14 +226,15 @@
                             listSearch.addClass('border-t')
                             data.forEach(comic => {
                                 listSearch.append('<li class="hover:bg-gray-200" role="option"> ' +
-                                    `<a href="/comics/${comic.titleSlug}" class="grid grid-cols-3 items-center justify-between p-4 gap-2"> ` +
-                                    '<div class="col-span-2"> ' +
+                                    `<a href="/comics/${comic.titleSlug}" class="grid grid-cols-5 items-center justify-between p-4 gap-2"> ` +
+                                    '<div class="col-span-3"> ' +
                                     `<span class="font-semibold text-slate-900 line-clamp-2">${comic.title}</span> ` +
                                     '</div> ' +
-                                    '<div class="col-span-1 flex gap-2 items-center justify-between"> ' +
+                                    '<div class="col-span-2 flex gap-2 items-center justify-between"> ' +
                                     '<div class="flex items-center gap-2"><span class="text-slate-600"><i class="fa-light fa-file-image"></i></span> ' +
                                     `<span class="text-slate-600">${comic.countChapter}</span> </div>` +
                                     `<span class="text-right text-slate-600">${comic.timeAgo}</span> ` +
+                                    `<span><i class="fa-light fa-face-grin-hearts"></i> ${comic.view}</span>` +
                                     '</div> ' +
                                     '</a> ' +
                                     '</li>');

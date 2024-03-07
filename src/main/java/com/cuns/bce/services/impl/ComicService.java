@@ -1,5 +1,6 @@
 package com.cuns.bce.services.impl;
 
+import com.cuns.bce.dto.response.api.RAComicSearchDto;
 import com.cuns.bce.dto.response.comics.ComicDto;
 import com.cuns.bce.dto.response.comics.ComicsDto;
 import com.cuns.bce.entities.CategoriesComic;
@@ -82,9 +83,9 @@ public class ComicService implements IComicService {
     }
 
     @Override
-    public List<ComicsDto> search(String title) {
+    public List<RAComicSearchDto> search(String title) {
         List<Comic> comics = comicRepository.findBySlugContainingIgnoreCase(Funcs.getTextSlug(title));
-        return Funcs.mapList(comics);
+        return comics.stream().map(comic -> modelMapper.map(comic, RAComicSearchDto.class)).toList();
     }
 
     @Override

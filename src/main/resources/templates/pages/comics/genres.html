@@ -2,7 +2,7 @@
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head
         th:replace="~{fragments/head :: head(
-        title='Thể Loại | BCuns Entertainment',
+        title='Thể Loại ' + ${category.getTitle()} + ' - BCuns Entertainment',
         description='Đọc truyện tranh online miễn phí tại trang web của BCuns Entertainment. Chúng tôi cung cấp cho bạn hàng ngàn tác phẩm truyện tranh từ các tác giả nổi tiếng nhất và nhiều thế loại như manga, manhua, manhwa. Tìm kiếm truyện tranh yêu thích của bạn dễ dàng với công cụ tìm kiếm tiên tiến của BCuns Entertainment và đọc truyện mọi lúc mọi nơi trên thiết bị di động của bạn. Đăng ký tài khoản để lưu trữ truyện yêu thích của bạn và tham gia vào cộng đồng truyện tranh của BCuns Entertainment. Hãy đến với BCuns Entertainment ngay hôm nay để khám phá thế giới truyện tranh đầy màu sắc và giải trí!',
         keywords='Truyện Tranh, BCuns Entertainment',
         url='https://bcent.online',
@@ -24,9 +24,12 @@
                 <i class="fa-thin fa-list-timeline" style="color: #ff0000;"></i>
                 <a href="#"
                    class="flex items-center hover:text-red-500 dark:hover:text-red-500 text-black dark:text-white">
-                    <h1 class="sm:text-xl font-medium mx-2">Truyện Tranh Nổi Bật</h1>
+                    <h1 class="sm:text-xl font-medium mx-2" th:text="'Thể Loại: ' + ${category.getTitle()}">Truyện Tranh Nổi Bật</h1>
                     <i class="fa-light fa-angles-right fa-lg"></i>
                 </a>
+            </div>
+            <div class="py-2">
+                <p class="font-light" th:text="${category.getDescription()}">Description</p>
             </div>
         </div>
         <!--    list comics -->
@@ -70,9 +73,9 @@
                             </div>
                             <div class="flex items-center">
                                 <i class="fa-light fa-face-grin-hearts"></i>
-                                <p th:if="${item.getLike() != null}" th:text="${item.getLike().size()}"
+                                <p th:if="${item.getLikesComics() != null}" th:text="${item.getLikesComics().size()}"
                                    class="text-sm font-light ml-1">123</p>
-                                <p th:if="${item.getLike() == null}" class="text-sm font-light ml-1">0</p>
+                                <p th:if="${item.getLikesComics() == null}" class="text-sm font-light ml-1">0</p>
                             </div>
                             <div class="flex items-center">
                                 <p th:text="${item.getView()}" class="text-sm font-light mr-1">123</p>
@@ -84,7 +87,7 @@
             </div>
         </div>
         <!--    pagination -->
-        <div class="flex justify-center mt-12">
+        <div th:if="${totalPages > 1}" class="flex justify-center mt-12">
             <div class="flex rounded-md">
                 <div>
                     <a
