@@ -17,12 +17,6 @@
 <header th:replace="~{fragments/header :: header}"></header>
 
 <!-- content -->
-<!--<div th:each="item:${comics}">-->
-<!--    <div th:each="like: ${item.getLike()}">-->
-<!--        <p th:text="${like.getValue()}"></p>-->
-<!--    </div>-->
-<!--    <div th:text="${item.getLike().size()}">-->
-<!--</div>-->
 <section class="mt-20 p-4 sm:px-8">
     <div class="mx-auto max-w-2xl sm:px-2 lg:max-w-7xl lg:px-4">
         <!--    title -->
@@ -77,9 +71,9 @@
                             </div>
                             <div class="flex items-center">
                                 <i class="fa-light fa-face-grin-hearts"></i>
-                                <p th:if="${item.getLike() != null}" th:text="${item.getLike().size()}"
+                                <p th:if="${item.getLikesComics() != null}" th:text="${item.getLikesComics().size()}"
                                    class="text-sm font-light ml-1">123</p>
-                                <p th:if="${item.getLike() == null}" class="text-sm font-light ml-1">0</p>
+                                <p th:if="${item.getLikesComics() == null}" class="text-sm font-light ml-1">0</p>
                             </div>
                             <div class="flex items-center">
                                 <p th:text="${item.getView()}" class="text-sm font-light mr-1">123</p>

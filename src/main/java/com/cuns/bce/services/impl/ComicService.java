@@ -82,40 +82,6 @@ public class ComicService implements IComicService {
     }
 
     @Override
-    public void likes(String username, Long comicId) {
-        // get comic by id
-        Optional<Comic> comic = comicRepository.findById(comicId);
-        // get user by username
-        Optional<User> user = userService.findByUsername(username);
-        // check comic and user
-        if (comic.isPresent() && user.isPresent()) {
-            // get comic
-            Comic comic1 = comic.get();
-            // get user
-            User user1 = user.get();
-            // get likes
-            Map<String, Object> likes = comic1.getLike();
-            // check likes
-            if (likes == null) {
-                // create new likes
-                likes = new HashMap<>();
-            }
-            // check likes contains key user id
-            if (likes.containsValue(user1.getUsername())) {
-                // remove key user id
-                likes.remove(String.valueOf(user1.getId()));
-            } else {
-                // add key user id
-                likes.put(String.valueOf(user1.getId()), user1.getUsername());
-            }
-            // set likes
-            comic1.setLike(likes);
-            // save comic
-            comicRepository.save(comic1);
-        }
-    }
-
-    @Override
     public List<ComicsDto> search(String title) {
         List<Comic> comics = comicRepository.findBySlugContainingIgnoreCase(Funcs.getTextSlug(title));
         return Funcs.mapList(comics);

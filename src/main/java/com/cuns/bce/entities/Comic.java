@@ -35,10 +35,6 @@ public class Comic {
     @Column(name = "thumbnails", length = Integer.MAX_VALUE)
     private String thumbnails;
 
-    @Column(name = "\"like\"")
-    @JdbcTypeCode(SqlTypes.JSON)
-    private Map<String, Object> like;
-
     @Column(name = "view")
     private Long view;
 
@@ -78,4 +74,7 @@ public class Comic {
 
     @OneToMany(mappedBy = "comic")
     private Set<RatingsComic> ratingsComics = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "comic")
+    private Set<LikesComic> likesComics = new LinkedHashSet<>();
 }

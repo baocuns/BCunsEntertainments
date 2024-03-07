@@ -54,8 +54,8 @@
                         <div class="mx-2 flex items-center">
                             <i class="fa-light fa-face-grin-hearts"></i>
                         </div>
-                        <p th:if="${comic.getLike() != null}" th:text="${comic.getLike().size()}">like</p>
-                        <p th:unless="${comic.getLike() != null}">0</p>
+                        <p th:if="${comic.getLikesComics() != null}" th:text="${comic.getLikesComics().size()}">like</p>
+                        <p th:unless="${comic.getLikesComics() != null}">0</p>
                     </div>
                     <div class="flex font-light mr-4">
                         <div class="mx-2 flex items-center">

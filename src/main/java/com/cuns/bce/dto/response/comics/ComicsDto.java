@@ -1,5 +1,6 @@
 package com.cuns.bce.dto.response.comics;
 
+import com.cuns.bce.entities.LikesComic;
 import com.cuns.bce.entities.RatingsComic;
 import com.cuns.bce.func.Funcs;
 import lombok.*;
@@ -20,12 +21,12 @@ public class ComicsDto implements Serializable {
     Long id;
     String title;
     String thumbnails;
-    Map<String, Object> like;
     Long view;
     Long countChapter;
     String slug;
     OffsetDateTime updatedAt;
     Set<RatingsComic> ratingsComics;
+    Set<LikesComic> likesComics;
 
     public String getTimeAgo() {
         return Funcs.getTimeAgo(updatedAt);

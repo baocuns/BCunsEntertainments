@@ -1,9 +1,6 @@
 package com.cuns.bce.dto.response.comics;
 
-import com.cuns.bce.entities.CategoriesComic;
-import com.cuns.bce.entities.Chapter;
-import com.cuns.bce.entities.RatingsComic;
-import com.cuns.bce.entities.User;
+import com.cuns.bce.entities.*;
 import com.cuns.bce.func.Funcs;
 import lombok.*;
 
@@ -23,7 +20,6 @@ public class ComicDto implements Serializable {
     String title;
     String description;
     String thumbnails;
-    Map<String, Object> like;
     Long view;
     String author;
     OffsetDateTime createdAt;
@@ -33,6 +29,7 @@ public class ComicDto implements Serializable {
     Set<Chapter> chapters;
     Set<RatingsComic> ratingsComics;
     Set<CategoriesComic> categoriesComics;
+    Set<LikesComic> likesComics;
 
     public String getUpdateTimeAgo() {
         return Funcs.getTimeAgo(updatedAt);
