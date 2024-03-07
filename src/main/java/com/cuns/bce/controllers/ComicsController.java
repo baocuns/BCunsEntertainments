@@ -3,10 +3,7 @@ package com.cuns.bce.controllers;
 import com.cuns.bce.dto.response.comics.ComicDto;
 import com.cuns.bce.dto.response.comics.ComicsDto;
 import com.cuns.bce.entities.Chapter;
-import com.cuns.bce.services.impl.ChapterService;
-import com.cuns.bce.services.impl.ComicService;
-import com.cuns.bce.services.impl.LikesComicService;
-import com.cuns.bce.services.impl.RatingsComicService;
+import com.cuns.bce.services.impl.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -25,6 +22,7 @@ public class ComicsController {
     final private ChapterService chapterService;
     final private RatingsComicService ratingsComicService;
     final private LikesComicService likesComicService;
+    final private CategoryService categoryService;
 
     @GetMapping("")
     public String comics(@RequestParam(value = "page", defaultValue = "0") int page,
@@ -102,6 +100,8 @@ public class ComicsController {
         int totalPages = comics.getTotalPages();
         // Get current page
         int currentPage = comics.getNumber();
+        // Send category
+        model.addAttribute("category", categoryService.getCategoryById(getId(genreSlug)));
         // Send list comic
         model.addAttribute("comics", comics);
         // Send count total page
