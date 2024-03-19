@@ -49,6 +49,9 @@ public class Chapter {
     @OneToMany(mappedBy = "chapter")
     private Set<Photo> photos = new LinkedHashSet<>();
 
+    @OneToMany(mappedBy = "chapter")
+    private Set<CommentsComic> commentsComics = new LinkedHashSet<>();
+
     public String getTimeAgo() {
         return Funcs.getTimeAgo(createdAt);
     }

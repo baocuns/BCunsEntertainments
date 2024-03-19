@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body th:fragment="comments">
+<div id="comment-parent" class="my-4 px-4 hidden">
+    <h1 class="font-medium border-b border-red-500 mb-2 dark:text-white dark:border-green-500">Comments</h1>
+    <button id="btn-comment-parent"
+            type="button"
+            class="py-4 px-6 w-full rounded border border-red-500 hover:bg-red-50 dark:bg-slate-800 dark:hover:bg-slate-500 dark:border-green-500 dark:text-white"
+    >
+        Hãy để lại bình luận
+    </button>
+</div>
+<div id="box-comment" class="my-4 px-4">
+    <h1 class="font-medium border-b border-red-500 mb-2 dark:text-white dark:border-green-500">Comments</h1>
+    <div class="relative dark:text-black">
+        <div id="editor">
+            <p>Đạo hữu xin dừng bước!</p>
+            <img src="http://3.bp.blogspot.com/-W2rCQRYm1g0/TxaJn8eZW_I/AAAAAAAAFWY/R6YdIWiuobU/Upanhso.tk-11.gif"
+                 alt="sticker">
+        </div>
+        <!-- modal gif -->
+        <div id="modal-sticker"
+             class="absolute hidden top-10 left-1/2 -translate-x-1/2 bg-gray-50 shadow w-2/3 md:max-w-3xl h-96 overflow-y-auto">
+            <div id="list-modal-sticker" class="grid grid-cols-4 md:grid-cols-6 gap-2"></div>
+        </div>
+        <button id="btn-comment-send"
+                type="button"
+                class="inline-flex justify-center mt-2 py-4 px-6 w-full rounded border border-red-500 hover:bg-red-50 dark:bg-slate-800 dark:hover:bg-slate-500 dark:border-green-500 dark:text-white"
+        >
+            <svg id="send-comment-load" class="hidden animate-spin -ml-1 mr-3 h-5 w-5 text-red-500 dark:text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            Comment
+        </button>
+    </div>
+</div>
+<!-- Content Chapter Details: list comment -->
+<section class="p-2 md:p-4">
+    <h1 class="font-medium border-b border-red-500 mb-2 dark:text-white dark:border-green-500">List Comments</h1>
+    <div class="max-w-full p-2 md:p-4 max-h-[500px] overflow-y-auto scrollbar-hidden shadow bg-slate-200 dark:bg-slate-800 dark:shadow-slate-700">
+        <div id="list-comments"></div>
+        <div id="comment-load-more" class="">
+            <button id="btn-comment-load-more"
+                    type="button"
+                    class="inline-flex justify-center py-4 px-6 w-full rounded border border-red-500 hover:bg-red-50 dark:bg-slate-800 dark:hover:bg-slate-500 dark:border-green-500 dark:text-white"
+            >
+                <svg id="comment-load" class="hidden animate-spin -ml-1 mr-3 h-5 w-5 text-red-500 dark:text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Tải thêm bình luận
+            </button>
+        </div>
+    </div>
+</section>
+<!-- Include the Quill library -->
+<script th:src="@{/js/sticker.js}"></script>
+<script th:src="@{/js/comments.js}"></script>
+</body>
+</html>
