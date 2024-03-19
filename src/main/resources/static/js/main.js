@@ -41,3 +41,26 @@ toggleSwitchs.forEach(element => {
 });
 
 //---------------------------------------------
+$(document).ready(function () {
+    handleGetProfileIf();
+    // delete virus in local storage after run /logout
+    if (window.location.pathname + window.location.search === '/login?logout') {
+        localStorage.removeItem('virus');
+    }
+});
+
+//--------------------------------------------- Functions
+const handleGetProfileIf = () => {
+    // check if profile is exist
+    let virus = JSON.parse(localStorage.getItem('virus'));
+    if (virus) return;
+    $.post('/api/profiles/if').done(function (response, textStatus, jqXHR) {
+        // Xử lý kết quả thành công
+        if (response.id) {
+            localStorage.setItem('virus', JSON.stringify(response));
+        }
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        // Xử lý lỗi
+        localStorage.removeItem('virus');
+    })
+}

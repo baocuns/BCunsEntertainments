@@ -52,4 +52,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     private Set<LikesComic> likesComics = new LinkedHashSet<>();
 
+    @OneToMany(mappedBy = "user")
+    private Set<CommentsComic> commentsComics = new LinkedHashSet<>();
+
 }

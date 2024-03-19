@@ -8,6 +8,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -30,11 +31,22 @@ public class SecurityConfiguration implements WebMvcConfigurer {
             // api
             new AntPathRequestMatcher("/api/comics/search"),
             new AntPathRequestMatcher("/api/ratings/comic/all"),
+            new AntPathRequestMatcher("/api/comments/comic/get"),
     };
     public static final AntPathRequestMatcher[] ENDPOINTS_WHITELIST_AUTHENTICATED = {
             new AntPathRequestMatcher("/comics/**/chapter/**"),
             new AntPathRequestMatcher("/comics/likes"),
             new AntPathRequestMatcher("/profiles/**/follows"),
+            new AntPathRequestMatcher("/profiles/**/followed"),
+            new AntPathRequestMatcher("/api/comments/comic/new"),
+            new AntPathRequestMatcher("/api/comments/comic/reply"),
+            new AntPathRequestMatcher("/api/comments/comic/like"),
+            new AntPathRequestMatcher("/api/comments/comic/dislike"),
+            new AntPathRequestMatcher("/api/comments/comic/unlike"),
+            new AntPathRequestMatcher("/api/comments/comic/undislike"),
+            new AntPathRequestMatcher("/api/comments/comic/reports"),
+            new AntPathRequestMatcher("/api/comments/comic/deleted"),
+            new AntPathRequestMatcher("/api/profiles/if"),
     };
     public static final String LOGIN_URL = "/login";
     public static final String LOGOUT_URL = "/logout";
@@ -56,11 +68,12 @@ public class SecurityConfiguration implements WebMvcConfigurer {
                         .failureUrl(LOGIN_FAIL_URL)
                         .usernameParameter(USERNAME)
                         .passwordParameter(PASSWORD)
-                        .defaultSuccessUrl(DEFAULT_SUCCESS_URL))
+                        .successHandler(new CustomAuthenticationSuccessHandler())) // add cookie and redirect to previous page
+                        //.defaultSuccessUrl(DEFAULT_SUCCESS_URL))
                 .logout(logout -> logout
                         .logoutUrl(LOGOUT_URL)
                         .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID")
+                        .deleteCookies("JSESSIONID", "virus")
                         .logoutSuccessUrl(LOGIN_URL + "?logout"))
                 .rememberMe(rememberMe -> rememberMe
                         .key("bcunsentertainment")

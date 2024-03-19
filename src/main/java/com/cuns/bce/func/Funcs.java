@@ -7,17 +7,14 @@ import org.modelmapper.ModelMapper;
 import org.ocpsoft.prettytime.PrettyTime;
 
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Funcs {
     private static final ModelMapper modelMapper = new ModelMapper();
     public static String getTimeAgo(OffsetDateTime dateTime) {
-        return new PrettyTime().format(Date.from(dateTime.toInstant()));
+        return new PrettyTime(new Locale("vi")).format(Date.from(dateTime.toInstant()));
     }
     public static String getTextSlug(String text) {
         String slug = text.replaceAll("đ", "d");

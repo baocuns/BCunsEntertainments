@@ -77,4 +77,7 @@ public class Comic {
 
     @OneToMany(mappedBy = "comic")
     private Set<LikesComic> likesComics = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "comic")
+    private Set<CommentsComic> commentsComics = new LinkedHashSet<>();
 }
