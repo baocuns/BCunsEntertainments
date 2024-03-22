@@ -1,5 +1,6 @@
 package com.cuns.bce.func;
 
+import com.cuns.bce.dto.response.comics.ChapterDto;
 import com.cuns.bce.dto.response.comics.ComicsDto;
 import com.cuns.bce.entities.Chapter;
 import com.cuns.bce.entities.Comic;
@@ -33,6 +34,17 @@ public class Funcs {
 
         return 0.0; // Trả về 0.0 nếu không tìm thấy số
     }
+    public static Integer extractNumberInt(String text) {
+        Pattern pattern = Pattern.compile("\\d+"); // Tìm các chữ số trong chuỗi
+        Matcher matcher = pattern.matcher(text);
+
+        if (matcher.find()) {
+            String numberStr = matcher.group();
+            return Integer.parseInt(numberStr);
+        } else {
+            return -1;
+        }
+    }
 
     public static int getChapterIndex(Set<Chapter> chapters, Chapter chapter) {
         int index = 0;
@@ -45,12 +57,6 @@ public class Funcs {
         return 0;
     }
 
-    public static List<ComicsDto> mapList(List<Comic> comics) {
-        List<ComicsDto> comicsDto = new ArrayList<>();
-        comics.forEach(comic -> comicsDto.add(modelMapper.map(comic, ComicsDto.class)));
-        return comicsDto;
-    }
-
     public static List<List<Chapter>> chunkChapters(Set<Chapter> chapters, int size) {
         List<List<Chapter>> chunks = new ArrayList<>();
 
@@ -58,6 +64,17 @@ public class Funcs {
             int endIndex = Math.min(i + size, chapters.size());
             List<Chapter> chunk = chapters.stream().skip(i).limit(endIndex - i).toList();
             chunks.add(chunk);
+        }
+        return chunks;
+    }
+    public static List<List<ChapterDto>> chunkListChapters(List<Chapter> chapters, int size) {
+        List<List<ChapterDto>> chunks = new ArrayList<>();
+
+        for (int i = 0; i < chapters.size(); i += size) {
+            int endIndex = Math.min(i + size, chapters.size());
+            List<Chapter> chunk = chapters.stream().skip(i).limit(endIndex - i).toList(); // list: 50
+            List<ChapterDto> chunkDto = chunk.stream().map(c -> modelMapper.map(c, ChapterDto.class)).toList();
+            chunks.add(chunkDto);
         }
         return chunks;
     }

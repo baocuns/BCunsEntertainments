@@ -160,7 +160,9 @@
         } else {
             isButtonTop = false;
         }
-        updateButtonVisibility();
+        if (!window.location.href.match(/\/chapter\/(\d+)/)??[1]) {
+            updateButtonVisibility();
+        }
     }
 
     function handleBackToTop() {
@@ -204,6 +206,7 @@
     }
 </script>
 <script th:src="@{/js/owl.carousel.min.js}"></script>
+<script th:src="@{/js/search.js}"></script>
 <script th:src="@{/js/main.js}"></script>
 </body>
 </html>

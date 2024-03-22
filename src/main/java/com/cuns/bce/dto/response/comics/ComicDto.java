@@ -40,6 +40,7 @@ public class ComicDto implements Serializable {
     public String getTileSlug() {
         return slug + "-" + id;
     }
+    // use for get next and prev chapter
     public String getSlugChapterNext(Chapter chapter) {
         // get chapter prev by index of chapters
         int index = Funcs.getChapterIndex(chapters, chapter);
@@ -57,9 +58,6 @@ public class ComicDto implements Serializable {
         }
         Chapter nextChapter = (Chapter) chapters.toArray()[index + 1];
         return "/comics/" + slug + "-" + id + "/chapter/" + nextChapter.getId();
-    }
-    public List<List<Chapter>> getChunks() {
-        return Funcs.chunkChapters(chapters, 50);
     }
     // avg rating of comic
     public Double getAvgRating() {
