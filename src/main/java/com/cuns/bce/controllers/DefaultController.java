@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.security.Principal;
 import java.util.Optional;
 
 @Controller
@@ -28,7 +29,10 @@ public class DefaultController {
         return "index";
     }
     @GetMapping("login")
-    public String showLoginPage(Model model) {
+    public String showLoginPage(Model model, Principal principal) {
+        if (principal != null) {
+            return "redirect:/";
+        }
         UserDto userDto = new UserDto();
         model.addAttribute("user", userDto);
 

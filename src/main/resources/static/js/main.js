@@ -36,13 +36,33 @@ const handleTextToSlug = (text) => {
 
 //--------------------------------------------- Document Ready Function ---------------------------------------------
 $(document).ready(function () {
-    handleScrollHomePage();
-    handleDarkLightMode();
-    handleGetProfileIf();
+    // field
+    // events
     // delete virus in local storage after run /logout
     if (window.location.pathname + window.location.search === '/login?logout') {
         localStorage.removeItem('virus');
     }
+    // btn on open menu
+    $(document).on('click', '#btn-account', function () {
+        $('#account-menu').toggleClass('hidden');
+    });
+    $(document).on('click', '#btn-account-mobile', function () {
+        $('#account-menu-mobile').toggleClass('hidden');
+    });
+    // btn on close menu when click outside
+    $(document).on('click', function (e) {
+        if (!$(e.target).closest('#btn-account').length) {
+            $('#account-menu').addClass('hidden');
+        }
+        if (!$(e.target).closest('#btn-account-mobile').length) {
+            $('#account-menu-mobile').addClass('hidden');
+        }
+    });
+    // function
+    handleScrollHomePage();
+    handleDarkLightMode();
+    handleGetProfileIf();
+    handleAddAccountMenu();
 });
 
 //--------------------------------------------- Functions
@@ -146,9 +166,41 @@ const handleGetProfileIf = () => {
         // Xử lý kết quả thành công
         if (response.id) {
             localStorage.setItem('virus', JSON.stringify(response));
+            handleAddAccountMenu();
         }
     }).fail(function (jqXHR, textStatus, errorThrown) {
         // Xử lý lỗi
         localStorage.removeItem('virus');
     })
+}
+// add account menu
+const handleAddAccountMenu = () => {
+    let virus = JSON.parse(localStorage.getItem('virus'));
+    let accountMenu = $('#account-menu');
+    let accountMenuMobile = $('#account-menu-mobile');
+    let html = '';
+
+    accountMenu.empty();
+    if (!virus) {
+        html = `
+            <a href="/login" 
+            class="block px-4 py-2 text-sm text-gray-700 dark:text-white hover:bg-gray-100 hover:text-red-500 dark:hover:bg-slate-700 dark:hover:text-green-500">Đăng Nhập</a>
+            <a href="/register" 
+            class="block px-4 py-2 text-sm text-gray-700 dark:text-white hover:bg-gray-100 hover:text-red-500 dark:hover:bg-slate-700 dark:hover:text-green-500">Đăng Ký</a>
+        `;
+        accountMenu.append(html);
+        accountMenuMobile.append(html);
+        return;
+    }
+    html = `
+        <a href="/profiles/${virus.bcId}" 
+        class="block px-4 py-2 text-sm text-gray-700 dark:text-white hover:bg-gray-100 hover:text-red-500 dark:hover:bg-slate-700 dark:hover:text-green-500">
+            <span class="text-sm">Hi </span>
+            <span class="text-sm italic font-bold">${virus.fullname}</span>
+        </a>
+        <a href="/logout" 
+        class="block px-4 py-2 text-sm text-gray-700 dark:text-white hover:bg-gray-100 hover:text-red-500 dark:hover:bg-slate-700 dark:hover:text-green-500">Logout</a>
+    `;
+    accountMenu.append(html);
+    accountMenuMobile.append(html);
 }
