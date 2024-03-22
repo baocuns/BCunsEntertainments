@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!-- logo -->
+<div th:fragment="logo">
+    <a href="/">
+        <span class="sr-only text-2xl">Your Company</span>
+        <img class="h-8 w-8 sm:w-10 sm:h-10 max-w-none rounded" th:src="@{/images/BC.png}"
+             alt="BCuns Entertainment | BCENT"/>
+    </a>
+</div>
+<!-- menu -->
+<div th:fragment="headerMenu">
+    <a th:href="@{/comics}">
+        <button class="text-xl font-bold dark:text-white">
+            Comics
+        </button>
+    </a>
+</div>
+<!-- option button -->
+<div th:fragment="headerOptionBtn" class="flex gap-2 dark:text-white">
+    <button id="btn-open-modal-search" class="p-2 hover:bg-gray-100 hover:text-green-500 rounded hidden md:block" aria-label="Search">
+        <i class="fa-light fa-magnifying-glass fa-lg"></i>
+    </button>
+    <button id="theme-switch" class=" p-2 hover:bg-gray-50 hover:text-green-500 rounded hidden md:block" aria-label="Theme Switch">
+        <i id="theme-icon" class="fa-light fa-sun-bright fa-lg"></i>
+    </button>
+    <button class="p-2 hover:bg-gray-50 hover:text-green-500 rounded hidden md:block" aria-label="Account">
+        <i class="fa-light fa-user fa-lg"></i>
+    </button>
+    <button id="btn-mobile-bar" class="p-2 hover:bg-gray-50 hover:text-green-500 rounded md:hidden" aria-label="Option Bar">
+        <i class="fa-light fa-grid-2 fa-lg"></i>
+    </button>
+</div>
+</body>
+</html>

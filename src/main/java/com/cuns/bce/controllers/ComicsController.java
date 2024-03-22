@@ -49,7 +49,6 @@ public class ComicsController {
 
         // send boolean isLiked
         if (principal != null) {
-//            model.addAttribute("isLiked", comicDto.getLike().containsValue(principal.getName()));
             model.addAttribute("isLiked", likesComicService.isLiking(principal, comicDto.getId()));
         } else {
             model.addAttribute("isLiked", false);
@@ -67,10 +66,6 @@ public class ComicsController {
     }
     @GetMapping("/{titleSlug}/chapter/{chapterId}")
     public String chapter(@PathVariable String titleSlug, @PathVariable Long chapterId, Model model) {
-
-        ComicDto comicDto = comicService.findById(getId(titleSlug));
-        model.addAttribute("comic", comicDto);
-
         Chapter chapter = chapterService.findById(chapterId).get();
         model.addAttribute("chapter", chapter);
 

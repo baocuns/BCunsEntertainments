@@ -149,21 +149,11 @@
                 </div>
                 <!-- button -->
                 <div class="flex flex-col sm:flex-row font-normal mt-4 justify-center sm:justify-start">
-                    <div class="m-2" th:if="${comic.getChapters().size()} >= 1">
-                        <a th:if="${comic.getChapters().size()} >= 1"
-                           th:href="${comic.getTileSlug()} + '/chapter/' + ${comic.getChapters()[comic.getChapters().size()-1].getId()}">
-                            <div class="p-2 bg-transparent hover:scale-110 duration-300 ease-in-out rounded text-black dark:text-gray-300 flex items-center border border-green-500">
-                                Đọc Ngay
-                            </div>
-                        </a>
+                    <div id="btn-read-now" class="m-2">
+                        <!-- button read now -->
                     </div>
-                    <div class="m-2" th:if="${comic.getChapters().size()} >= 1">
-                        <a th:if="${comic.getChapters().size()} >= 1"
-                           th:href="${comic.getTileSlug()} + '/chapter/' + ${comic.getChapters()[0].getId()}">
-                            <div class="p-2 bg-transparent hover:scale-110 duration-300 ease-in-out rounded text-black dark:text-gray-300 flex items-center border border-red-500">
-                                Chương Mới Nhất
-                            </div>
-                        </a>
+                    <div id="btn-read-update" class="m-2">
+                        <!-- button read update -->
                     </div>
                     <div class="m-2">
                         <form th:action="@{/comics/likes}" id="wishlist" method="post">
@@ -199,39 +189,23 @@
             <p class="text-xl dark:text-white">Danh Sách Chương</p>
         </div>
         <div class="md:px-4 py-2">
-            <div class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-4 p-2 rounded bg-gray-50 dark:bg-slate-800">
-                <button
-                        th:each="chunk : ${comic.getChunks()}"
-                        th:id="${chunk.get(0).getId()}"
-                        onclick="tabs(this.id)"
-                        class="transition duration-500 ease-in-out hover:scale-125 hover:bg-red-300 text-red-500 font-semibold shadow rounded w-full py-2 dark:hover:bg-green-400 dark:text-white bg-red-200 dark:bg-green-800"
-                >
-                    <p th:text="${chunk.get(0).extractNumber()} + ' : ' + ${chunk.get(chunk.size() - 1).extractNumber()}">
-                        123</p>
-                </button>
+            <div id="btn-taps-list"
+                 class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-4 p-2 rounded bg-gray-50 dark:bg-slate-800">
+                <!-- list taps chapter -->
             </div>
             <!-- list chapter -->
-            <div th:if="${comic.getChapters().size()} > 0"
-                 class="h-96 overflow-y-auto px-8 py-4 mt-4 bg-gray-50 dark:bg-slate-800 scrollbar-hidden">
-                <div th:each="chunk, chunkIndex: ${comic.getChunks()}" class="dark:text-slate-400">
-                    <div th:id="${chunk.get(0).getId()}" th:class="'tabs' + ${chunkIndex.index > 0 ? ' hidden' : ''}">
-                        <div th:each="chapter: ${chunk}">
-                            <a th:href="${comic.getTileSlug()} + '/chapter/' + ${chapter.getId()}">
-                                <div class="grid grid-cols-4 gap-2 p-2 my-2 rounded shadow hover:scale-105 hover:bg-gray-200 cursor-pointer duration-500 ease-in-out dark:shadow-gray-700 dark:hover:bg-slate-700">
-                                    <h1 class="flex items-center text-sm md:text-base col-span-2 md:col-auto"
-                                        th:text="${chapter.getTitle()}">Chapter 6</h1>
-                                    <div class="font-thin flex items-center"><i th:text="${chapter.getTimeAgo()}">a few
-                                        seconds
-                                        ago</i></div>
-                                    <div class="flex items-center gap-2">
-                                        <p th:text="${chapter.getView()}">2</p>
-                                        <i class="fa-sharp fa-light fa-eyes"></i>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+            <div id="chapter-taps-list"
+                 class="max-h-96 overflow-y-auto px-8 py-4 mt-4 bg-gray-50 dark:bg-slate-800 scrollbar-hidden">
+                <!-- list chapter -->
+                <button type="button"
+                        class="inline-flex justify-center py-4 px-6 w-full rounded border border-red-500 hover:bg-red-50 dark:bg-slate-800 dark:hover:bg-slate-500 dark:border-green-500 dark:text-white"
+                >
+                    <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-red-500 dark:text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Đang tải chương...
+                </button>
             </div>
         </div>
     </div>
@@ -336,186 +310,6 @@
 </main>
 
 <!-- script modal rating -->
-<script>
-    $(document).ready(function () {
-        // Hàm ẩn hiện modal
-        let isModalOpenComicRating = false
-        // open modal
-        const handleOpenModalComicRating = () => {
-            $('#modal-comic-rating').removeClass('hidden').addClass('flex')
-            $('#overlay-comic-rating').removeClass('hidden')
-            setTimeout(() => {
-                $('#overlay-body-comic-rating').addClass('opacity-100').removeClass('opacity-0')
-                $('#modal-content-comic-rating').addClass('opacity-100 translate-y-0').removeClass('opacity-0 translate-y-2.5')
-            }, 100)
-            history.pushState({modalComicRatingOpen: true}, null, null);
-            isModalOpenComicRating = true
-        }
-        $('.rating-star').click(function () {
-            // check is login
-            if ($('.rating').data('is-login') === false) {
-                window.location.href = '/login'
-            } else {
-                // check is rating
-                if ($('.rating').data('is-rating') === false) {
-                    handleOpenModalComicRating()
-                } else {
-                    alert('Bạn đã đánh giá truyện này')
-                }
-            }
-        })
-        // close modal
-        const handleModalComicRatingClose = () => {
-            $('#modal-content-comic-rating').removeClass('opacity-100 translate-y-0').addClass('opacity-0 translate-y-2.5')
-            $('#overlay-body-comic-rating').removeClass('opacity-100').addClass('opacity-0')
-            setTimeout(() => {
-                $('#modal-comic-rating').removeClass('flex').addClass('hidden')
-                $('#overlay-comic-rating').addClass('hidden')
-            }, 400)
-            isModalOpenComicRating = false
-        }
-        $('#overlay-comic-rating').click(handleModalComicRatingClose)
-        $('#btn-close-modal-comic-rating').click(handleModalComicRatingClose)
-        // close modal when press esc
-        $(document).keydown(function (e) {
-            if (e.key === 'Escape') {
-                handleModalComicRatingClose()
-            }
-        })
-        // close modal when press back
-        window.onpopstate = function (event) {
-            if (event.state === null) {
-                if (isModalOpenComicRating) {
-                    handleModalComicRatingClose()
-                }
-            } else if (event.state.modalProfileEditOpen) {
-                handleModalComicRatingClose()
-            }
-        }
-    })
-</script>
-<!-- script modal list user rating -->
-<script>
-    $(document).ready(function () {
-        // Hàm ẩn hiện modal
-        let isModalOpenListUserRating = false
-        let isCallApi = false
-        // open modal
-        const handleOpenModalListUserRating = () => {
-            $('#modal-list-user-rating').removeClass('hidden').addClass('flex')
-            $('#overlay-list-user-rating').removeClass('hidden')
-            setTimeout(() => {
-                $('#overlay-body-list-user-rating').addClass('opacity-100').removeClass('opacity-0')
-                $('#modal-content-list-user-rating').addClass('opacity-100 translate-y-0').removeClass('opacity-0 translate-y-2.5')
-                setTimeout(() => {
-                    $('#modal-list-user-rating').removeClass('overflow-hidden').addClass('overflow-y-auto')
-                }, 300)
-            }, 100)
-            history.pushState({modalListUserRatingOpen: true}, null, null);
-            isModalOpenListUserRating = true
-
-            // get all user rating from backend
-            isCallApi = true
-            $.post('/api/ratings/comic/all', {comicId: $('#info-comic').data('comic-id')}, function (data, status) {
-                if (status === 'success') {
-                    $('#list-user-rating').empty()
-                    data.forEach((item) => {
-                        $('#list-user-rating').append(`
-                            <div class="flex items-center gap-4">
-                                <img
-                                        src="${item.userProfileAvatarUrl}"
-                                        alt="avatar"
-                                        class="h-10 w-10 rounded-full object-cover"
-                                />
-                                <div class="">
-                                    <div class="flex gap-2">
-                                        <p class="font-medium">${item.userProfileFullname}</p>
-                                        <p>${item.rate}/5</p>
-                                        <svg class="text-yellow-500 h-5 w-5" viewBox="0 0 20 20"
-                                             fill="currentColor" aria-hidden="true">
-                                            <path fill-rule="evenodd"
-                                                  d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
-                                                  clip-rule="evenodd"/>
-                                        </svg>
-                                    </div>
-                                    <small>${item.content}</small>
-                                </div>
-                            </div>
-                            `)
-                    })
-                }
-            })
-        }
-        $('.list-user-rating').click(function () {
-            handleOpenModalListUserRating()
-        })
-        // close modal
-        const handleModalListUserRatingClose = () => {
-            $('#modal-list-user-rating').addClass('overflow-hidden').removeClass('overflow-y-auto')
-            $('#modal-content-list-user-rating').removeClass('opacity-100 translate-y-0').addClass('opacity-0 translate-y-2.5')
-            $('#overlay-body-list-user-rating').removeClass('opacity-100').addClass('opacity-0')
-            setTimeout(() => {
-                $('#modal-list-user-rating').removeClass('flex').addClass('hidden')
-                $('#overlay-list-user-rating').addClass('hidden')
-            }, 400)
-            isModalOpenListUserRating = false
-        }
-        $('#overlay-list-user-rating').click(handleModalListUserRatingClose)
-        $('#btn-close-modal-list-user-rating').click(handleModalListUserRatingClose)
-        // close modal when press esc
-        $(document).keydown(function (e) {
-            if (e.key === 'Escape') {
-                handleModalListUserRatingClose()
-            }
-        })
-        // close modal when press back
-        window.onpopstate = function (event) {
-            if (event.state === null) {
-                if (isModalOpenListUserRating) {
-                    handleModalListUserRatingClose()
-                }
-            } else if (event.state.modalProfileEditOpen) {
-                handleModalListUserRatingClose()
-            }
-        }
-    })
-</script>
-<script>
-    // Hàm tabs chuyển đổi giữa các tab
-    const tabs = (id) => {
-        const content = $('div[id="' + id + '"]')
-        const tabs = $('div[class="tabs"]')
-        tabs.addClass('hidden')
-        content.removeClass('hidden')
-    }
-    // Ẩn màu sao khi hover
-    $('.rating').hover(function () {
-        $('.rating-star').each(function () {
-            $(this).hasClass('text-yellow-500') ? $(this).addClass('act') : ''
-            $(this).removeClass('text-yellow-500')
-            $(this).addClass('text-gray-200')
-        })
-    }, function () {
-        $('.rating-star').each(function () {
-            $(this).hasClass('act') ? $(this).addClass('text-yellow-500') : ''
-            $(this).removeClass('act')
-        })
-    })
-    // set star rating from backend data avgRating
-    const avgRating = $('#avgRating').text()
-    const rating = Math.round(avgRating)
-    $('.rating-star').each(function (index) {
-        if (index > 4 - rating) {
-            $(this).removeClass('text-gray-200')
-            $(this).addClass('text-yellow-500')
-        }
-        // set rate value when click star
-        $(this).click(function () {
-            $('#rate').val($(this).data('rate'))
-        })
-    })
-    // check is login
-    const isLogin = $('#isLogin').val()
-</script>
+<script th:src="@{/js/comics/details.comics.js}"></script>
 </body>
 </html>

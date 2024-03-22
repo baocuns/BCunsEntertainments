@@ -1,6 +1,7 @@
 package com.cuns.bce.services.impl;
 
 import com.cuns.bce.dto.response.api.RAComicSearchDto;
+import com.cuns.bce.dto.response.comics.ChapterDto;
 import com.cuns.bce.dto.response.comics.ComicDto;
 import com.cuns.bce.dto.response.comics.ComicsDto;
 import com.cuns.bce.entities.CategoriesComic;
@@ -9,6 +10,7 @@ import com.cuns.bce.entities.Comic;
 import com.cuns.bce.entities.User;
 import com.cuns.bce.func.Funcs;
 import com.cuns.bce.repositories.CategoriesComicRepository;
+import com.cuns.bce.repositories.ChapterRepository;
 import com.cuns.bce.repositories.ComicRepository;
 import com.cuns.bce.services.inter.IComicService;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +30,7 @@ public class ComicService implements IComicService {
     final private ComicRepository comicRepository;
     final private UserService userService;
     final private CategoriesComicRepository categoriesComicRepository;
+    final private ChapterRepository chapterRepository;
     private final ModelMapper modelMapper = new ModelMapper();
 
     @Override
@@ -93,6 +96,16 @@ public class ComicService implements IComicService {
         Pageable pageable = PageRequest.of(page, size);
         Page<CategoriesComic> categoriesComics = categoriesComicRepository.findByCategoryId(genresId, pageable);
         return categoriesComics.map(categoriesComic -> modelMapper.map(categoriesComic.getComic(), ComicsDto.class));
+    }
+
+    @Override
+    public List<List<ChapterDto>> getChaptersByComicId(Long comicId, int chunkSize) {
+        List<Chapter> chapters = chapterRepository.findByComicId(comicId);
+        // sort chapters by title asc (a -> z)
+        chapters.sort(Comparator.comparing(chapter -> Funcs.extractNumber(chapter.getTitle())));
+        // reverse chapters by title asc (z -> a)
+        Collections.reverse(chapters);
+        return Funcs.chunkListChapters(chapters, chunkSize);
     }
 
 }

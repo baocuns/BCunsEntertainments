@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Modal</title>
+</head>
+<body>
+<!-- modal search -->
+<main th:fragment="search" class="flex justify-center w-full">
+    <section id="modal-search" class="hidden justify-center fixed inset-0 z-30">
+        <div id="modal-content-search"
+             class="modal-content-search bg-white rounded w-11/12 md:w-[550px] min-h-64 absolute top-[20%] z-20">
+            <div class="relative shadow-sm">
+                <input
+                        id="search-input"
+                        class="block w-full appearance-none bg-transparent py-4 pl-4 pr-12 text-base text-slate-900 placeholder:text-slate-600 focus:outline-none sm:text-sm sm:leading-6"
+                        placeholder="Tìm kiếm bất kỳ thứ gì..."
+                />
+                <button id="btn-input-search" class="pointer-events-none absolute top-4 right-4 h-6 w-6">
+                    <i class="fa-light fa-magnifying-glass fa-lg"></i>
+                </button>
+            </div>
+            <!-- list search -->
+            <ul
+                    class="max-h-[18.375rem] divide-y divide-slate-200 overflow-y-auto rounded-b-lg border-slate-200 text-xs"
+                    role="listbox"
+                    id="list-search"
+            >
+            </ul>
+        </div>
+        <!-- overlay -->
+        <div id="overlay-search" class="hidden z-10">
+            <div id="overlay-body-search"
+                 class="overlay-body-search fixed inset-0 w-full h-screen bg-gray-500/50 blur-sm"></div>
+        </div>
+    </section>
+</main>
+<!-- modal chapter -->
+<div th:fragment="chapters" id="modal-chapters-parent" class="modal hidden overflow-y-auto h-screen inset-0 z-30">
+    <div id="chapter-modal"
+         class="flex min-h-full justify-center items-start py-8 bg-gray-400/50 transition ease-in-out duration-100 opacity-0">
+        <div id="chapter-list" class="bg-white dark:bg-slate-900 p-4 rounded shadow max-w-4xl transition ease-in-out duration-300 opacity-0">
+            <div class="flex justify-between">
+                <a id="link-back-to-comic" href="#"
+                   class="flex items-center gap-2 text-lg font-medium text-red-500 dark:text-green-500">
+                    <i class="fa-light fa-chevron-left"></i>
+                </a>
+                <button class="close dark:text-white">
+                    <i class="fa-light fa-xmark"></i>
+                    Close
+                </button>
+            </div>
+            <div class="max-w-4xl">
+                <div class="flex w-full font-medium items-center py-1 border-b border-red-500 dark:border-green-500">
+                    <i class="fa-sharp fa-light fa-list-timeline mr-2 text-red-500 dark:text-green-500 fa-xl"></i>
+                    <p class="text-xl dark:text-white">Danh Sách Chương</p>
+                </div>
+                <div class="md:px-4 py-2">
+                    <div id="btn-taps-list"
+                         class="grid grid-cols-4 sm:grid-cols-6 gap-4 p-2 rounded bg-gray-50 dark:bg-slate-800">
+                        <!-- list taps chapter -->
+                    </div>
+                    <!-- list chapter -->
+                    <div id="chapter-taps-list"
+                         class="max-h-96 overflow-y-auto p-4 mt-4 bg-gray-50 dark:bg-slate-800 scrollbar-hidden">
+                        <!-- list chapter -->
+                        <button type="button"
+                                class="inline-flex justify-center py-4 px-6 w-full rounded border border-red-500 hover:bg-red-50 dark:bg-slate-800 dark:hover:bg-slate-500 dark:border-green-500 dark:text-white"
+                        >
+                            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-red-500 dark:text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Đang tải chương...
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
