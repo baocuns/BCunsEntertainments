@@ -1,10 +1,12 @@
 package com.cuns.bce.services.inter;
 
 import com.cuns.bce.dto.request.auth.ProfileDto;
+import com.cuns.bce.dto.response.api.RAUserProfileDto;
 import com.cuns.bce.entities.Profile;
 import com.cuns.bce.entities.User;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.List;
 
 @Service
@@ -41,6 +43,8 @@ public interface IProfileService {
     List<ProfileDto> findAllLiking(User user);
     // get count liking
     int countLiking(User user);
+    // get profile by user
+    RAUserProfileDto findByUser(Principal principal);
 //    // create profile
 //    void create(ProfileDto profileDto);
 //    // delete profile

@@ -2,6 +2,7 @@ package com.cuns.bce.api;
 
 import com.cuns.bce.dto.response.api.RAUserProfileDto;
 import com.cuns.bce.entities.User;
+import com.cuns.bce.services.impl.ProfileService;
 import com.cuns.bce.services.impl.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +18,7 @@ import java.security.Principal;
 @RequestMapping("/api/profiles")
 @Slf4j
 public class ProfilesApi {
-    final private UserService userService;
+    final private ProfileService profileService;
 
     @PostMapping("/if")
     public ResponseEntity<?> getId(Principal principal) {
@@ -25,11 +26,11 @@ public class ProfilesApi {
             if (principal == null) {
                 return ResponseEntity.badRequest().build();
             }
-            User user = userService.findByUsername(principal.getName()).get();
-            if (user.getProfile() == null) {
+            RAUserProfileDto userProfileDto = profileService.findByUser(principal);
+            if (userProfileDto == null) {
                 return ResponseEntity.badRequest().build();
             }
-            return ResponseEntity.ok(new RAUserProfileDto(user.getProfile().getId()));
+            return ResponseEntity.ok(userProfileDto);
         } catch (Exception e) {
             log.error("Error when get profile: " + e.getMessage());
             return ResponseEntity.badRequest().build();

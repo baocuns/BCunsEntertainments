@@ -29,9 +29,15 @@
     <button id="theme-switch" class=" p-2 hover:bg-gray-50 hover:text-green-500 rounded hidden md:block" aria-label="Theme Switch">
         <i id="theme-icon" class="fa-light fa-sun-bright fa-lg"></i>
     </button>
-    <button class="p-2 hover:bg-gray-50 hover:text-green-500 rounded hidden md:block" aria-label="Account">
-        <i class="fa-light fa-user fa-lg"></i>
-    </button>
+    <div class="relative">
+        <button id="btn-account" class="p-2 hover:bg-gray-50 hover:text-green-500 rounded hidden md:block" aria-label="Account">
+            <i class="fa-light fa-user fa-lg"></i>
+        </button>
+        <!-- account menu -->
+        <div id="account-menu"
+             class="hidden absolute right-0 mt-2 w-48 py-2 bg-white dark:bg-gray-800 rounded-md shadow shadow-red-500 dark:shadow-green-500 z-10">
+        </div>
+    </div>
     <button id="btn-mobile-bar" class="p-2 hover:bg-gray-50 hover:text-green-500 rounded md:hidden" aria-label="Option Bar">
         <i class="fa-light fa-grid-2 fa-lg"></i>
     </button>

@@ -1,6 +1,7 @@
 package com.cuns.bce.services.impl;
 
 import com.cuns.bce.dto.request.auth.ProfileDto;
+import com.cuns.bce.dto.response.api.RAUserProfileDto;
 import com.cuns.bce.entities.Follows;
 import com.cuns.bce.entities.Likes;
 import com.cuns.bce.entities.Profile;
@@ -14,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.List;
 
 @Service
@@ -23,6 +25,7 @@ public class ProfileService implements IProfileService {
     final private ProfileRepository profileRepository;
     final private FollowsRepository followsRepository;
     final private LikesRepository likesRepository;
+    final private UserService userService;
     private final ModelMapper modelMapper = new ModelMapper();
 
     @Override
@@ -132,6 +135,15 @@ public class ProfileService implements IProfileService {
     @Override
     public int countLiking(User user) {
         return likesRepository.countByLiker(user);
+    }
+
+    @Override
+    public RAUserProfileDto findByUser(Principal principal) {
+        User user = userService.findByUsername(principal.getName()).get();
+        if (user.getProfile() != null) {
+            return modelMapper.map(user.getProfile(), RAUserProfileDto.class);
+        }
+        return null;
     }
 
 }

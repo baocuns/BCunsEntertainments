@@ -18,10 +18,16 @@
                     <p class="text-teal-600"><i class="fa-light fa-magnifying-glass fa-lg"></i></i></i></p>
                     <p>Tìm kiếm</p>
                 </button>
-                <a class="flex gap-2 py-2" href="/login">
-                    <p class="text-purple-600"><i class="fa-light fa-user fa-lg"></i></i></p>
-                    <p>Tài Khoản</p>
-                </a>
+                <div class="relative">
+                    <button id="btn-account-mobile" class="flex gap-2 py-2 w-full">
+                        <p class="text-purple-600"><i class="fa-light fa-user fa-lg"></i></i></p>
+                        <p>Tài Khoản</p>
+                    </button>
+                    <!-- account menu -->
+                    <div id="account-menu-mobile"
+                         class="hidden absolute right-0 mt-2 w-48 py-2 bg-white dark:bg-gray-800 rounded-md shadow shadow-red-500 dark:shadow-green-500 z-10">
+                    </div>
+                </div>
                 <a class="flex gap-2 py-2" href="#">
                     <p class="text-green-600"><i class="fa-light fa-champagne-glasses fa-lg"></i></p>
                     <p>News</p>
