@@ -44,4 +44,30 @@ public class Profile {
     @Column(name = "updated_at")
     private OffsetDateTime updatedAt;
 
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = OffsetDateTime.now();
+        this.updatedAt = OffsetDateTime.now();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.updatedAt = OffsetDateTime.now();
+    }
+
+    public Profile() {
+    }
+
+    public Profile(String bcId, User uid, String fullname) {
+        this.id = null;
+        this.bcId = bcId + System.currentTimeMillis();
+        this.uid = uid;
+        this.fullname = fullname;
+        this.story = "story...";
+        this.avatarUrl = "https://static.vecteezy.com/system/resources/previews/031/606/479/non_2x/manager-avatar-ilustration-free-vector.jpg";
+        this.isBlock = false;
+        this.isPublic = true;
+        this.createdAt = OffsetDateTime.now();
+        this.updatedAt = OffsetDateTime.now();
+    }
 }

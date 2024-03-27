@@ -18,6 +18,12 @@
 <!-- user info -->
 <section class="mt-20">
     <div class="px-4 sm:px-8">
+        <div th:if="${param.error}" class="py-2 justify-center">
+            <p class="text-red-600" th:text="${param.error}"></p>
+        </div>
+        <div th:if="${param.success}" class="py-2 justify-center">
+            <p class="text-green-600">Bạn đã cập nhật thành công!</p>
+        </div>
         <div class="p-4 max-w-full md:max-w-6xl md:min-w-max flex justify-center">
             <div class="flex flex-col w-full sm:flex-row items-center sm:items-start p-4">
                 <div class="p-4 flex-none sm:w-1/4 justify-end flex">
@@ -48,20 +54,28 @@
                     </div>
                     <div class="flex mt-4">
                         <div class="flex mr-4">
-                            <h1 class="font-bold" th:text="${countFollowers}">120k</h1>
-                            <h2 class="font-light ml-2">Follower</h2>
+                            <span class="font-bold" th:text="${countFollowers}">120k</span>
+                            <button type="button"
+                                    data-btn-friend-id="tabs-friend-0"
+                                    class="btn-friend font-light ml-2 hover:underline text-xs md:text-base">Follower</button>
                         </div>
                         <div class="flex mr-4">
-                            <h1 class="font-bold" th:text="${countFollowing}">130k</h1>
-                            <h2 class="font-light ml-2">Đang Follow</h2>
+                            <span class="font-bold" th:text="${countFollowing}">130k</span>
+                            <button type="button"
+                                    data-btn-friend-id="tabs-friend-1"
+                                    class="btn-friend font-light ml-2 hover:underline text-xs md:text-base">Đang Follow</button>
                         </div>
                         <div class="flex mr-4">
-                            <h1 class="font-bold" th:text="${countLiker}">120.3k</h1>
-                            <h2 class="font-light ml-2">Like</h2>
+                            <span class="font-bold" th:text="${countLiker}">120.3k</span>
+                            <button type="button"
+                                    data-btn-friend-id="tabs-friend-2"
+                                    class="btn-friend font-light ml-2 hover:underline text-xs md:text-base">Like</button>
                         </div>
                         <div class="flex">
-                            <h1 class="font-bold" th:text="${countLiking}">120.3k</h1>
-                            <h2 class="font-light ml-2">Liking</h2>
+                            <span class="font-bold" th:text="${countLiking}">120.3k</span>
+                            <button type="button"
+                                    data-btn-friend-id="tabs-friend-3"
+                                    class="btn-friend font-light ml-2 hover:underline text-xs md:text-base">Liking</button>
                         </div>
                     </div>
                     <!-- btn option -->
@@ -109,26 +123,37 @@
             </div>
         </div>
         <!-- tabs này dùng js để lấy dữ liệu -->
-        <div class="p-4 md:px-8 md:py-4 max-w-full sm:max-w-6xl md:max-w-4xl">
+        <div class="p-4 md:px-8 md:py-4">
             <!-- tabs -->
             <div class="flex justify-center md:justify-start dark:text-white">
                 <div class="flex gap-2">
-                    <button th:id="0"
-                            class="tabs px-4 py-2 border-b-2 border-red-500 dark:border-green-500 dark:bg-slate-700"
-                            onclick="tabs(0)"
-                    >Bài viết
+                    <button id="btn-tabs-0"
+                            class="tabs px-4 py-2 border-b-2 hover:text-red-500 hover:border-b-2 hover:border-red-500 dark:hover:bg-slate-700 dark:hover:border-green-500 dark:hover:text-green-500"
+                            onclick="tabs(0, 'tabs-content', '.tabs', 'btn-tabs-0')"
+                    >
+                        <i class="fa-solid fa-list"></i>
+                        <span class="hidden sm:inline-block">Bài viết</span>
                     </button>
-                    <button th:id="1" class="tabs px-4 py-2 border-b dark:bg-slate-800"
-                            onclick="tabs(1)"
-                    >Truyện
+                    <button id="btn-tabs-1"
+                            class="tabs px-4 py-2 border-b-2 hover:text-red-500 hover:border-b-2 hover:border-red-500 dark:hover:bg-slate-700 dark:hover:border-green-500 dark:hover:text-green-500"
+                            onclick="tabs(1, 'tabs-content', '.tabs', 'btn-tabs-1')"
+                    >
+                        <i class="fa-regular fa-image"></i>
+                        <span class="hidden sm:inline-block">Truyện Tranh</span>
                     </button>
-                    <button th:id="2" class="tabs px-4 py-2 border-b dark:bg-slate-800"
-                            onclick="tabs(2)"
-                    >Anime
+                    <button id="btn-tabs-2"
+                            class="tabs px-4 py-2 border-b-2 hover:text-red-500 hover:border-b-2 hover:border-red-500 dark:hover:bg-slate-700 dark:hover:border-green-500 dark:hover:text-green-500"
+                            onclick="tabs(2, 'tabs-content', '.tabs', 'btn-tabs-2')"
+                    >
+                        <i class="fa-brands fa-youtube"></i>
+                        <span class="hidden sm:inline-block">Anime</span>
                     </button>
-                    <button th:id="3" class="tabs px-4 py-2 border-b dark:bg-slate-800"
-                            onclick="tabs(3)"
-                    >Khác
+                    <button id="btn-tabs-3"
+                            class="tabs px-4 py-2 border-b-2 hover:text-red-500 hover:border-b-2 hover:border-red-500 dark:hover:bg-slate-700 dark:hover:border-green-500 dark:hover:text-green-500"
+                            onclick="tabs(3, 'tabs-content', '.tabs', 'btn-tabs-3')"
+                    >
+                        <i class="fa-solid fa-meteor"></i>
+                        <span class="hidden sm:inline-block">Something</span>
                     </button>
                 </div>
             </div>
@@ -142,7 +167,17 @@
                 <div class="tabs-content hidden"
                      th:id="1"
                 >
-                    Truyện
+                    <!-- list comics -->
+                    <ul
+                            class="max-h-[18.375rem] divide-y divide-slate-200 overflow-y-auto rounded-b-lg border-slate-200 text-xs"
+                            role="listbox"
+                            id="tabs-content-comics"
+                    >
+                        <li class="flex text-base items-center justify-between p-2 hover:bg-slate-100 dark:hover:bg-slate-800"
+                            role="option">
+                            Không có quyền truy cập
+                        </li>
+                    </ul>
                 </div>
                 <div class="tabs-content hidden"
                      th:id="2"
@@ -233,6 +268,21 @@
                                 </div>
                             </div>
                             <div class="py-2">
+                                <div class="font-medium border-b mb-2 text-black">Link Avatar</div>
+                                <div class="px-8 sm:px-16">
+                                <textarea name="linkAvatar"
+                                          class="w-4/5 font-normal tracking-tight focus:outline-0 resize-none text-black bg-white"
+                                          placeholder="link avatar online..."
+                                          style="height: 24px !important;"></textarea>
+                                </div>
+                                <div class="px-6 py-2">
+                                    <div class="text-xs text-black italic">
+                                        <p>Bạn có thể sử dụng link hình ảnh online thay vì upload hình ảnh lên server.
+                                            Khuyến khích sử dụng để tiết kiệm dữ liệu!</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="py-2">
                                 <div class="font-medium border-b mb-2 text-black">BC ID</div>
                                 <div class="flex justify-center items-center">
                                     <p class="text-lg text-black font-medium">@</p>
@@ -257,7 +307,8 @@
                                     </div>
                                     <div class="text-xs text-black italic">
                                         <p>BC ID là chuỗi có 5 ký tự trở lên và tối đa 20 ký tự, chỉ có thể bao gồm chữ
-                                            cái, chữ số, dấu gạch ngang và chữ không dấu. Khi thay đổi BC ID, liên kết hồ sơ
+                                            cái, chữ số, dấu gạch ngang và chữ không dấu. Khi thay đổi BC ID, liên kết
+                                            hồ sơ
                                             của bạn cũng sẽ thay đổi. Hệ thông khuyết khích nên đặt BC ID đơn giản, ngắn
                                             gọn dễ nhớ.</p>
                                     </div>
@@ -328,16 +379,273 @@
         </div>
     </section>
 </main>
+<!-- modal follows -->
+<main>
+    <div id="modal-friend" class="fixed inset-0 bg-slate-200/50 hidden">
+        <div class="flex w-full h-full justify-center items-center">
+            <div id="modal-friend-content" class="bg-white rounded shadow p-4 dark:text-white dark:bg-slate-800 transition duration-300 ease-in-out opacity-0">
+                <div class="flex justify-between gap-4 py-2">
+                    <h1 class="text-lg font-bold">BCuns ID</h1>
+                    <button id="btn-close-modal-friend" class="text-red-500 dark:text-green-500">
+                        <i class="fa-solid fa-times fa-xl"></i>
+                    </button>
+                </div>
+                <!-- tabs -->
+                <div class="flex justify-center md:justify-start dark:text-white">
+                    <div class="flex gap-2">
+                        <button id="tabs-friend-0"
+                                data-tabs-friend-content="taps-friend-content-0"
+                                class="tabs-friend px-4 py-2 border-b-2 hover:text-red-500 hover:border-b-2 hover:border-red-500 dark:hover:bg-slate-700 dark:hover:border-green-500 dark:hover:text-green-500"
+                                onclick="tabs('taps-friend-content-0', 'taps-friend-content', '.tabs-friend', 'tabs-friend-0')"
+                        >
+                            <span class="text-count"></span>
+                            <span class="text-xs md:text-base">Follower</span>
+                        </button>
+                        <button id="tabs-friend-1"
+                                data-tabs-friend-content="taps-friend-content-1"
+                                class="tabs-friend px-4 py-2 border-b-2 hover:text-red-500 hover:border-b-2 hover:border-red-500 dark:hover:bg-slate-700 dark:hover:border-green-500 dark:hover:text-green-500"
+                                onclick="tabs('taps-friend-content-1', 'taps-friend-content', '.tabs-friend', 'tabs-friend-1')"
+                        >
+                            <span class="text-count"></span>
+                            <span class="text-xs md:text-base">Đang Follow</span>
+                        </button>
+                        <button id="tabs-friend-2"
+                                data-tabs-friend-content="taps-friend-content-2"
+                                class="tabs-friend px-4 py-2 border-b-2 hover:text-red-500 hover:border-b-2 hover:border-red-500 dark:hover:bg-slate-700 dark:hover:border-green-500 dark:hover:text-green-500"
+                                onclick="tabs('taps-friend-content-2', 'taps-friend-content', '.tabs-friend', 'tabs-friend-2')"
+                        >
+                            <span class="text-count"></span>
+                            <span class="text-xs md:text-base">Đã Like</span>
+                        </button>
+                        <button id="tabs-friend-3"
+                                data-tabs-friend-content="taps-friend-content-3"
+                                class="tabs-friend px-4 py-2 border-b-2 hover:text-red-500 hover:border-b-2 hover:border-red-500 dark:hover:bg-slate-700 dark:hover:border-green-500 dark:hover:text-green-500"
+                                onclick="tabs('taps-friend-content-3', 'taps-friend-content', '.tabs-friend', 'tabs-friend-3')"
+                        >
+                            <span class="text-count"></span>
+                            <span class="text-xs md:text-base">Liker</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- content -->
+                <div class="py-2 max-h-96 overflow-y-auto scrollbar-hidden">
+                    <div class="taps-friend-content"
+                         id="taps-friend-content-0"
+                    >
+                        <button type="button"
+                                class="inline-flex justify-center items-center py-4 px-6 w-full rounded border border-red-500 hover:bg-red-50 dark:bg-slate-800 dark:hover:bg-slate-500 dark:border-green-500 dark:text-white"
+                        >
+                            <svg id="comment-load" class="animate-spin -ml-1 mr-3 h-5 w-5 text-red-500 dark:text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Follower
+                        </button>
+                    </div>
+                    <div class="taps-friend-content hidden"
+                         id="taps-friend-content-1"
+                    >
+                        <button type="button"
+                                class="inline-flex justify-center items-center py-4 px-6 w-full rounded border border-red-500 hover:bg-red-50 dark:bg-slate-800 dark:hover:bg-slate-500 dark:border-green-500 dark:text-white"
+                        >
+                            <svg id="comment-load" class="animate-spin -ml-1 mr-3 h-5 w-5 text-red-500 dark:text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Follower
+                        </button>
+                    </div>
+                    <div class="taps-friend-content hidden"
+                         id="taps-friend-content-2"
+                    >
+                        <button type="button"
+                                class="inline-flex justify-center items-center py-4 px-6 w-full rounded border border-red-500 hover:bg-red-50 dark:bg-slate-800 dark:hover:bg-slate-500 dark:border-green-500 dark:text-white"
+                        >
+                            <svg id="comment-load" class="animate-spin -ml-1 mr-3 h-5 w-5 text-red-500 dark:text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Đã Like
+                        </button>
+                    </div>
+                    <div class="taps-friend-content hidden"
+                         id="taps-friend-content-3"
+                    >
+                        <button type="button"
+                                class="inline-flex justify-center items-center py-4 px-6 w-full rounded border border-red-500 hover:bg-red-50 dark:bg-slate-800 dark:hover:bg-slate-500 dark:border-green-500 dark:text-white"
+                        >
+                            <svg id="comment-load" class="animate-spin -ml-1 mr-3 h-5 w-5 text-red-500 dark:text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Liker
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
 <!-- script -->
 <script>
+    $(document).ready(function () {
+        // events
+        $(document).on('click', '.btn-friend', function () {
+            let btnFriendTabs = $(`#${$(this).data('btn-friend-id')}`)
+            tabs(btnFriendTabs.data('tabs-friend-content'), 'taps-friend-content', '.tabs-friend', btnFriendTabs.attr('id'))
+            $('#modal-friend').removeClass('hidden')
+            setTimeout(() => {
+                $('#modal-friend-content').removeClass('opacity-0')
+            }, 50)
+        })
+        $(document).on('click', '#btn-close-modal-friend', function () {
+            $('#modal-friend-content').addClass('opacity-0')
+            setTimeout(() => {
+                $('#modal-friend').addClass('hidden')
+            }, 200)
+        })
+        $(window).click(function (e) {
+            if (!$(e.target).closest('#modal-friend-content').length && !$(e.target).closest('.btn-friend').length) {
+                $('#modal-friend-content').addClass('opacity-0')
+                setTimeout(() => {
+                    $('#modal-friend').addClass('hidden')
+                }, 200)
+            }
+        })
+        $(document).on('click', '#btn-re-follow', function () {
+            handleFollowAndUnFollow($(this).data('bc-id'), (status) => {
+                if (status) {
+                    $(this).html('<span class="text-red-500 dark:text-green-500">Theo dõi lại</span>')
+                } else {
+                    $(this).html('<span class="text-red-500 dark:text-green-500">Bạn Bè</span>')
+                }
+            })
+        })
+        $(document).on('click', '#btn-un-follow', function () {
+            handleFollowAndUnFollow($(this).data('bc-id'), (status) => {
+                if (status) {
+                    $(this).html('<span class="text-red-500 dark:text-green-500">Đang theo dõi</span>')
+                } else {
+                    $(this).html('<span class="text-red-500 dark:text-green-500">Theo dõi</span>')
+                }
+            })
+        })
+        $(document).on('click', '#btn-follow', function () {
+            handleFollowAndUnFollow($(this).data('bc-id'), (status) => {
+                if (status) {
+                    $(this).html('<span class="text-red-500 dark:text-green-500">Đang theo dõi</span>')
+                } else {
+                    $(this).html('<span class="text-red-500 dark:text-green-500">Theo dõi</span>')
+                }
+            })
+        })
+        // tabs
+        tabs(0, 'tabs-content', '.tabs', 'btn-tabs-0')
+        // call api get comic liked
+        handleTabsCallApiGetComicLiked()
+    })
     // tabs
-    const tabs = (id) => {
-        const content = $('div[id="' + id + '"]')
-        const tabs = $('div[class="tabs-content"]')
+    const tabs = (id, cls, tapsClass, btnId) => {
+        const content = $(`div[id="${id}"]`)
+        const tabs = $(`div[class="${cls}"]`)
         tabs.addClass('hidden')
         content.removeClass('hidden')
-        $('.tabs').addClass('border-b dark:bg-slate-800').removeClass('border-b-2 border-red-500 dark:border-green-500 dark:bg-slate-700')
-        $('#' + id).removeClass('border-b dark:bg-slate-800').addClass('border-b-2 border-red-500 dark:border-green-500 dark:bg-slate-700')
+        $(`${tapsClass}`).removeClass('border-red-500 dark:border-green-500 dark:bg-slate-700')
+        $(`#${btnId}`).addClass('border-red-500 dark:border-green-500 dark:bg-slate-700')
+    }
+    // tabs test call api
+    const handleTabsCallApiGetComicLiked = () => {
+        $.post('/api/profiles/comic-liked', {bcId: window.location.pathname.match(/\/profiles\/(.*)/)[1]})
+            .done((data) => {
+                if (data.length > 0) {
+                    $('#tabs-content-comics').html('')
+                    data.forEach((item) => {
+                        $('#tabs-content-comics').append(`<li class="dark:bg-slate-800 dark:text-white hover:bg-gray-200 dark:hover:bg-slate-700" role="option">
+                        <a href="/comics/${item.comic.titleSlug}" class="grid grid-cols-5 items-center justify-between py-4 md:p-4 gap-2">
+                            <div class="col-span-3">
+                                <span class="font-semibold line-clamp-2">${item.comic.title}</span>
+                            </div>
+                            <div class="col-span-2 flex gap-2 items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <span><i class="fa-light fa-file-image"></i></span>
+                                    <span>${item.comic.countChapter}</span>
+                                </div>
+                                <span class="text-right">${item.comic.timeAgo}</span>
+                                <span class="hidden sm:inline-block"><i class="fa-light fa-face-grin-hearts"></i> ${item.comic.view}</span>
+                            </div>
+                        </a>
+                        </li>`);
+                    })
+                }
+            })
+            .fail((err) => {
+                console.log(err)
+            })
+        $.post('/api/profiles/follower', {bcId: window.location.pathname.match(/\/profiles\/(.*)/)[1]})
+            .done((data) => {
+                if (data.length > 0) {
+                    $('#tabs-friend-0 .text-count').text(data.length)
+                    $('#taps-friend-content-0').empty()
+                    data.forEach((item) => {
+                        $('#taps-friend-content-0').append(handleHtmlFollow(item));
+                    })
+                }
+            })
+            .fail((err) => {
+                console.log(err)
+            })
+        $.post('/api/profiles/following', {bcId: window.location.pathname.match(/\/profiles\/(.*)/)[1]})
+            .done((data) => {
+                if (data.length > 0) {
+                    $('#tabs-friend-1 .text-count').text(data.length)
+                    $('#taps-friend-content-1').empty()
+                    data.forEach((item) => {
+                        $('#taps-friend-content-1').append(handleHtmlFollow(item));
+                    })
+                }
+            })
+            .fail((err) => {
+                console.log(err)
+            })
+    }
+    // un follow
+    const handleFollowAndUnFollow = (bcId, callback) => {
+        $.post('/api/profiles/follow', {bcId: bcId})
+            .done((data) => {
+                return callback ? callback(data) : null
+            })
+            .fail((err) => {
+                console.log(err)
+            })
+    }
+    const handleHtmlFollow = (item) => {
+        return `<div id="item-${item.bcId}" class="flex items-center p-2 gap-4">
+                            <a href="/profiles/${item.bcId}"><img src="${item.avatarUrl}"
+                                 class="h-12 w-12 rounded-full object-cover"
+                                 alt="avatar"
+                            ></a>
+                            <div>
+                                <a href="/profiles/${item.bcId}"><p class="font-bold">${item.fullname}</p></a>
+                                <p class="text-gray-500">${item.bcId}</p>
+                            </div>
+                            <div class="flex-1 flex justify-end">
+                            ${
+            item.isYouSelf ? '<span class="text-red-500 dark:text-green-500"><i class="fa-solid fa-check"></i></span>' :
+                item.isFriend ? `<button class="border border-red-500 dark:border-green-500 px-4 py-2 rounded font-medium hover:bg-red-50 dark:hover:bg-white/20">
+                                    <span class="text-red-500 dark:text-green-500 hidden md:inline-block text-xs md:text-base">Bạn Bè</span>
+                                    <span class="text-red-500 dark:text-green-500 md:hidden"><i class="fa-solid fa-user-group"></i></span>
+                                </button>` :
+                    item.isFollower ? `<button id="btn-re-follow" data-bc-id="${item.bcId}" class="border border-red-500 dark:border-green-500 px-4 py-2 rounded font-medium hover:bg-red-50 dark:hover:bg-white/20">
+                                    <span class="text-red-500 dark:text-green-500 text-xs md:text-base">Follow Lại</span>
+                                </button>` :
+                        item.isFollowing ?`<button id="btn-un-follow" data-bc-id="${item.bcId}" class="border border-red-500 dark:border-green-500 px-4 py-2 rounded font-medium hover:bg-red-50 dark:hover:bg-white/20">
+                                    <span class="text-red-500 dark:text-green-500 text-xs md:text-base">Bỏ Follow</span>
+                                </button>` :
+                            `<button id="btn-follow" data-bc-id="${item.bcId}" class="border border-red-500 dark:border-green-500 px-4 py-2 rounded font-medium hover:bg-red-50 dark:hover:bg-white/20">
+                                    <span class="text-red-500 dark:text-green-500 text-xs md:text-base">Follow</span>`
+        }
+                            </div>
+                        </div>`
     }
 </script>
 <script>

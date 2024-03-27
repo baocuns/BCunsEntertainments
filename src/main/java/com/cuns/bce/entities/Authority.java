@@ -21,4 +21,12 @@ public class Authority {
     @Column(name = "authority")
     private String authority;
 
+    public Authority() {
+    }
+
+    public Authority(User user, String authority) {
+        this.user = user;
+        this.authority = authority;
+    }
+
 }

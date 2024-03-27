@@ -55,40 +55,38 @@ public class ProfileController {
     // edit profile
     @PostMapping("/{bcId}")
     public String editProfile(@PathVariable String bcId, Model model, Principal principal,
-                              @ModelAttribute ProfileDto profileDto) {
-        // kiem tra xem nguoi dung co quyen sua profile khong, neu co thi moi cho sua
-        // get user by principal
-        Optional<User> user = userService.findByUsername(principal.getName());
-        ProfileDto profileDtoOld = profileService.findByUid(bcId);
-        if (user.isPresent()) {
-            // check user match profile
-            if (user.get().getId().equals(profileDtoOld.getUid().getId())) {
-                // update profile
-                ProfileDto profileUpdate = profileService.update(profileDto, bcId);
-                return "redirect:/profiles/" + profileUpdate.getBcId();
+                              @ModelAttribute ProfileDto profileDto,
+                              @RequestParam("linkAvatar") String linkAvatar) {
+        try {
+            // kiem tra xem nguoi dung co quyen sua profile khong, neu co thi moi cho sua
+            // get user by principal
+            Optional<User> user = userService.findByUsername(principal.getName());
+            ProfileDto profileDtoOld = profileService.findByUid(bcId);
+            if (user.isPresent()) {
+                // check user match profile
+                if (user.get().getId().equals(profileDtoOld.getUid().getId())) {
+                    // if link avatar is not empty
+                    if (!linkAvatar.isEmpty()) {
+                        profileDto.setAvatarUrl(linkAvatar);
+                    }
+                    // update profile
+                    ProfileDto profileUpdate = profileService.update(profileDto, bcId);
+                    return "redirect:/profiles/" + profileUpdate.getBcId() + "?success=update-profile";
+                }
             }
+            // neu khong co quyen sua profile
+            return "redirect:/profiles/" + bcId + "?error=no-permission";
+        } catch (Exception e) {
+            e.printStackTrace();
+            // neu khong co quyen sua profile
+            return "redirect:/profiles/" + bcId + "?error=" + e.getMessage();
         }
-
-        // neu khong co quyen sua profile
-        return "redirect:/profiles/" + bcId;
     }
     // follows
     @PostMapping("/{bcId}/follows")
-    public String follow(@PathVariable String bcId, Model model, Principal principal) {
+    public String follow(@PathVariable String bcId, Model model, Principal principal) throws Exception {
         // get user by principal
-        Optional<User> user = userService.findByUsername(principal.getName());
-        ProfileDto profileDto = profileService.findByUid(bcId);
-        if (user.isPresent()) {
-            // check user match profile
-            if (!user.get().getId().equals(profileDto.getUid().getId())) {
-                // check if user is following
-                if (!profileService.isFollowing(user.get(), profileDto.getUid())) {
-                    profileService.follow(user.get(), profileDto.getUid());
-                } else {
-                    profileService.unfollow(user.get(), profileDto.getUid());
-                }
-            }
-        }
+        profileService.follow(principal, bcId);
         return "redirect:/profiles/" + bcId;
     }
     // likes

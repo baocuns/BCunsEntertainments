@@ -39,7 +39,7 @@ $(document).ready(function () {
     // field
     // events
     // delete virus in local storage after run /logout
-    if (window.location.pathname + window.location.search === '/login?logout') {
+    if (window.location.pathname + window.location.search === '/login?logout' || window.location.search === '?success=update-profile') {
         localStorage.removeItem('virus');
     }
     // btn on open menu
@@ -82,6 +82,9 @@ const handleScrollHomePage = () => {
         isScrollDown = currentScrollTop > lastScrollTop;
         lastScrollTop = currentScrollTop;
 
+        // hide account menu
+        $('#account-menu').addClass('hidden');
+        // update scroll class
         updateScrollClass();
 
         // set background header

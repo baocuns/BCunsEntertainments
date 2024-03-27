@@ -48,6 +48,10 @@ public class SecurityConfiguration implements WebMvcConfigurer {
             new AntPathRequestMatcher("/api/comments/comic/reports"),
             new AntPathRequestMatcher("/api/comments/comic/deleted"),
             new AntPathRequestMatcher("/api/profiles/if"),
+            new AntPathRequestMatcher("/api/profiles/comic-liked"),
+            new AntPathRequestMatcher("/api/profiles/follower"),
+            new AntPathRequestMatcher("/api/profiles/following"),
+            new AntPathRequestMatcher("/api/profiles/follow"),
     };
     public static final String LOGIN_URL = "/login";
     public static final String LOGOUT_URL = "/logout";

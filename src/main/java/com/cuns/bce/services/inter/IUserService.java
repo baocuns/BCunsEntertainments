@@ -10,5 +10,5 @@ import java.util.Optional;
 @Service
 public interface IUserService {
     Optional<User> findByUsername(String username);
-    User registerNewUserAccount(UserRegisterDto userRegisterDto) throws Exception;
+    void registerNewUserAccount(UserRegisterDto userRegisterDto) throws Exception;
 }

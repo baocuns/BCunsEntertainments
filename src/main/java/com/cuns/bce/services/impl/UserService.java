@@ -3,8 +3,10 @@ package com.cuns.bce.services.impl;
 import com.cuns.bce.dto.auth.UserDto;
 import com.cuns.bce.dto.request.auth.UserRegisterDto;
 import com.cuns.bce.entities.Authority;
+import com.cuns.bce.entities.Profile;
 import com.cuns.bce.entities.User;
 import com.cuns.bce.repositories.AuthorityRepository;
+import com.cuns.bce.repositories.ProfileRepository;
 import com.cuns.bce.repositories.UserRepository;
 import com.cuns.bce.services.inter.IUserService;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,7 @@ public class UserService implements IUserService {
     public final UserRepository userRepository;
     public final PasswordEncoder passwordEncoder;
     public final AuthorityRepository authorityRepository;
+    final private ProfileRepository profileRepository;
     private final ModelMapper modelMapper = new ModelMapper();
     @Override
     public Optional<User> findByUsername(String username) {
@@ -37,28 +40,30 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User registerNewUserAccount(UserRegisterDto userRegisterDto) throws Exception {
+    public void registerNewUserAccount(UserRegisterDto userRegisterDto) throws Exception {
         if (emailExists(userRegisterDto.getEmail())) {
             throw new Exception("There is an account with that email address: " + userRegisterDto.getEmail());
         }
+        if (userRepository.findByUsername(userRegisterDto.getUsername()).isPresent()) {
+            throw new Exception("There is an account with that username: " + userRegisterDto.getUsername());
+        }
 
-        User user = new User();
-        user.setUsername(userRegisterDto.getUsername());
-        user.setEmail(userRegisterDto.getEmail());
-        user.setPassword(passwordEncoder.encode(userRegisterDto.getPassword()));
-        user.setEnabled(true);
-        user.setCreatedAt(OffsetDateTime.now());
-        user.setUpdatedAt(OffsetDateTime.now());
-        // save user
-        User registered = userRepository.save(user);
+        try {
+            // save user
+            User user = new User(userRegisterDto.getUsername(), userRegisterDto.getEmail(), passwordEncoder.encode(userRegisterDto.getPassword()));
+            User registered = userRepository.save(user);
 
-        // create default authority
-        Authority authority = new Authority();
-        authority.setAuthority("ROLE_USER");
-        authority.setUser(registered);
-        authorityRepository.save(authority);
+            // create default authority
+            Authority authority = new Authority(registered, "ROLE_USER");
+            authorityRepository.save(authority);
 
-        return null;
+            // create default user profile
+            Profile profile = new Profile(registered.getUsername(), registered, registered.getUsername());
+            profileRepository.save(profile);
+        } catch (Exception e) {
+            log.error("Error while registering new user account: " + e.getMessage());
+            throw new Exception("Error while registering new user account: " + e.getMessage());
+        }
     }
 
     private boolean emailExists(String email) {

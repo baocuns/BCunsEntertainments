@@ -24,9 +24,6 @@
         <div th:if="${registerSuccess}" class="py-2 justify-center">
             <p th:text="${registerSuccess}" class="text-green-600">messed</p>
         </div>
-        <div th:if="${errorRegister}" class="py-2 justify-center">
-            <p th:text="${errorRegister}" class="text-red-600">messed</p>
-        </div>
         <div class="shadow p-8 rounded-md dark:shadow-gray-700 dark:text-white">
             <div class="flex items-center">
                 <div class="mr-2 bg-red-500 dark:bg-green-600 p-2 rounded-full text-white">
@@ -58,7 +55,7 @@
                                th:field="*{password}"
                                id="password"
                                required
-                               class="w-full px-4 py-2 shadow rounded focus:outline-green-600 "
+                               class="w-full px-4 py-2 shadow rounded focus:outline-green-600 text-gray-700"
                                placeholder="Bạn có nhớ nữa không?"/>
                     </div>
                 </div>
