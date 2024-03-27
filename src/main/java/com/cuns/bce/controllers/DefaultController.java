@@ -41,7 +41,10 @@ public class DefaultController {
         return "pages/auth/login";
     }
     @GetMapping("register")
-    public String showRegisterPage(Model model) {
+    public String showRegisterPage(Model model, Principal principal) {
+        if (principal != null) {
+            return "redirect:/";
+        }
         UserRegisterDto userRegisterDto = new UserRegisterDto();
         model.addAttribute("user", userRegisterDto);
         return "pages/auth/register";
@@ -52,11 +55,12 @@ public class DefaultController {
             userService.registerNewUserAccount(userRegisterDto);
             model.addAttribute("registerSuccess", "Register successfully!");
             model.addAttribute("user", userRegisterDto);
+            return "pages/auth/login";
         } catch (Exception e) {
             model.addAttribute("errorRegister", e.getMessage());
             e.printStackTrace();
+            return "pages/auth/register";
         }
-        return "pages/auth/login";
     }
     @GetMapping("forgot-password")
     public String showForgotPasswordPage() {
