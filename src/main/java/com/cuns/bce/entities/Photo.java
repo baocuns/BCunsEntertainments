@@ -3,6 +3,11 @@ package com.cuns.bce.entities;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -23,5 +28,21 @@ public class Photo {
 
     @Column(name = "url", length = Integer.MAX_VALUE)
     private String url;
+
+    @Column(name = "server")
+    @JdbcTypeCode(SqlTypes.JSON)
+    private List<String> server;
+
+    public void setPhotoByConfig(CrawlsConfig crawlsConfig) {
+        List<String> list = new ArrayList<>();
+        if (this.server != null) {
+            for (String s : this.server) {
+                for (String dsp : crawlsConfig.getDomainServerPicture()) {
+                    list.add("https://" + dsp + s);
+                }
+            }
+        }
+        this.server = list;
+    }
 
 }

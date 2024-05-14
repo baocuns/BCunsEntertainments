@@ -1,5 +1,6 @@
 package com.cuns.bce.dto.response.comics;
 
+import com.cuns.bce.entities.CrawlsConfig;
 import com.cuns.bce.entities.LikesComic;
 import com.cuns.bce.entities.RatingsComic;
 import com.cuns.bce.func.Funcs;
@@ -40,5 +41,8 @@ public class ComicsDto implements Serializable {
             return 0.0;
         }
         return ratingsComics.stream().mapToDouble(RatingsComic::getRate).average().orElse(0.0);
+    }
+    public void setComicByConfig(CrawlsConfig crawlsConfig) {
+        this.thumbnails = "https://" + crawlsConfig.getDomainServer() + this.thumbnails;
     }
 }

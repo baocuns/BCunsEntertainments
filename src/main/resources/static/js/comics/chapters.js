@@ -31,8 +31,25 @@ $(document).ready(function () {
     // chuyển đỗi giữa các taps list chapter
     $(document).on('click', '.btn-taps-chapter', function () {
         tabsChapter($(this).attr('id'))
+    });
+    $('img').on('error', function () {
+        handleErrorPicture($(this));
+    });
+    $('.picture').each(function () {
+        $(this).find('img').on('loadeddata', function () {
+            $(this).parent().find('.picture-load').remove();
+        });
     })
 });
+const handleErrorPicture = (img) => {
+    const server = img.data('server');
+    const index = img.data('index');
+    if (server) {
+        const servers = server.slice(1, -1).split(', ').map(s => s.trim());
+        img.attr('src', `https://picture.bcent.online/images?src=${servers[index]}`);
+        img.data('index', index < servers.length - 1 ? index + 1 : 0);
+    }
+}
 const handleOpenModalChapters = () => {
     $('#modal-chapters-parent').removeClass('hidden').addClass('fixed');
     setTimeout(() => {

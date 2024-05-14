@@ -80,4 +80,9 @@ public class Comic {
 
     @OneToMany(mappedBy = "comic")
     private Set<CommentsComic> commentsComics = new LinkedHashSet<>();
+
+    // ----------------- Functions -----------------
+    public void setComicByConfig(CrawlsConfig crawlsConfig) {
+        this.thumbnails = "https://" + crawlsConfig.getDomainServer() + this.thumbnails;
+    }
 }

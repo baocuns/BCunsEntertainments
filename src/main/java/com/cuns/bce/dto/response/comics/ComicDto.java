@@ -66,4 +66,7 @@ public class ComicDto implements Serializable {
         }
         return ratingsComics.stream().mapToDouble(RatingsComic::getRate).average().orElse(0.0);
     }
+    public void setComicByConfig(CrawlsConfig crawlsConfig) {
+        this.thumbnails = "https://" + crawlsConfig.getDomainServer() + this.thumbnails;
+    }
 }

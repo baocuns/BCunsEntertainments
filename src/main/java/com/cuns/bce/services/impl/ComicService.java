@@ -4,10 +4,7 @@ import com.cuns.bce.dto.response.api.RAComicSearchDto;
 import com.cuns.bce.dto.response.comics.ChapterDto;
 import com.cuns.bce.dto.response.comics.ComicDto;
 import com.cuns.bce.dto.response.comics.ComicsDto;
-import com.cuns.bce.entities.CategoriesComic;
-import com.cuns.bce.entities.Chapter;
-import com.cuns.bce.entities.Comic;
-import com.cuns.bce.entities.User;
+import com.cuns.bce.entities.*;
 import com.cuns.bce.func.Funcs;
 import com.cuns.bce.repositories.CategoriesComicRepository;
 import com.cuns.bce.repositories.ChapterRepository;
@@ -31,12 +28,17 @@ public class ComicService implements IComicService {
     final private UserService userService;
     final private CategoriesComicRepository categoriesComicRepository;
     final private ChapterRepository chapterRepository;
+    final private CrawlsConfigService crawlsConfigService;
     private final ModelMapper modelMapper = new ModelMapper();
 
     @Override
     public Page<ComicsDto> findAllByPage(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Comic> comics = comicRepository.findAll(pageable);
+        // get config
+        CrawlsConfig crawlsConfig = crawlsConfigService.findById(1L);
+        // set config to comic
+        comics.forEach(comic -> comic.setComicByConfig(crawlsConfig));
         return comics.map(comic -> modelMapper.map(comic, ComicsDto.class));
     }
 
@@ -57,6 +59,8 @@ public class ComicService implements IComicService {
     @Override
     public ComicDto findById(Long id) {
         Optional<Comic> comic = comicRepository.findById(id);
+        // get config
+        CrawlsConfig crawlsConfig = crawlsConfigService.findById(1L);
         // increase views by one
         comic.ifPresent(this::increaseViews);
         // Comic to ComicDto
@@ -69,6 +73,8 @@ public class ComicService implements IComicService {
         Collections.reverse(chapters);
         // set chapters type List to chapters in comicDto type Set
         comicDto.setChapters(new LinkedHashSet<>(chapters));
+        // set config to comic
+        comicDto.setComicByConfig(crawlsConfig);
 
         return comicDto;
     }
@@ -76,6 +82,10 @@ public class ComicService implements IComicService {
     @Override
     public Comic findById(Long id, boolean isComic) {
         Optional<Comic> comic = comicRepository.findById(id);
+        // get config
+        CrawlsConfig crawlsConfig = crawlsConfigService.findById(1L);
+        // set config to comic
+        comic.ifPresent(value -> value.setComicByConfig(crawlsConfig));
         return comic.get();
     }
 
@@ -95,6 +105,10 @@ public class ComicService implements IComicService {
     public Page<ComicsDto> getComicsByGenresId(Long genresId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<CategoriesComic> categoriesComics = categoriesComicRepository.findByCategoryId(genresId, pageable);
+        // get config
+        CrawlsConfig crawlsConfig = crawlsConfigService.findById(1L);
+        // set config to comic
+        categoriesComics.forEach(categoriesComic -> categoriesComic.getComic().setComicByConfig(crawlsConfig));
         return categoriesComics.map(categoriesComic -> modelMapper.map(categoriesComic.getComic(), ComicsDto.class));
     }
 

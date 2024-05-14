@@ -1,6 +1,7 @@
 package com.cuns.bce.services.impl;
 
 import com.cuns.bce.entities.Chapter;
+import com.cuns.bce.entities.CrawlsConfig;
 import com.cuns.bce.entities.Photo;
 import com.cuns.bce.repositories.ChapterRepository;
 import com.cuns.bce.services.inter.IChapterService;
@@ -19,10 +20,13 @@ import java.util.stream.Stream;
 @Slf4j
 public class ChapterService implements IChapterService {
     final private ChapterRepository chapterRepository;
+    final private CrawlsConfigService crawlsConfigService;
 
     @Override
     public Optional<Chapter> findById(Long id) {
         Optional<Chapter> chapter = chapterRepository.findById(id);
+        // get config
+        CrawlsConfig crawlsConfig = crawlsConfigService.findById(1L);
         // increase views by one
         chapter.ifPresent(this::increaseViews);
 
@@ -35,6 +39,8 @@ public class ChapterService implements IChapterService {
         sortPhotos.addAll(chapter.get().getPhotos());
         // set photos to chapter
         chapter.get().setPhotos(sortPhotos);
+        // set photo by config
+        chapter.get().getPhotos().forEach(photo -> photo.setPhotoByConfig(crawlsConfig));
         return chapter;
     }
 
