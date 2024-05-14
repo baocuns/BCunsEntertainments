@@ -5,6 +5,7 @@ import com.cuns.bce.dto.request.auth.UserRegisterDto;
 import com.cuns.bce.entities.Authority;
 import com.cuns.bce.entities.Profile;
 import com.cuns.bce.entities.User;
+import com.cuns.bce.func.Funcs;
 import com.cuns.bce.repositories.AuthorityRepository;
 import com.cuns.bce.repositories.ProfileRepository;
 import com.cuns.bce.repositories.UserRepository;
@@ -50,7 +51,7 @@ public class UserService implements IUserService {
 
         try {
             // save user
-            User user = new User(userRegisterDto.getUsername(), userRegisterDto.getEmail(), passwordEncoder.encode(userRegisterDto.getPassword()));
+            User user = new User(Funcs.handleSlugify(userRegisterDto.getUsername(), ""), userRegisterDto.getEmail(), passwordEncoder.encode(userRegisterDto.getPassword()));
             User registered = userRepository.save(user);
 
             // create default authority
