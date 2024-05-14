@@ -1,6 +1,5 @@
 package com.cuns.bce.api;
 
-import com.cuns.bce.dto.response.api.RACommentsComicDto;
 import com.cuns.bce.dto.response.comics.CommentsComicDto;
 import com.cuns.bce.services.impl.CommentsComicService;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +22,7 @@ public class CommentsApi {
     final private CommentsComicService commentsComicService;
 
     @PostMapping("/comic/get")
-    public ResponseEntity<List<RACommentsComicDto>> getCommentsOfComic(@RequestParam Long comicId,
+    public ResponseEntity<List<CommentsComicDto>> getCommentsOfComic(@RequestParam Long comicId,
                                                                       @RequestParam Long chapterId,
                                                                       @RequestParam(value = "page", defaultValue = "0") int page,
                                                                       @RequestParam(value = "size", defaultValue = "10") int size) {
@@ -31,14 +30,27 @@ public class CommentsApi {
             if (comicId < -1) return ResponseEntity.badRequest().build(); // -1 : in page chapter
             // check chapterId is valid
             if (chapterId >= 0) {
-                List<RACommentsComicDto> comments = commentsComicService.getCommentsOfComicByIsParentAndChapterId(chapterId, page, size);
+                List<CommentsComicDto> comments = commentsComicService.getCommentsOfComicByIsParentAndChapterId(chapterId, page, size);
                 return ResponseEntity.ok(comments);
             } else {
-                List<RACommentsComicDto> comments = commentsComicService.getCommentsOfComicByIsParentAndComicId(comicId, page, size);
+                List<CommentsComicDto> comments = commentsComicService.getCommentsOfComicByIsParentAndComicId(comicId, page, size);
                 return ResponseEntity.ok(comments);
             }
         } catch (Exception e) {
             log.error("Error when get comments of comic: " + e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+    }
+    @PostMapping("/comic/get/replies")
+    public ResponseEntity<List<CommentsComicDto>> getRepliesOfComment(@RequestParam Long commentId,
+                                                                       @RequestParam(value = "page", defaultValue = "0") int page,
+                                                                       @RequestParam(value = "size", defaultValue = "10") int size) {
+        try {
+            if (commentId < 0) return ResponseEntity.badRequest().build();
+            List<CommentsComicDto> comments = commentsComicService.getRepliesOfComment(commentId, page, size);
+            return ResponseEntity.ok(comments);
+        } catch (Exception e) {
+            log.error("Error when get replies of comment: " + e.getMessage());
             return ResponseEntity.badRequest().build();
         }
     }

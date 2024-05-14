@@ -27,6 +27,7 @@ public class CommentsComicDto implements Serializable {
     Boolean isActive;
     Boolean isParent;
     OffsetDateTime createdAt;
+    Integer totalReplies;
 
     public String getTimeAgo() {
         return Funcs.getTimeAgo(createdAt);

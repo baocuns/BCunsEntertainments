@@ -1,6 +1,5 @@
 package com.cuns.bce.services.impl;
 
-import com.cuns.bce.dto.response.api.RACommentsComicDto;
 import com.cuns.bce.dto.response.comics.CommentsComicDto;
 import com.cuns.bce.entities.*;
 import com.cuns.bce.repositories.CommentsComicRepository;
@@ -119,17 +118,29 @@ public class CommentsComicService implements ICommentsComicService {
     }
 
     @Override
-    public List<RACommentsComicDto> getCommentsOfComicByIsParentAndComicId(Long comicId, int page, int size) {
+    public List<CommentsComicDto> getCommentsOfComicByIsParentAndComicId(Long comicId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         List<CommentsComic> comments = commentsComicRepository.findAllByComicIdAndIsParentTrueOrderByIdDesc(comicId, pageable);
-        return getRaCommentsComicDtos(comments);
+        return getCommentsComicDtos(comments);
     }
 
     @Override
-    public List<RACommentsComicDto> getCommentsOfComicByIsParentAndChapterId(Long chapterId, int page, int size) {
+    public List<CommentsComicDto> getCommentsOfComicByIsParentAndChapterId(Long chapterId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         List<CommentsComic> comments = commentsComicRepository.findAllByChapterIdAndIsParentTrueOrderByIdDesc(chapterId, pageable);
-        return getRaCommentsComicDtos(comments);
+        return getCommentsComicDtos(comments);
+    }
+
+    @Override
+    public List<CommentsComicDto> getRepliesOfComment(Long commentId, int page, int size) {
+        List<ReplyCmtsComic> replies = replyCmtsComicService.getRepliesOfCommentByPage(commentId, page, size);
+        List<CommentsComicDto> repliesDto = new ArrayList<>();
+        for (ReplyCmtsComic reply : replies) {
+            CommentsComicDto replyDto = modelMapper.map(reply.getReply(), CommentsComicDto.class);
+            replyDto.setTotalReplies(reply.getReply().getParentCmtsComics().size());
+            repliesDto.add(replyDto);
+        }
+        return repliesDto;
     }
 
     @Override
@@ -203,17 +214,13 @@ public class CommentsComicService implements ICommentsComicService {
         }
     }
 
-    private List<RACommentsComicDto> getRaCommentsComicDtos(List<CommentsComic> comments) {
-        List<RACommentsComicDto> apiCommentsDto = new ArrayList<>();
+    private List<CommentsComicDto> getCommentsComicDtos(List<CommentsComic> comments) {
+        List<CommentsComicDto> commentsDto = new ArrayList<>();
         for (CommentsComic comment : comments) {
-            List<CommentsComicDto> replies = new ArrayList<>();
-            for (ReplyCmtsComic reply : comment.getParentCmtsComics()) {
-                replies.add(modelMapper.map(reply.getReply(), CommentsComicDto.class));
-            }
-            RACommentsComicDto apiCommentDto = modelMapper.map(comment, RACommentsComicDto.class);
-            apiCommentDto.setParentCmtsComicReplies(replies);
-            apiCommentsDto.add(apiCommentDto);
+            CommentsComicDto commentDto = modelMapper.map(comment, CommentsComicDto.class);
+            commentDto.setTotalReplies(comment.getParentCmtsComics().size());
+            commentsDto.add(commentDto);
         }
-        return apiCommentsDto;
+        return commentsDto;
     }
 }

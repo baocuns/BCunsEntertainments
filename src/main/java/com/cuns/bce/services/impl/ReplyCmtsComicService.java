@@ -6,6 +6,8 @@ import com.cuns.bce.repositories.ReplyCmtsComicRepository;
 import com.cuns.bce.services.inter.IReplyCmtsComicService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +32,12 @@ public class ReplyCmtsComicService implements IReplyCmtsComicService {
     @Override
     public List<ReplyCmtsComic> getRepliesOfComment(Long parentId) {
         return replyCmtsComicRepository.findAllByParentId(parentId);
+    }
+
+    @Override
+    public List<ReplyCmtsComic> getRepliesOfCommentByPage(Long parentId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return replyCmtsComicRepository.findAllByParentIdOrderByIdDesc(parentId, pageable);
     }
 
     @Override
