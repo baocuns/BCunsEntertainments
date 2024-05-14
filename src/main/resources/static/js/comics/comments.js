@@ -2,9 +2,11 @@ let comicId = $('#info-comic').data('comic-id');
 let chapterId = $('#info-chapter').data('chapter-id');
 let edt;
 let page = 0;
+let pageReply = 0;
 let size = 10;
 let isCallApiLoadComment = false;
 let isCallApiSendComment = false;
+let repliesOption = [];
 
 $(document).ready(function () {
     // init editor
@@ -85,9 +87,13 @@ $(document).ready(function () {
     });
     // call api get comment
     handleCallApiGetComment();
+    // load reply
+    $(document).on('click', '.btn-load-reply', function () {
+        handleLoadReply($(this).data('cmt-id'));
+    });
 });
 
-// Function
+//----------------------------------------------------------- Function
 const handleSendReply = (cmtId) => {
     const content = $('.ck .ck-content');
     if (content.text() === '' || content === '' || content === '<p><br data-cke-filler="true"></p>') {
@@ -165,152 +171,165 @@ const handleCallApiSendAddNewComment = (comicId, chapterId, content) => {
     });
 }
 
-// Call api get comment
+//----------------------------------------------------------- Call api get comment
 const handleAddComment = (comments) => {
     comments.forEach(function (comment) {
         $('#list-comments').append(handleComment(comment));
     });
 }
 const handleComment = (comment) => {
-    let strReply = '';
-    if (comment.parentCmtsComicReplies != null && comment.parentCmtsComicReplies.length > 0) {
-        comment.parentCmtsComicReplies.forEach(function (reply) {
-            strReply += handleReply(reply, comment.id);
-        });
-    }
     return `<div id="comments-${comment.id}" class="shadow my-2 w-full rounded bg-slate-50 dark:bg-slate-700 dark:text-white">
-            <div id="comment-${comment.id}"  class="flex p-2 gap-2 w-full">
-                <!-- avatar -->
-                <div class="flex-shrink-0">
-                    <a href="/profiles/${comment.userProfileBcId}">
-                        <img
-                                src="${comment.userProfileAvatarUrl}"
-                                alt="avatar"
-                                class="w-12 h-12 rounded-full object-cover"
-                                loading="lazy"
-                        >
-                    </a>
-                </div>
-                <!-- content -->
-                <div class="w-full">
-                    <div class="md:px-2 md:py-1">
-                        <div class="border-b w-full pb-1">
-                            <a href="/profiles/${comment.userProfileBcId}">
-                                <h3 class="text-name font-bold">${comment.userProfileFullname}</h3>
-                            </a>
-                            <div class="flex gap-2 w-full items-center">
-                                ${comment.chapterId ? !window.location.href.match(/\/chapter\/(\d+)/)??[1] ? `<a href="${window.location.href}/chapter/${comment.chapterId}">
-                                    <span class="text-xs italic font-light text-gray-400 hover:text-red-500 dark:hover:text-green-500">${comment.chapterTitle}</span>
-                                </a>`: '' : ''}
-                                <span class="text-sm italic font-light text-gray-400">${comment.timeAgo}</span>
+            <div id="comment-${comment.id}">
+                <div class="flex p-2 gap-2 w-full">
+                    <!-- avatar -->
+                    <div class="flex-shrink-0">
+                        <a href="/profiles/${comment.userProfileBcId}">
+                            <img
+                                    src="${comment.userProfileAvatarUrl}"
+                                    alt="avatar"
+                                    class="w-12 h-12 rounded-full object-cover"
+                                    loading="lazy"
+                            >
+                        </a>
+                    </div>
+                    <div class="w-full">
+                        <div class="md:px-2 md:py-1">
+                            <div class="border-b w-full pb-1">
+                                <a href="/profiles/${comment.userProfileBcId}">
+                                    <h3 class="text-name font-bold">${comment.userProfileFullname}</h3>
+                                </a>
+                                <div class="flex gap-2 w-full items-center">
+                                    ${comment.chapterId ? !window.location.href.match(/\/chapter\/(\d+)/)??[1] ? `<a href="${window.location.href}/chapter/${comment.chapterId}">
+                                        <span class="text-xs italic font-light text-gray-400 hover:text-red-500 dark:hover:text-green-500">${comment.chapterTitle}</span>
+                                    </a>`: '' : ''}
+                                    <span class="text-sm italic font-light text-gray-400">${comment.timeAgo}</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="bg-white text-sm shadow rounded dark:bg-slate-600 p-2 ck-content">
-                            ${comment.content}
-                        </div>
                     </div>
-                    <div class="flex gap-4 md:px-2 py-2 items-center">
-                        <button class="btn-reply text-sm font-medium hover:text-red-500 dark:text-white dark:hover:text-green-500"
-                            data-cmt-id="${comment.id}"
-                        >
-                            Trả lời
-                        </button>
-                        <div class="flex gap-2 items-center">
-                            <span class="text-likes text-sm font-medium">${comment.likes}</span>
-                            <button class="${handleCheckLikeComment(comment.id) ? 'text-red-500 dark:text-green-500': 'dark:text-white'} btn-likes hover:text-red-500 dark:hover:text-green-500"
+                </div>
+                <!-- content -->
+                <div class="px-2">
+                    <div class="bg-white text-sm shadow rounded dark:bg-slate-600 p-2 ck-content">
+                        ${comment.content}
+                    </div>
+                    <div class="flex justify-between items-center">
+                            <div class="flex gap-4 md:px-2 py-2 items-center">
+                                <button class="btn-reply text-sm font-medium hover:text-red-500 dark:text-white dark:hover:text-green-500"
                                     data-cmt-id="${comment.id}"
-                            ><i class="fa-solid fa-thumbs-up"></i></button>
-                        </div>
-                        <div class="flex gap-2 items-center">
-                            <span class="text-dislikes text-sm font-medium">${comment.dislikes}</span>
-                            <button class="${handleCheckDislikeComment(comment.id) ? 'text-red-500 dark:text-green-500': 'dark:text-white'} btn-dislikes hover:text-red-500 dark:hover:text-green-500"
+                                >
+                                    Trả lời
+                                </button>
+                                <div class="flex gap-2 items-center">
+                                    <span class="text-likes text-sm font-medium">${comment.likes > 0 ? comment.likes : ''}</span>
+                                    <button class="${handleCheckLikeComment(comment.id) ? 'text-red-500 dark:text-green-500': 'dark:text-white'} btn-likes hover:text-red-500 dark:hover:text-green-500"
+                                            data-cmt-id="${comment.id}"
+                                    ><i class="fa-solid fa-thumbs-up"></i></button>
+                                </div>
+                                <div class="flex gap-2 items-center">
+                                    <span class="text-dislikes text-sm font-medium">${comment.dislikes > 0 ? comment.dislikes : ''}</span>
+                                    <button class="${handleCheckDislikeComment(comment.id) ? 'text-red-500 dark:text-green-500': 'dark:text-white'} btn-dislikes hover:text-red-500 dark:hover:text-green-500"
+                                            data-cmt-id="${comment.id}"
+                                    ><i class="fa-solid fa-thumbs-down"></i></button>
+                                </div>
+                                <div class="flex gap-2 items-center">
+                                    <button class="${handleCheckReportComment(comment.id) ? 'text-red-500 dark:text-green-500': 'dark:text-white'} btn-reports hover:text-red-500 dark:hover:text-green-500"
+                                            data-cmt-id="${comment.id}"
+                                    ><i class="fa-solid fa-triangle-exclamation"></i></button>
+                                </div>
+                                ${handleCheckIsOwnerComment(comment.userProfileId) ? `
+                                <div class="flex gap-2 items-center">
+                                    <button class="btn-deleted hover:text-red-500 dark:text-white dark:hover:text-green-500"
+                                            data-cmt-id="${comment.id}"
+                                    ><i class="fa-solid fa-delete-left"></i></button>
+                                </div>
+                                `: ''}
+                            </div>
+                            ${comment.totalReplies > 0 ? `
+                            <button class="btn-load-reply flex items-center md:px-2 py-2 gap-2 text-sm font-medium hover:text-red-500 dark:text-white dark:hover:text-green-500"
                                     data-cmt-id="${comment.id}"
-                            ><i class="fa-solid fa-thumbs-down"></i></button>
-                        </div>
-                        <div class="flex gap-2 items-center">
-                            <button class="${handleCheckReportComment(comment.id) ? 'text-red-500 dark:text-green-500': 'dark:text-white'} btn-reports hover:text-red-500 dark:hover:text-green-500"
-                                    data-cmt-id="${comment.id}"
-                            ><i class="fa-solid fa-triangle-exclamation"></i></button>
-                        </div>
-                        ${handleCheckIsOwnerComment(comment.userProfileId) ? `
-                        <div class="flex gap-2 items-center">
-                            <button class="btn-deleted hover:text-red-500 dark:text-white dark:hover:text-green-500"
-                                    data-cmt-id="${comment.id}"
-                            ><i class="fa-solid fa-delete-left"></i></button>
-                        </div>
-                        `: ''}
+                                >
+                                    <svg id="load-reply" class="hidden animate-spin -ml-1 mr-3 h-5 w-5 text-red-500 dark:text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                    Xem ${comment.totalReplies} trả lời
+                                    <i class="fa-solid fa-angle-down"></i>
+                            </button>` : ''}
                     </div>
                 </div>
             </div>
             <!-- comment reply -->
-            <div id="replies-${comment.id}" class="pl-4 md:pl-12">
-            ${strReply}
-            </div>
+            <div id="replies-${comment.id}" class="pl-4 md:pl-12 transition duration-300 ease-in-out hidden"></div>
             <!-- comment box reply -->
-            <div id="box-comment-${comment.id}" class="box-comment-reply my-4 px-4 pb-4"></div>
+            <div id="box-comment-${comment.id}" class="box-comment-reply my-4 px-4"></div>
         </div>`;
 }
 const handleReply = (reply, cmtId) => {
-    return `<div id="comment-${reply.id}" class="flex p-2 gap-2 w-full">
-                <!-- avatar -->
-                <div class="flex-shrink-0">
-                    <a href="/profiles/${reply.userProfileBcId}">
-                        <img
-                                src="${reply.userProfileAvatarUrl}"
-                                alt="avatar"
-                                class="w-12 h-12 rounded-full object-cover"
-                                loading="lazy"
-                        >
-                    </a>
-                </div>
-                <!-- content -->
-                <div class="w-full">
-                    <div class="md:px-2 md:py-1">
-                        <div class="border-b w-full pb-1">
-                            <a href="/profiles/${reply.userProfileBcId}">
-                                <h3 class="text-name font-bold">${reply.userProfileFullname}</h3>
-                            </a>
-                            <div class="flex gap-2 w-full items-center">
-                                ${reply.chapterId ? !window.location.href.match(/\/chapter\/(\d+)/)??[1] ? `<a href="${window.location.href}/chapter/${reply.chapterId}">
-                                    <span class="text-xs italic font-light text-gray-400 hover:text-red-500 dark:hover:text-green-500">${reply.chapterTitle}</span>
-                                </a>`: '' : ''}
-                                <span class="text-sm italic font-light text-gray-400">${reply.timeAgo}</span>
+    return `<div id="comment-${reply.id}">
+                <div class="flex p-2 gap-2 w-full">
+                    <!-- avatar -->
+                    <div class="flex-shrink-0">
+                        <a href="/profiles/${reply.userProfileBcId}">
+                            <img
+                                    src="${reply.userProfileAvatarUrl}"
+                                    alt="avatar"
+                                    class="w-12 h-12 rounded-full object-cover"
+                                    loading="lazy"
+                            >
+                        </a>
+                    </div>
+                    <div class="w-full">
+                        <div class="md:px-2 md:py-1">
+                            <div class="border-b w-full pb-1">
+                                <a href="/profiles/${reply.userProfileBcId}">
+                                    <h3 class="text-name font-bold">${reply.userProfileFullname}</h3>
+                                </a>
+                                <div class="flex gap-2 w-full items-center">
+                                    ${reply.chapterId ? !window.location.href.match(/\/chapter\/(\d+)/) ?? [1] ? `<a href="${window.location.href}/chapter/${reply.chapterId}">
+                                        <span class="text-xs italic font-light text-gray-400 hover:text-red-500 dark:hover:text-green-500">${reply.chapterTitle}</span>
+                                    </a>` : '' : ''}
+                                    <span class="text-sm italic font-light text-gray-400">${reply.timeAgo}</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="bg-white text-sm shadow rounded dark:bg-slate-600 p-2 ck-content">
-                            ${reply.content}
-                        </div>
+                    </div>
+                </div>
+                <!-- content -->
+                <div class="px-2">
+                    <div class="bg-white text-sm shadow rounded dark:bg-slate-600 p-2 ck-content">
+                                ${reply.content}
                     </div>
                     <div class="flex gap-4 py-2 md:px-2 items-center">
-                        <button class="btn-reply text-sm font-medium hover:text-red-500 dark:text-white dark:hover:text-green-500"
-                                data-cmt-id="${cmtId}"
-                        >
-                            Trả lời
-                        </button>
-                        <div class="flex gap-2 items-center">
-                            <span class="text-likes text-sm font-medium">${reply.likes}</span>
-                            <button class="${handleCheckLikeComment(reply.id) ? 'text-red-500 dark:text-green-500': 'dark:text-white'} btn-likes hover:text-red-500 dark:hover:text-green-500"
-                                    data-cmt-id="${reply.id}"
-                            ><i class="fa-solid fa-thumbs-up"></i></button>
-                        </div>
-                        <div class="flex gap-2 items-center">
-                            <span class="text-dislikes text-sm font-medium">${reply.dislikes}</span>
-                            <button class="${handleCheckDislikeComment(reply.id) ? 'text-red-500 dark:text-green-500': 'dark:text-white'} btn-dislikes hover:text-red-500 dark:hover:text-green-500"
-                                    data-cmt-id="${reply.id}"
-                            ><i class="fa-solid fa-thumbs-down"></i></button>
-                        </div>
-                        <div class="flex gap-2 items-center">
-                            <button class="${handleCheckReportComment(reply.id) ? 'text-red-500 dark:text-green-500': 'dark:text-white'} btn-reports hover:text-red-500 dark:hover:text-green-500"
-                                    data-cmt-id="${reply.id}"
-                            ><i class="fa-solid fa-triangle-exclamation"></i></button>
-                        </div>
-                        ${handleCheckIsOwnerComment(reply.userProfileId) ? `
-                        <div class="flex gap-2 items-center">
-                            <button class="btn-deleted hover:text-red-500 dark:text-white dark:hover:text-green-500"
-                                    data-cmt-id="${reply.id}"
-                            ><i class="fa-solid fa-delete-left"></i></button>
-                        </div>
-                        `: ''}
+                            <button class="btn-reply text-sm font-medium hover:text-red-500 dark:text-white dark:hover:text-green-500"
+                                    data-cmt-id="${cmtId}"
+                            >
+                                Trả lời
+                            </button>
+                            <div class="flex gap-2 items-center">
+                                <span class="text-likes text-sm font-medium">${reply.likes}</span>
+                                <button class="${handleCheckLikeComment(reply.id) ? 'text-red-500 dark:text-green-500' : 'dark:text-white'} btn-likes hover:text-red-500 dark:hover:text-green-500"
+                                        data-cmt-id="${reply.id}"
+                                ><i class="fa-solid fa-thumbs-up"></i></button>
+                            </div>
+                            <div class="flex gap-2 items-center">
+                                <span class="text-dislikes text-sm font-medium">${reply.dislikes}</span>
+                                <button class="${handleCheckDislikeComment(reply.id) ? 'text-red-500 dark:text-green-500' : 'dark:text-white'} btn-dislikes hover:text-red-500 dark:hover:text-green-500"
+                                        data-cmt-id="${reply.id}"
+                                ><i class="fa-solid fa-thumbs-down"></i></button>
+                            </div>
+                            <div class="flex gap-2 items-center">
+                                <button class="${handleCheckReportComment(reply.id) ? 'text-red-500 dark:text-green-500' : 'dark:text-white'} btn-reports hover:text-red-500 dark:hover:text-green-500"
+                                        data-cmt-id="${reply.id}"
+                                ><i class="fa-solid fa-triangle-exclamation"></i></button>
+                            </div>
+                            ${handleCheckIsOwnerComment(reply.userProfileId) ? `
+                            <div class="flex gap-2 items-center">
+                                <button class="btn-deleted hover:text-red-500 dark:text-white dark:hover:text-green-500"
+                                        data-cmt-id="${reply.id}"
+                                ><i class="fa-solid fa-delete-left"></i></button>
+                            </div>
+                            ` : ''}
                     </div>
                 </div>
             </div>`;
@@ -360,7 +379,46 @@ const handleLoaderOnchange = () => {
     }
 }
 
-// check like, dislike, report, delete comment
+//----------------------------------------------------------- reply comment
+const handleLoadReply = (cmtId) => {
+    const replies = $(`#replies-${cmtId}`);
+    let option = repliesOption.find(function (item) {
+        return item.cmtId === cmtId;
+    });
+    if (!option) {
+        $(`#comment-${cmtId}`).find('#load-reply').removeClass('hidden');
+        repliesOption.push({cmtId: cmtId, page: 0, size: 10, isCallApi: false});
+        handleCallApiGetReply(cmtId);
+    } else {
+        replies.toggle('hidden');
+    }
+}
+const handleCallApiGetReply = (cmtId) => {
+    let option = repliesOption.find(function (item) {
+        return item.cmtId === cmtId;
+    });
+    $.post('/api/comments/comic/get/replies', {
+        commentId: cmtId,
+        page: option.page,
+        size: option.size
+    }).done(function (response, textStatus, jqXHR) {
+        // Xử lý kết quả thành công
+        const replies = $(`#replies-${cmtId}`);
+        response.forEach(function (reply) {
+            replies.append(handleReply(reply, cmtId));
+            option.page++;
+        });
+        replies.toggle('hidden');
+        $(`#comment-${cmtId}`).find('#load-reply').addClass('hidden');
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        // Xử lý lỗi
+        alert('Lỗi: ' + textStatus + ' - Không thể lấy trả lời rồi Fen ơi!');
+    }).always(function () {
+        // Thực hiện các công việc cần thiết sau khi request hoàn thành (có thể bao gồm cả thành công và thất bại)
+    });
+}
+
+//----------------------------------------------------------- check like, dislike, report, delete comment
 const handleCheckLikeComment = (cmtId) => {
     let likes = localStorage.getItem('likes');
     if (likes) {
@@ -410,7 +468,7 @@ const handleCheckLogin = () => {
 }
 
 // Like and dislike comment likes: {"cmtId": 1}, dislikes: {"cmtId": 2}
-// like comment
+//----------------------------------------------------------- like comment
 const handleLikeComment = (cmtId) => {
     if (!handleCheckLogin()) {
         alert('Phải đăng nhập đã Fen ơi!');
@@ -492,7 +550,7 @@ const handleCallApiUnlikeComment = (cmtId) => {
         // Thực hiện các công việc cần thiết sau khi request hoàn thành (có thể bao gồm cả thành công và thất bại)
     });
 }
-// dislike comment
+//----------------------------------------------------------- dislike comment
 const handleDislikeComment = (cmtId) => {
     if (!handleCheckLogin()) {
         alert('Phải đăng nhập đã Fen ơi!');
@@ -572,7 +630,8 @@ const handleCallApiUndislikeComment = (cmtId) => {
         // Thực hiện các công việc cần thiết sau khi request hoàn thành (có thể bao gồm cả thành công và thất bại)
     });
 }
-// delete comment
+
+//----------------------------------------------------------- delete comment
 const handleDeleteComment = (cmtId) => {
     // alert('Xóa bình luận') after if confirm delete comment
     if (confirm('Bạn có chắc chắn muốn xóa bình luận này không?')) {
@@ -638,7 +697,7 @@ const handleCallApiReportComment = (cmtId) => {
     });
 }
 
-// editor and box comment
+//----------------------------------------------------------- editor and box comment
 const handleAddSticker = (editor, src) => {
     const content = `<img src="${src}" alt="sticker">`;
     const viewFragment = editor.data.processor.toView(content);
@@ -664,7 +723,7 @@ const handleAddReply = (cmtId) => {
     $('.box-comment-reply').empty();
     let fullname = $(`#comment-${cmtId} .text-name`).text();
     let strBoxComment = `<h1 class="font-medium border-b border-red-500 mb-2 dark:text-white dark:border-green-500">Comments</h1>
-            <div class="relative text-black">
+            <div class="relative text-black pb-4">
                 <div id="editor">
                     <i><strong>${fullname}</strong></i>
                     <p>Đạo hữu xin dừng bước!</p>

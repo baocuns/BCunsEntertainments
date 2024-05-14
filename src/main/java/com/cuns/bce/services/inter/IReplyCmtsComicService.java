@@ -13,6 +13,8 @@ public interface IReplyCmtsComicService {
     void deleteReply(Long commentId, Long replyId);
     // get all replies of a comment
     List<?> getRepliesOfComment(Long parentId);
+    // get all replies of a comment by page
+    List<?> getRepliesOfCommentByPage(Long parentId, int page, int size);
     // delete all replies of a comment
     void deleteRepliesOfComment(Long parentId);
 }

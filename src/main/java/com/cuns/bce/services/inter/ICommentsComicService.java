@@ -18,6 +18,8 @@ public interface ICommentsComicService {
     List<?> getCommentsOfComicByIsParentAndComicId(Long comicId, int page, int size);
     // get all comments have isParent = true of a comic by chapterId
     List<?> getCommentsOfComicByIsParentAndChapterId(Long chapterId, int page, int size);
+    // get all replies of a comment
+    List<?> getRepliesOfComment(Long commentId, int page, int size);
     // likes a comment
     void likeComment(Principal principal, Long commentId);
     // unlikes a comment
