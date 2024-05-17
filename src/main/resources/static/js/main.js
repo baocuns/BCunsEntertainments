@@ -28,10 +28,14 @@ const diacriticsMap = {
     'Ý': 'Y', 'Ỳ': 'Y', 'Ỷ': 'Y', 'Ỹ': 'Y', 'Ỵ': 'Y',
 };
 // text to slug
-const handleTextToSlug = (text) => {
+const handleTextToSlug = (text, s = '-') => {
     return text.toLowerCase().replace(/./g, function () {
         return diacriticsMap[arguments[0]] || arguments[0];
-    }).trim().replace(/\s+/g, '-').replace(/-+/g, '-').replace(/[^\w-]+/g, '');
+    })
+        .trim()
+        .replace(/\s+/g, s)
+        .replace(/-+/g, s)
+        .replace(/[^\w-]+/g, '');
 }
 
 //--------------------------------------------- Document Ready Function ---------------------------------------------

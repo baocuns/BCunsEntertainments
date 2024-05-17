@@ -33,6 +33,8 @@ public class SecurityConfiguration implements WebMvcConfigurer {
             new AntPathRequestMatcher("/api/ratings/comic/all"),
             new AntPathRequestMatcher("/api/comments/comic/get"),
             new AntPathRequestMatcher("/api/comics/chapters"),
+            new AntPathRequestMatcher("/api/users/check-username-exist"),
+            new AntPathRequestMatcher("/api/users/check-email-exist"),
     };
     public static final AntPathRequestMatcher[] ENDPOINTS_WHITELIST_AUTHENTICATED = {
             new AntPathRequestMatcher("/comics/**/chapter/**"),

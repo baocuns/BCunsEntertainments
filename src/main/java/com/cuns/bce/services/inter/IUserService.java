@@ -11,4 +11,6 @@ import java.util.Optional;
 public interface IUserService {
     Optional<User> findByUsername(String username);
     void registerNewUserAccount(UserRegisterDto userRegisterDto) throws Exception;
+    boolean checkUsernameExist(String username);
+    boolean checkEmailExist(String email);
 }
