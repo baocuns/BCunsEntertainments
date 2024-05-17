@@ -42,7 +42,7 @@ public class UserService implements IUserService {
 
     @Override
     public void registerNewUserAccount(UserRegisterDto userRegisterDto) throws Exception {
-        if (emailExists(userRegisterDto.getEmail())) {
+        if (checkEmailExist(userRegisterDto.getEmail())) {
             throw new Exception("There is an account with that email address: " + userRegisterDto.getEmail());
         }
         if (userRepository.findByUsername(userRegisterDto.getUsername()).isPresent()) {
@@ -67,7 +67,13 @@ public class UserService implements IUserService {
         }
     }
 
-    private boolean emailExists(String email) {
+    @Override
+    public boolean checkUsernameExist(String username) {
+        return userRepository.findByUsername(username).isPresent();
+    }
+
+    @Override
+    public boolean checkEmailExist(String email) {
         return userRepository.findByEmail(email).isPresent();
     }
 }
