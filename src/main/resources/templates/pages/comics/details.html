@@ -29,7 +29,15 @@
         <div class="col-span-3 dark:text-slate-400">
             <div class="mt-8 sm:mt-2">
                 <!-- title -->
-                <h1 class="text-2xl font-semibold dark:text-white" id="info-comic" th:data-comic-id="${comic.getId()}" th:text="${comic.getTitle()}">Title</h1>
+                <h1 class="text-2xl font-semibold dark:text-white"
+                    id="info-comic"
+                    th:data-comic-id="${comic.getId()}"
+                    th:text="${comic.getTitle()}"
+                    th:data-comic-thumbnail="${comic.getThumbnails()}"
+                    th:data-comic-slug="${comic.getTileSlug()}"
+                    th:data-comic-count-chapter="${comic.getCountChapter()}"
+                    th:data-comic-time-ago="${comic.getUpdateTimeAgo()}"
+                >Title</h1>
                 <!-- info -->
                 <div class="flex font-light mt-4">
                     <div class="mx-2 flex items-center">

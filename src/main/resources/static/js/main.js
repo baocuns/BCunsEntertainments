@@ -37,6 +37,35 @@ const handleTextToSlug = (text, s = '-') => {
         .replace(/-+/g, s)
         .replace(/[^\w-]+/g, '');
 }
+// Hàm chuyển đổi date thành time ago
+function dateToTimeAgo(timestamp) {
+    const now = new Date();
+    const diffInSeconds = Math.floor((now - timestamp) / 1000);
+
+    const secondsInMinute = 60;
+    const secondsInHour = 3600;
+    const secondsInDay = 86400;
+    const secondsInMonth = 2592000; // Approximation for a month (30 days)
+
+    if (diffInSeconds < secondsInMinute) {
+        return `${diffInSeconds} giây trước`;
+    } else if (diffInSeconds < secondsInHour) {
+        const minutes = Math.floor(diffInSeconds / secondsInMinute);
+        return `${minutes} phút trước`;
+    } else if (diffInSeconds < secondsInDay) {
+        const hours = Math.floor(diffInSeconds / secondsInHour);
+        return `${hours} giờ trước`;
+    } else if (diffInSeconds < secondsInMonth) {
+        const days = Math.floor(diffInSeconds / secondsInDay);
+        return `${days} ngày trước`;
+    } else {
+        const dt = new Date(timestamp);
+        const day = dt.getDate();
+        const month = dt.getMonth() + 1; // Months are 0-based in JS
+        const year = dt.getFullYear();
+        return `${day}/${month}/${year}`;
+    }
+}
 
 //--------------------------------------------- Document Ready Function ---------------------------------------------
 $(document).ready(function () {
@@ -67,6 +96,7 @@ $(document).ready(function () {
     handleDarkLightMode();
     handleGetProfileIf();
     handleAddAccountMenu();
+    handleUpdateHistory();
 });
 
 //--------------------------------------------- Functions
@@ -164,6 +194,46 @@ const handleDarkLightMode = () => {
         });
     });
 }
+// Cập nhật lịch sử đọc truyện của user bằng null khi được đăng nhập
+const handleUpdateHistory = () => {
+    const comicHistory = localStorage.getItem('comicHistory');
+    // get user
+    const user = JSON.parse(localStorage.getItem('virus'));
+    if (comicHistory && user) {
+        let histories = JSON.parse(comicHistory);
+        if (histories.length > 0) {
+            let historyByNull = histories.filter(history => history.userId === null); // mảng chứa history userId null
+            if (historyByNull.length > 0) {
+                if (histories.find(history => history.userId === user.bcId)) {
+                    histories = histories.filter(history => history.userId !== null); // mảng không chứa history userId null
+                    histories.forEach(history => {
+                        if (history.userId === user.bcId) {
+                            historyByNull[0].comics.forEach(comic => {
+                                if (!history.comics.find(c => c.id === comic.id)) { // kiểm tra comic đã tồn tại trong history chưa
+                                    history.comics.push(comic);
+                                } else {
+                                    history.comics.forEach(c => {
+                                        if (c.id === comic.id) {
+                                            c.chapterRead = comic.chapterRead;
+                                            c.timeRead = comic.timeRead;
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                } else {
+                    histories.forEach(history => {
+                        if (history.userId === null) {
+                            history.userId = user.bcId;
+                        }
+                    });
+                }
+            }
+            localStorage.setItem('comicHistory', JSON.stringify(histories));
+        }
+    }
+}
 // get profile if exist
 const handleGetProfileIf = () => {
     // check if profile is exist
@@ -186,10 +256,16 @@ const handleAddAccountMenu = () => {
     let accountMenu = $('#account-menu');
     let accountMenuMobile = $('#account-menu-mobile');
     let html = '';
+    let htmlDefault = `
+        <a href="/history" 
+            class="block px-4 py-2 text-sm text-gray-700 dark:text-white hover:bg-gray-100 hover:text-red-500 dark:hover:bg-slate-700 dark:hover:text-green-500">
+            Lịch Sử
+        </a>
+    `;
 
     accountMenu.empty();
     if (!virus) {
-        html = `
+        html = htmlDefault + `
             <a href="/login" 
             class="block px-4 py-2 text-sm text-gray-700 dark:text-white hover:bg-gray-100 hover:text-red-500 dark:hover:bg-slate-700 dark:hover:text-green-500">Đăng Nhập</a>
             <a href="/register" 
@@ -205,6 +281,7 @@ const handleAddAccountMenu = () => {
             <span class="text-sm">Hi </span>
             <span class="text-sm italic font-bold">${virus.fullname}</span>
         </a>
+        ${htmlDefault}
         <a href="/logout" 
         class="block px-4 py-2 text-sm text-gray-700 dark:text-white hover:bg-gray-100 hover:text-red-500 dark:hover:bg-slate-700 dark:hover:text-green-500">Logout</a>
     `;

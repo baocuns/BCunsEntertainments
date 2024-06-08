@@ -28,6 +28,7 @@ public class SecurityConfiguration implements WebMvcConfigurer {
             new AntPathRequestMatcher("/comics/**"),
             new AntPathRequestMatcher("/crawl/**"),
             new AntPathRequestMatcher("/profiles/**"),
+            new AntPathRequestMatcher("/history"),
             // api
             new AntPathRequestMatcher("/api/comics/search"),
             new AntPathRequestMatcher("/api/ratings/comic/all"),
@@ -38,22 +39,8 @@ public class SecurityConfiguration implements WebMvcConfigurer {
     };
     public static final AntPathRequestMatcher[] ENDPOINTS_WHITELIST_AUTHENTICATED = {
             new AntPathRequestMatcher("/comics/**/chapter/**"),
-            new AntPathRequestMatcher("/comics/likes"),
             new AntPathRequestMatcher("/profiles/**/follows"),
             new AntPathRequestMatcher("/profiles/**/followed"),
-            new AntPathRequestMatcher("/api/comments/comic/new"),
-            new AntPathRequestMatcher("/api/comments/comic/reply"),
-            new AntPathRequestMatcher("/api/comments/comic/like"),
-            new AntPathRequestMatcher("/api/comments/comic/dislike"),
-            new AntPathRequestMatcher("/api/comments/comic/unlike"),
-            new AntPathRequestMatcher("/api/comments/comic/undislike"),
-            new AntPathRequestMatcher("/api/comments/comic/reports"),
-            new AntPathRequestMatcher("/api/comments/comic/deleted"),
-            new AntPathRequestMatcher("/api/profiles/if"),
-            new AntPathRequestMatcher("/api/profiles/comic-liked"),
-            new AntPathRequestMatcher("/api/profiles/follower"),
-            new AntPathRequestMatcher("/api/profiles/following"),
-            new AntPathRequestMatcher("/api/profiles/follow"),
     };
     public static final String LOGIN_URL = "/login";
     public static final String LOGOUT_URL = "/logout";

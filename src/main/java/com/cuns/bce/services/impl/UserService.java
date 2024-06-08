@@ -32,6 +32,7 @@ public class UserService implements IUserService {
     private final ModelMapper modelMapper = new ModelMapper();
     @Override
     public Optional<User> findByUsername(String username) {
+        // TODO: check if user is not null
         Optional<User> user = userRepository.findByUsername(username);
         Set<Authority> authorities = authorityRepository.findAllByUser(user.get());
         // set authorities for user

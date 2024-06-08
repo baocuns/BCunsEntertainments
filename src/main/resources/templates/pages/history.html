@@ -1,10 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+<head
+        th:replace="~{fragments/head :: head(
+        title='Lịch Sử | BCENT',
+        description='Lịch sử của bạn trên BCENT',
+        keywords='lich su, history, bcent, bcent online, bcuns entertainment',
+        url='https://bcent.online/history',
+        image='https://vnw-img-cdn.popsww.com/api/v2/containers/file2/cms_assets/thumb_1920x1080__notext_-74b733a15710-1677820176303-e0UF4omJ.jpg?v=0&maxW=1400&format=webp',
+        site_name='BCENT Online'
+    )}">
+    <title>History</title>
 </head>
-<body>
-$END$
+<body class="scrollbar-hidden dark:bg-slate-900">
+<!-- header -->
+<header th:replace="~{fragments/header :: header}"></header>
+<!-- main -->
+<main class="mt-20">
+    <div class="sm:max-w-7xl mx-auto">
+        <div class="mt-4 px-2">
+            <div class="flex justify-between items-center">
+                <h2 class="text-xl font-bold text-red-500 border-b-2 border-red-500 dark:text-green-500 dark:border-green-500">
+                    Lịch sử xem</h2>
+                <a href="/history" class="text-sm dark:text-white">Xem tất cả</a>
+            </div>
+            <div id="history-comics" class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                <!-- history comics -->
+            </div>
+        </div>
+    </div>
+</main>
+<!-- footer -->
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+<!-- scripts -->
+<script th:src="@{/js/comics/history.js}"></script>
 </body>
 </html>

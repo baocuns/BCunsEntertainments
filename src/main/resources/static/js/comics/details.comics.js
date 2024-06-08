@@ -1,3 +1,4 @@
+const infoComic = $('#info-comic')
 $(document).ready(function () {
     // Hàm ẩn hiện modal
     let isModalOpenComicRating = false
@@ -230,8 +231,86 @@ $(document).ready(function () {
                 $('#chapter-taps-list').append('<div class="font-medium p-4 border-l-2 border-red-500 dark:text-white dark:border-green-500">Không có chương nào Fen ơi!</div>')
             }
         });
-})
+    // add comic to history
+    handleAddComicToHistory()
+});
 
+const handleAddComicToHistory = () => {
+    const comic = {
+        id: infoComic.data('comic-id'),
+        title: infoComic.text(),
+        thumbnail: infoComic.data('comic-thumbnail'),
+        slug: infoComic.data('comic-slug'),
+        countChapter: infoComic.data('comic-count-chapter'),
+        timeUpdate: infoComic.data('comic-time-ago'),
+        timeRead: Date.now(),
+        chapterRead: 0,
+    }
+    let comicHistory = localStorage.getItem("comicHistory");
+    // get user
+    const user = JSON.parse(localStorage.getItem('virus'));
+    // history object
+    const history = {
+        userId: user ? user.bcId : null,
+        comics: [comic]
+    };
+
+    if (comicHistory != null) {
+        let histories = JSON.parse(comicHistory);
+        if (user) {
+            let historyByUser = histories.filter(history => history.userId === user.bcId);
+            if (historyByUser.length  >0) {
+                // comic
+                let comicHistoryById = historyByUser[0].comics.filter(h => h.id === comic.id);
+                // comics history
+                let comicHistory = historyByUser[0].comics.filter(h => h.id !== comic.id);
+                if (comicHistory.length >= 12) {
+                    comicHistory.pop();
+                }
+                if (comicHistoryById.length > 0) {
+                    // update time read
+                    comicHistoryById[0].timeRead = comic.timeRead;
+                    comicHistory.unshift(comicHistoryById[0])
+                } else {
+                    comicHistory.unshift(comic);
+                }
+                historyByUser[0].comics = comicHistory;
+                histories = histories.filter(history => history.userId !== user.bcId);
+                histories.push(historyByUser[0]);
+            }
+            else {
+                histories.push(history);
+            }
+        } else {
+            let historyByNull = histories.filter(history => history.userId === null);
+            if (historyByNull.length  >0) {
+                // comic
+                let comicHistoryById = historyByNull[0].comics.filter(h => h.id === comic.id);
+                // comics history
+                let comicHistory = historyByNull[0].comics.filter(h => h.id !== comic.id);
+                if (comicHistory.length >= 12) {
+                    comicHistory.pop();
+                }
+                if (comicHistoryById.length > 0) {
+                    // update time read
+                    comicHistoryById[0].timeRead = comic.timeRead;
+                    comicHistory.unshift(comicHistoryById[0])
+                } else {
+                    comicHistory.unshift(comic);
+                }
+                historyByNull[0].comics = comicHistory;
+                histories = histories.filter(history => history.userId !== null);
+                histories.push(historyByNull[0]);
+            }
+            else {
+                histories.push(history);
+            }
+        }
+        localStorage.setItem("comicHistory", JSON.stringify(histories));
+    } else {
+        localStorage.setItem("comicHistory", JSON.stringify([history]));
+    }
+}
 const tabsChapter = (id) => {
     const content = $(`#list-chapter-${id}`)
     const tabs = $('.tabs-chapter')
