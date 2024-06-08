@@ -66,4 +66,8 @@ public class DefaultController {
     public String showForgotPasswordPage() {
         return "pages/auth/forgot-password";
     }
+    @GetMapping("history")
+    public String showHistoryPage() {
+        return "pages/history";
+    }
 }
